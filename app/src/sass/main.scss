@@ -1,0 +1,173 @@
+body {
+    font-size: 0.9rem;
+    padding: 70px 0 0;
+    background-color: #F4F4F4;
+    margin: 0 auto;
+    max-width: 1440px;
+}
+
+pre,
+code,
+kbd,
+samp,
+.form-control,
+.col-form-legend,
+.btn {
+  font-size: 0.9rem;
+}
+
+.navbar-brand {
+  font-family: Baskerville, serif;
+}
+
+/* Override Bootstrap Responsive CSS fixed navbar */
+@media (max-width: 1440px) {
+    .navbar-fixed-top, .navbar-fixed-bottom {
+        position: fixed;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+.btn-primary {
+    background-color: #470544;
+    border-color: #470544;
+}
+
+.btn-primary:hover {
+    background-color: #470544;
+    border-color: #470544;
+}
+
+.btn-primary.disabled, .btn-primary:disabled {
+    background-color: #470544;
+    border-color: #470544;
+}
+
+.btn-primary:not([disabled]):not(.disabled):active, .btn-primary:not([disabled]):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+    background-color: #470544;
+}
+
+.bg-dark {
+    background-color: #470544 !important;
+}
+
+#footer {
+    background-color: white;
+    margin-top: 10px;
+}
+#footer-heading {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.contact_icon {
+    margin: 25px;
+}
+
+#content, #centre {
+    position:relative;
+}
+
+.card, .card-deck {
+    margin-bottom: 20px;
+}
+
+@font-face {
+    font-family: 'alternate_gothic_fs_no_3Rg';
+    src: url('../fonts/AlternateGothicNo3-webfont.woff');
+    src: url('../fonts/AlternateGothicNo3-webfont.woff?#iefix') format('embedded-opentype'), url('../fonts/AlternateGothicNo3-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal
+}
+
+.onboardh1 {
+    margin-top: 60px;
+    margin-bottom: 30px;
+}
+
+#page-heading{
+    margin-bottom: 30px;
+}
+
+h1, h2 {
+    font-family: "alternate_gothic_fs_no_3Rg", "Arial", sans-serif;
+}
+
+h4 {
+    margin-bottom: 0;
+}
+
+p {
+    font-family: "Trade Gothic Lt", Arial,"Times New Roman", serif;
+}
+
+hr {
+    border-color: #bbb;
+}
+
+.alignleft {
+    float: left;
+}
+
+.alignright {
+    float: right;
+    text-align: right;
+}
+
+.btn-secondary {
+    background-color: #F4F4F4;
+    color: #535353;
+    border-color: #EAEAEA;
+}
+.btn-secondary:hover {
+    background-color: #F0F0F0;
+    color: #535353;
+    border-color: #EAEAEA;
+}
+
+
+/* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+.row.content {
+    height: auto;
+}
+
+/* end of characteristics for sidebars */
+.card-block {
+    padding: 20px;
+}
+
+.card-block .activityTable {
+     padding:0;
+}
+
+.activityTable .table {
+    margin-bottom:0;
+}
+
+.card-footer {
+    padding: 10px;
+}
+
+/* Set footer padding */
+footer {
+    padding: 10px;
+}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 768px) {
+    .sidenav {
+        height: auto;
+    }
+
+    .row.content {
+        height:auto;
+    }
+
+}
+
+@media screen and (max-width: 1023px) {
+    #notifications, #volunteering, #otherSection, #managerShiftResponse {
+        min-height: 80%;
+    }
+}
