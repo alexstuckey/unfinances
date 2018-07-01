@@ -1,0 +1,8 @@
+.DS_Store
+node_modules
+app/static/
+
+### PhpStorm ###
+.idea/**/*
+
+app/sftp-config*.json
