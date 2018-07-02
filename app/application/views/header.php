@@ -13,7 +13,6 @@
         <script src="<?php echo base_url('/static/js/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('/static/js/bootstrap.min.js'); ?>"></script>
         <script src="<?php echo base_url('/static/js/select2.min.js'); ?>"></script>
-        <script src="<?php echo base_url('/static/js/progressbar.min.js'); ?>"></script>
 
         <!-- App JS -->
         <!-- <script src="<?php echo base_url('/static/js/homepage.js'); ?>"></script> -->
