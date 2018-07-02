@@ -35,33 +35,31 @@
         <!-- Webpage -->
         <div id="page">
 
-            <div id="nav">
-                <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
-                    <a class="navbar-brand" href="#">UC Finances</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                        <ul class="navbar-nav mr-auto">
-                            <?php if (empty($hide_links) || ($hide_links == FALSE)): ?>
-                                <li class="nav-item<?php if ($active == "home") { echo " active"; }; ?>">
-                                    <a class="nav-link" href="<?php echo site_url('/home'); ?>">Home</a>
-                                </li>
-                                <li class="nav-item<?php if ($active == "volunteering") { echo " active"; }; ?>">
-                                    <a class="nav-link" href="<?php echo site_url('/my_expenses'); ?>">My Expenses</a>
-                                </li>
-                                <li class="nav-item<?php if ($active == "team_challenge") { echo " active"; }; ?>">
-                                    <a class="nav-link" href="<?php echo site_url('/my_wages'); ?>">My Wages</a>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
-                        <ul class="navbar-nav">
-                            <?php if (!empty($is_admin) && ($is_admin == TRUE)): ?>
-                                <li class="nav-item<?php if ($active == "admin") { echo " active"; }; ?>">
-                                    <a class="nav-link" href="<?php echo site_url('/admin/departments'); ?>">Admin</a>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
+            <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+                <a class="navbar-brand" href="#">UC Finances</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav mr-auto">
+                        <?php if (empty($hide_links) || ($hide_links == FALSE)): ?>
+                            <li class="nav-item<?php if ($active == "home") { echo " active"; }; ?>">
+                                <a class="nav-link" href="<?php echo site_url('/home'); ?>">Home</a>
+                            </li>
+                            <li class="nav-item<?php if ($active == "volunteering") { echo " active"; }; ?>">
+                                <a class="nav-link" href="<?php echo site_url('/my_expenses'); ?>">My Expenses</a>
+                            </li>
+                            <li class="nav-item<?php if ($active == "team_challenge") { echo " active"; }; ?>">
+                                <a class="nav-link" href="<?php echo site_url('/my_wages'); ?>">My Wages</a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <?php if (!empty($is_admin) && ($is_admin == TRUE)): ?>
+                            <li class="nav-item<?php if ($active == "admin") { echo " active"; }; ?>">
+                                <a class="nav-link" href="<?php echo site_url('/admin/departments'); ?>">Admin</a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </nav>
