@@ -60,5 +60,7 @@ $route['admin/emails'] = 'admin/emails';
 $route['admin/emails/edit'] = 'admin/emailsEdit';
 
 
+$route['expenses/claim/new'] = 'claim/newClaim';
+
 
 $route['(.+)'] = 'home/show404';
