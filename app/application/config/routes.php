@@ -56,6 +56,9 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['home'] = 'home/homepage';
 
+$route['admin/emails'] = 'admin/emails';
+$route['admin/emails/edit'] = 'admin/emailsEdit';
+
 
 
 $route['(.+)'] = 'home/show404';
