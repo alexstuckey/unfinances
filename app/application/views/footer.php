@@ -1,17 +1,6 @@
-            <!-- FOOTER -->
-            <div id="footer">
-                 <!-- FOOTER -->
-                <footer class="container">
-                    <br>
-                    <!-- <p class="float-right">
-                        <a href="#">Link 1</a> &middot;
-                        <a href="#">Link 2</a> &middot;
-                        <a href="#">Link 3</a>
-                    </p> -->
-                    <p>&middot; Alex Stuckey 2018 &middot;</p>
-                </footer>
-
-            </div>
+            <footer class="my-5 text-muted text-center text-small">
+                <p class="mb-0">© 2017-2018 Alex Stuckey</p>
+            </footer>
         </div>
     </body>
 </html>
