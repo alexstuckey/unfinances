@@ -71,7 +71,7 @@ body {
     margin-bottom: 30px;
 }
 
-h1, h2 {
+h1, h2, h3, h4, h5, h6 {
     font-family: 'EB Garamond', serif;
     font-weight: 600;
 }
@@ -148,4 +148,9 @@ footer {
     #notifications, #volunteering, #otherSection, #managerShiftResponse {
         min-height: 80%;
     }
+}
+
+
+.claim-form .bold-label {
+    font-weight: 600;
 }
