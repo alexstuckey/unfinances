@@ -46,10 +46,10 @@
                             <li class="nav-item<?php if ($active == "home") { echo " active"; }; ?>">
                                 <a class="nav-link" href="<?php echo site_url('/home'); ?>">Home</a>
                             </li>
-                            <li class="nav-item<?php if ($active == "volunteering") { echo " active"; }; ?>">
+                            <li class="nav-item<?php if ($active == "expenses") { echo " active"; }; ?>">
                                 <a class="nav-link" href="<?php echo site_url('/my_expenses'); ?>">My Expenses</a>
                             </li>
-                            <li class="nav-item<?php if ($active == "team_challenge") { echo " active"; }; ?>">
+                            <li class="nav-item<?php if ($active == "wages") { echo " active"; }; ?>">
                                 <a class="nav-link" href="<?php echo site_url('/my_wages'); ?>">My Wages</a>
                             </li>
                         <?php endif; ?>
