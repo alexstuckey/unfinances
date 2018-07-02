@@ -17,7 +17,7 @@ samp,
 }
 
 .navbar-brand {
-  font-family: Baskerville, serif;
+  font-family: 'EB Garamond', serif;
 }
 
 /* Override Bootstrap Responsive CSS fixed navbar */
@@ -83,7 +83,8 @@ samp,
 }
 
 h1, h2 {
-    font-family: "alternate_gothic_fs_no_3Rg", "Arial", sans-serif;
+    font-family: 'EB Garamond', serif;
+    font-weight: 600;
 }
 
 h4 {
@@ -91,7 +92,7 @@ h4 {
 }
 
 p {
-    font-family: "Trade Gothic Lt", Arial,"Times New Roman", serif;
+    font-family: 'EB Garamond', serif;
 }
 
 hr {

@@ -19,6 +19,7 @@
 
 
         <!-- Vendor CSS -->
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=EB+Garamond:400,600">
         <link rel="stylesheet" href="<?php echo base_url('/static/css/bootstrap.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url('/static/css/select2.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url('/static/css/select2-bootstrap4.min.css'); ?>">
