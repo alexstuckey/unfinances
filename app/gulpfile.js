@@ -20,8 +20,10 @@ gulp.task('sass', function () {
 gulp.task('css', function() {
    gulp.src([
     'node_modules/bootstrap/dist/css/bootstrap.css',
-    'node_modules/select2/dist/css/select2.css',
-    'node_modules/select2-bootstrap4-theme/dist/select2-bootstrap4.css',
+    // 'node_modules/select2/dist/css/select2.css',
+    // 'node_modules/select2-bootstrap4-theme/dist/select2-bootstrap4.css',
+    'node_modules/jsgrid/dist/jsgrid.css',
+    'node_modules/jsgrid/dist/jsgrid-theme.css',
     ])
     .pipe(concat('vendor.min.css'))
     // Minified
@@ -37,7 +39,8 @@ gulp.task('js', function() {
     'node_modules/jquery/dist/jquery.js',
     // 'node_modules/tether/dist/js/tether.js',
     // 'node_modules/popper.js/dist/umd/popper.js',
-    'node_modules/select2/dist/js/select2.js',
+    // 'node_modules/select2/dist/js/select2.js',
+    'node_modules/jsgrid/dist/jsgrid.js',
     ])
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(minify({

@@ -9,7 +9,7 @@
         <!-- Vendor JS -->
         <script src="<?php echo base_url('/static/js/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('/static/js/bootstrap.min.js'); ?>"></script>
-        <script src="<?php echo base_url('/static/js/select2.min.js'); ?>"></script>
+        <script src="<?php echo base_url('/static/js/jsgrid.min.js'); ?>"></script>
 
         <!-- App JS -->
         <!-- <script src="<?php echo base_url('/static/js/homepage.js'); ?>"></script> -->
@@ -24,7 +24,6 @@
 
         <!-- Icon -->
         <link rel="icon" type="image/png" href="<?php echo base_url('/static/images/favicon-32x32.png'); ?>" sizes="32x32">
-
     </head>
 
     <body>
