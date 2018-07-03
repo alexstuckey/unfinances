@@ -1,6 +1,7 @@
 var gulp = require('gulp')
 var sourcemaps = require('gulp-sourcemaps')
 var sass = require('gulp-sass')
+const concat = require('gulp-concat')
 
 gulp.task('sass', function () {
  return gulp.src(['./src/sass/**/*.scss',
@@ -13,6 +14,15 @@ gulp.task('sass', function () {
   .pipe(gulp.dest('./static/css'))
 })
 
+// CSS
+gulp.task('css', function() {
+   gulp.src([
+
+    ])
+    .pipe(concat('vendor.min.css'))
+    .pipe(gulp.dest('./static/css'))
+})
+
 // Move JS Files to ./static/js
 gulp.task('js', function() {
   return gulp.src([
@@ -22,6 +32,8 @@ gulp.task('js', function() {
     'node_modules/tether/dist/js/tether.min.js',
     'node_modules/popper.js/dist/umd/popper.min.js',
     'node_modules/select2/dist/js/select2.min.js',
+    'node_modules/gijgo/js/core.js',
+    'node_modules/gijgo/js/datepicker.js',
     ])
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write())
@@ -38,10 +50,10 @@ gulp.task('images', function() {
     .pipe(gulp.dest('./static/images'))
 })
 
-gulp.task('default', ['sass', 'js', 'fonts', 'images'])
+gulp.task('default', ['sass', 'css', 'js', 'fonts', 'images'])
 
 // Watches project resouce directory for changes
-gulp.task('serve', ['sass', 'js', 'fonts'], function() {
+gulp.task('serve', ['sass', 'css', 'js', 'fonts'], function() {
 
   gulp.watch('./src/sass/**/*.scss', ['sass'])
   gulp.watch('./src/js/**/*.js', ['js'])
