@@ -5,9 +5,6 @@
         <?php $this->load->helper('url'); ?>
         <title><?php if (isset($page_title)) { echo $page_title; } else { echo "No Title"; }; ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <!-- Popper JS -->
-        <script src="<?php echo base_url('/static/js/popper.min.js'); ?>"></script>
         
         <!-- Vendor JS -->
         <script src="<?php echo base_url('/static/js/jquery.min.js'); ?>"></script>
@@ -20,9 +17,7 @@
 
         <!-- Vendor CSS -->
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=EB+Garamond:400,600">
-        <link rel="stylesheet" href="<?php echo base_url('/static/css/bootstrap.css'); ?>">
-        <link rel="stylesheet" href="<?php echo base_url('/static/css/select2.min.css'); ?>">
-        <link rel="stylesheet" href="<?php echo base_url('/static/css/select2-bootstrap4.min.css'); ?>">
+        <link rel="stylesheet" href="<?php echo base_url('/static/css/vendor.min.css'); ?>">
 
         <!-- App CSS -->
         <link rel="stylesheet" href="<?php echo base_url('/static/css/main.css'); ?>" type="text/css">
