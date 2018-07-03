@@ -2,14 +2,16 @@ var gulp = require('gulp')
 var sourcemaps = require('gulp-sourcemaps')
 var sass = require('gulp-sass')
 const concat = require('gulp-concat')
+const minify = require('gulp-minify')
+const clean_css = require('gulp-clean-css')
 
 gulp.task('sass', function () {
- return gulp.src(['./src/sass/**/*.scss',
-  'node_modules/bootstrap/scss/bootstrap.scss',
-  'node_modules/select2/dist/css/select2.min.css',
-  'node_modules/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css'])
+ return gulp.src([
+  './src/sass/**/*.scss',
+  ])
   .pipe(sourcemaps.init())
   .pipe(sass().on('error', sass.logError))
+  .pipe(clean_css())
   .pipe(sourcemaps.write())
   .pipe(gulp.dest('./static/css'))
 })
@@ -17,9 +19,13 @@ gulp.task('sass', function () {
 // CSS
 gulp.task('css', function() {
    gulp.src([
-
+    'node_modules/bootstrap/dist/css/bootstrap.css',
+    'node_modules/select2/dist/css/select2.css',
+    'node_modules/select2-bootstrap4-theme/dist/select2-bootstrap4.css',
     ])
     .pipe(concat('vendor.min.css'))
+    // Minified
+    .pipe(clean_css())
     .pipe(gulp.dest('./static/css'))
 })
 
@@ -27,16 +33,21 @@ gulp.task('css', function() {
 gulp.task('js', function() {
   return gulp.src([
     './src/js/**/*.js',
-    'node_modules/bootstrap/dist/js/bootstrap.min.js',
-    'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/tether/dist/js/tether.min.js',
-    'node_modules/popper.js/dist/umd/popper.min.js',
-    'node_modules/select2/dist/js/select2.min.js',
-    'node_modules/gijgo/js/core.js',
-    'node_modules/gijgo/js/datepicker.js',
+    'node_modules/bootstrap/dist/js/bootstrap.js',
+    'node_modules/jquery/dist/jquery.js',
+    // 'node_modules/tether/dist/js/tether.js',
+    // 'node_modules/popper.js/dist/umd/popper.js',
+    'node_modules/select2/dist/js/select2.js',
     ])
     .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(sourcemaps.write())
+    .pipe(minify({
+        ext: {
+            src:'-debug.js',
+            min:'.min.js'
+        },
+        noSource: true // stops '-debug.js' being produced
+    }))
+    .pipe(sourcemaps.write('maps'))
     .pipe(gulp.dest("./static/js"))
 })
 
