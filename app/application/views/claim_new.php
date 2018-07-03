@@ -104,6 +104,10 @@
         }
       })
     }
+
+    function calculate_sum(args) {
+        $('#currency-sum').text(args.grid.data.reduce((accumulator, row) => accumulator + Number(row.Price), 0).toFixed(2))
+    }
  
     $("#jsGrid").jsGrid({
         width: "100%",
@@ -151,10 +155,10 @@
                     return $('<td>').addClass('currency').text(value)
                 },
                 insertValue: function() {
-                    return Number(this.insertControl.val()).toFixed(2)
+                    return Number(this.insertControl.val())
                 },
                 editValue: function() {
-                    return Number(this.editControl.val()).toFixed(2)
+                    return Number(this.editControl.val())
                 },
             },
             {
@@ -162,10 +166,10 @@
                 width: 20
             }
         ],
-        onItemInserting: function(e) {
-            console.log(e)
-        },
-        insertRowLocation: "top",
+        onInit: calculate_sum,
+        onItemDeleted: calculate_sum,
+        onItemInserted: calculate_sum,
+        onItemUpdated: calculate_sum,
     })
 
     $('body').click(function(e) {
