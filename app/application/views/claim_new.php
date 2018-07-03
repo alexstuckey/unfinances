@@ -42,7 +42,7 @@
                 <h4 class="mb-3">Details of Expenditure</h4>
 
                 <div id="jsGrid"></div>
-                <table class="jsgrid-table"><tr class="jsgrid-row"><td style="width: 150px;"></td><td class="currency" style="width: 30px;">50.00</td><td style="width: 20px;"></td></tr><table>
+                <table class="jsgrid-table"><tr class="jsgrid-row"><td style="width: 150px;"></td><td class="currency" id="currency-sum" style="width: 30px; border-top-style: solid; border-top-width: 1px; border-bottom-style: double;">50.00</td><td style="width: 20px;"></td></tr><table>
 
                 <hr class="mt-5">
 
