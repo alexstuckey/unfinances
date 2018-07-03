@@ -62,5 +62,7 @@ $route['admin/emails/edit'] = 'admin/emailsEdit';
 
 $route['expenses/claim/new'] = 'claim/newClaim';
 
+$route['file/upload']['POST'] = 'file/do_upload';
+
 
 $route['(.+)'] = 'home/show404';
