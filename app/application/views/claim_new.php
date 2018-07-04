@@ -9,31 +9,41 @@
         <div class="col-lg-8 order-md-1">
             <h4 class="mb-3">Claim details</h4>
             <form>
-                <div class="mb-3">
-                    <label class="bold-label" for="input_id_claim">Claim №</label>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="bold-label" for="input_id_claim">Claim №</label>
                     <input type="text" class="form-control" id="input_id_claim" value="" required="" style="background-color: transparent; border: 0; color: #212529;">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="bold-label" for="field_status">Status</label>
+                        <div><span class="badge my-badge-status badge-secondary">DRAFT</span></div>
+                    </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="input_claimant_name">Claimant Name</label>
-                        <input type="text" class="form-control" id="input_claimant_name" value="" required="" style="background-color: transparent; border: 0; color: #212529;">
+                        <input disabled type="text" class="form-control" id="input_claimant_name" value="" required="" style="color: #212529; -webkit-text-fill-color: #212529;">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="input_claimant_id">CIS Username</label>
-                        <input type="text" class="form-control" id="input_claimant_id" value="" required="" style="background-color: transparent; border: 0; color: #212529;">
+                        <input disabled type="text" class="form-control" id="input_claimant_id" value="" required="" style="color: #212529; -webkit-text-fill-color: #212529;">
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label class="bold-label" for="input_date">Date</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="input_date" placeholder="Date" required="" value="<?php echo $claim['date'] ?>">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="bold-label" for="input_date">Date</label>
+                        <input disabled type="text" class="form-control" id="input_date" placeholder="Date" value="<?php echo $claim['date'] ?>" required="" style="color: #212529; -webkit-text-fill-color: #212529;">
                     </div>
-                </div>
-
-                <div class="mb-3">
-                    <label class="bold-label" for="input_of_id_cost_centre">Cost Centre</label>
-                    <input type="text" class="form-control" id="input_of_id_cost_centre" placeholder="Cost Centre" value="">
+                    <div class="col-md-6 mb-3">
+                        <label class="bold-label" for="input_cost_centre">Cost Centre</label>
+                        <select id="input_cost_centre" class="custom-select">
+                            <?php foreach ($cost_centres as $cost_centre): ?>
+                            <option value="<?php echo $cost_centre['cost_centre']; ?>"><?php echo $cost_centre['cost_centre']; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="mb-3">
@@ -95,6 +105,11 @@
 </main>
 
 <style type="text/css">
+    .my-badge-status {
+        margin-top: 3px;
+        font-size: 1.25rem;
+    }
+
     .currency {
         text-align: right;
         width: 100%;
@@ -104,7 +119,6 @@
         content: "£";
         float: left;
     }
-
     #currency-sum {
         border-top-style: solid;
         border-top-width: 1px;
