@@ -62,6 +62,7 @@
 
           <form class="card p-2">
             <div id="drag-drop-area"></div>
+            <div id="drag-drop-progress"></div>
           </form>
         </div>
     </div>
@@ -278,13 +279,18 @@
             },
 
         })
-        uppy.on('file-added', (file) => {
+        uppy
+        .on('file-added', (file) => {
             uppy.setFileMeta(file.id, {
                 invoice_id: <?php echo $claim['id_claim'] ?>
             })
         })
-        uppy.use(Uppy.DragDrop, { target: '#drag-drop-area' })
-        uppy.use(Uppy.XHRUpload, {
+        .use(Uppy.DragDrop, { target: '#drag-drop-area' })
+        .use(Uppy.ProgressBar, {
+            target: '#drag-drop-progress',
+            hideAfterFinish: true,
+        })
+        .use(Uppy.XHRUpload, {
             endpoint: '<?php echo site_url('/file/upload'); ?>',
             fieldName: 'userfile',
             getResponseError(responseText, xhr) {
@@ -294,6 +300,17 @@
         })
 
         loadClaim(claimFromServerRender)
+
+        // function refreshClaimFromServer() {
+        window.refreshClaimFromServer = function() {
+            jQuery.ajax({
+                url: "../../api/expenses/claim/"+claimFromServerRender.id_claim,
+            }).done((data) => {
+                loadClaim(data)
+            }).fail((jqXHR, textStatus, errorThrown) => {
+                console.error(errorThrown)
+            })
+        }
     })
 
 </script>
