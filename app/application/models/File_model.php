@@ -3,6 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class File_model extends CI_Model {
 
+    private function human_filesize($bytes, $decimals = 2)
+    {
+        if ($bytes < 1024) {
+            return $bytes . ' B';
+        }
+
+        $factor = floor(log($bytes, 1024));
+        $suffixes = array('B', 'KB', 'MB', 'GB', 'TB', 'PB');
+        return sprintf("%.{$decimals}f ", $bytes / pow(1024, $factor)) . $suffixes[$factor];
+    }
+
 
     //Loads the database using the ../config/database.php file
     public function __construct()	{
@@ -14,6 +25,19 @@ class File_model extends CI_Model {
         $query = $this->db->get('uploads');
 
         return $query->result_array();
+    }
+
+    public function getFilesForClaimID($id_claim)
+    {
+        $this->db->where('of_id_claim', $id_claim);
+        $query = $this->db->get('uploads');
+
+        $files = $query->result_array();
+        foreach ($files as &$file) {
+            $file['filesize_human'] = $this->human_filesize($file['filesize_bytes']);
+        }
+
+        return $files;
     }
 
     public function getFileByFilename($filename)
