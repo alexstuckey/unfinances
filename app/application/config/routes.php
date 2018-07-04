@@ -61,7 +61,8 @@ $route['admin/emails/edit'] = 'admin/emailsEdit';
 
 
 $route['expenses/claim/new'] = 'claim/newClaim';
-$route['expenses/claim/(:num)'] = 'claim/showClaim/$1';
+$route['expenses/claim/(:num)'] = 'claim/showClaim/$1/web';
+$route['api/expenses/claim/(:num)'] = 'claim/showClaim/$1/json';
 
 $route['file/upload']['POST'] = 'file/do_upload';
 
