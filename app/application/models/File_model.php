@@ -35,6 +35,7 @@ class File_model extends CI_Model {
         $files = $query->result_array();
         foreach ($files as &$file) {
             $file['filesize_human'] = $this->human_filesize($file['filesize_bytes']);
+            $file['uploaded_datetime'] = date("Y-m-d\TH:i:s",strtotime($file['uploaded_datetime']));
         }
 
         return $files;
@@ -45,7 +46,13 @@ class File_model extends CI_Model {
         $this->db->where('id_filename', $filename);
         $query = $this->db->get('uploads');
 
-        return $query->row_array();
+        $file = null;
+        $file = $query->row_array();
+        $file['filesize_human'] = $this->human_filesize($file['filesize_bytes']);
+        $file['uploaded_datetime'] = date("Y-m-d\TH:i:s",strtotime($file['uploaded_datetime']));
+
+
+        return $file;
     }
 
     public function deleteFileByFilename($filename)
