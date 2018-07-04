@@ -285,6 +285,9 @@
                 invoice_id: <?php echo $claim['id_claim'] ?>
             })
         })
+        .on('upload-success', (file, resp, uploadURL) => {
+            refreshClaimFromServer()
+        })
         .use(Uppy.DragDrop, { target: '#drag-drop-area' })
         .use(Uppy.ProgressBar, {
             target: '#drag-drop-progress',
