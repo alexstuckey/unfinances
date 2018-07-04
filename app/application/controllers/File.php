@@ -76,4 +76,32 @@ class File extends CI_Controller {
 
     }
 
+
+    public function delete_image()
+    {
+        // auth
+
+        // Check if image exists
+
+        // Check if you are owner of image / admin
+
+        // Check if image 'editable'
+
+        // Delete file
+
+        // Delete row
+    }
+
+
+    public function images_of_claim($claim_id)
+    {
+        // auth
+
+        // check if claim exists
+
+        // check if you have access to claim
+
+        // return array of images
+    }
+
 }
