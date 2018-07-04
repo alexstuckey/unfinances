@@ -14,8 +14,12 @@ class File extends CI_Controller {
         // }
 
         $config['upload_path']          = './uploads/';
-        $config['allowed_types']        = 'gif|jpg|png|pdf';
+        $config['allowed_types']        = 'gif|jpg|jpeg|png|pdf';
         $config['max_size']             = 5000;
+
+        // Generate filename (extension filled in from original)
+        $this->load->library('Uuid');
+        $config['file_name']            = $this->uuid->v4();
 
         $this->load->library('upload', $config);
 
@@ -28,14 +32,30 @@ class File extends CI_Controller {
 
         } else {
 
-            if ( ! $this->upload->do_upload('userfile') )
-            {
-                $error = array('error' => $this->upload->display_errors());
-
+            // Check if user alloed to upload to this invoice / if it exists
+            if ( !true ) {
+                $error = array('error' => 'access not permitted to invoice_id = ' . $invoice_id);
             } else {
-                $data = array('upload_data' => $this->upload->data(),
-                              'invoice_id' => $invoice_id
-                            );
+
+                if ( ! $this->upload->do_upload('userfile') )
+                {
+                    $error = array('error' => $this->upload->display_errors());
+
+                } else {
+                    $data = array('upload_data' => $this->upload->data(),
+                                  'invoice_id' => $invoice_id
+                                );
+
+                    // Write to db
+                    $this->load->model('File_model');
+                    $this->File_model->createFile(
+                        $data['upload_data']['file_name'],
+                        $data['upload_data']['client_name'],
+                        filesize($data['upload_data']['full_path']),
+                        $_SERVER['REMOTE_USER'],
+                        $invoice_id
+                    );
+                }
             }
         }
 
