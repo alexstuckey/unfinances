@@ -22,10 +22,18 @@ gulp.task('css', function() {
     'node_modules/bootstrap/dist/css/bootstrap.css',
     // 'node_modules/select2/dist/css/select2.css',
     // 'node_modules/select2-bootstrap4-theme/dist/select2-bootstrap4.css',
-    'node_modules/jsgrid/dist/jsgrid.css',
-    'node_modules/jsgrid/dist/jsgrid-theme.css',
     ])
     .pipe(concat('vendor.min.css'))
+    // Minified
+    .pipe(clean_css())
+    .pipe(gulp.dest('./static/css'))
+
+    gulp.src([
+    'node_modules/jsgrid/dist/jsgrid.css',
+    'node_modules/jsgrid/dist/jsgrid-theme.css',
+    'node_modules/uppy/dist/uppy.css',
+    ])
+    .pipe(concat('claim.min.css'))
     // Minified
     .pipe(clean_css())
     .pipe(gulp.dest('./static/css'))
@@ -41,6 +49,7 @@ gulp.task('js', function() {
     // 'node_modules/popper.js/dist/umd/popper.js',
     // 'node_modules/select2/dist/js/select2.js',
     'node_modules/jsgrid/dist/jsgrid.js',
+    'node_modules/uppy/dist/uppy.js',
     ])
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(minify({

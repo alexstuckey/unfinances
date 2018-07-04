@@ -30,6 +30,7 @@
     "jsgrid": "^1.5.3",
     "popper.js": "^1.14.3",
     "select2": "^4.0.6-rc.1",
-    "select2-bootstrap4-theme": "^1.0.0"
+    "select2-bootstrap4-theme": "^1.0.0",
+    "uppy": "^0.26.0"
   }
 }

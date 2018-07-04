@@ -10,6 +10,7 @@
         <script src="<?php echo base_url('/static/js/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('/static/js/bootstrap.min.js'); ?>"></script>
         <script src="<?php echo base_url('/static/js/jsgrid.min.js'); ?>"></script>
+        <script src="<?php echo base_url('/static/js/uppy.min.js'); ?>"></script>
 
         <!-- App JS -->
         <!-- <script src="<?php echo base_url('/static/js/homepage.js'); ?>"></script> -->
@@ -18,6 +19,7 @@
         <!-- Vendor CSS -->
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=EB+Garamond:400,600">
         <link rel="stylesheet" href="<?php echo base_url('/static/css/vendor.min.css'); ?>">
+        <link rel="stylesheet" href="<?php echo base_url('/static/css/claim.min.css'); ?>">
 
         <!-- App CSS -->
         <link rel="stylesheet" href="<?php echo base_url('/static/css/main.css'); ?>" type="text/css">
