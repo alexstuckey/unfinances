@@ -50,18 +50,35 @@ class Claim extends CI_Controller {
 
     public function jsonGetClaim($id_claim)
     {
+        $error = null;
+
         // auth
+
 
         $this->load->model('Claim_model');
         $data['claim'] = $this->Claim_model->getClaimById($id_claim);
-        
-        $data['claimJSON'] = json_encode($data['claim']);
-        $data['claimJSON'] = str_replace('\\\\\\', '\\', $data['claimJSON']);
 
-        $this->output
-                ->set_status_header(201)
-                ->set_content_type('application/json')
-                ->set_output($data['claimJSON']);
+        if (isset($data['claim'])) {
+            $data['claimJSON'] = json_encode($data['claim']);
+            $data['claimJSON'] = str_replace('\\\\\\', '\\', $data['claimJSON']);
+
+            $this->output
+                    ->set_status_header(201)
+                    ->set_content_type('application/json')
+                    ->set_output($data['claimJSON']);
+        } else {
+            // Couldn't find it
+            $error = array("error" => "claim could not be found");
+        }
+
+        if (isset($error)) {
+            $this->output
+                    ->set_status_header(404)
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($error));
+        }
+
+        
     }
 
 }

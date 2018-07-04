@@ -21,15 +21,17 @@ class Claim_model extends CI_Model {
         $this->db->where('id_claim', $id_claim);
         $query = $this->db->get('claims');
 
-        $claim = $query->row_array();
+        $claim = null;
+        if ($query->num_rows() == 1) {
+            $claim = $query->row_array();
 
+            $this->load->model('File_model');
+            $claim['attachments'] = $this->File_model->getFilesForClaimID($id_claim);
 
-        $this->load->model('File_model');
-        $claim['attachments'] = $this->File_model->getFilesForClaimID($id_claim);
-
-        $this->load->model('CIS_model');
-        $user_cis_profile = $this->CIS_model->get_user_details_by_cisID($claim['claimant_id']);
-        $claim['claimant_name'] = $user_cis_profile['fullname'];
+            $this->load->model('CIS_model');
+            $user_cis_profile = $this->CIS_model->get_user_details_by_cisID($claim['claimant_id']);
+            $claim['claimant_name'] = $user_cis_profile['fullname'];
+        }
 
         return $claim;
     }
