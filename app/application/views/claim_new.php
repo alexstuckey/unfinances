@@ -113,18 +113,18 @@
 </style>
 
 <script>
-    var claimFromServerRender = jQuery.parseJSON(<?php echo json_encode($claimJSON); ?>)
+    window.claimState = jQuery.parseJSON(<?php echo json_encode($claimJSON); ?>)
 
     $(document).ready(function() {
         // Gets run once on page load (at bootom), then used to reload server data
         function loadClaim(claim) {
-            claim.expenditure_items = jQuery.parseJSON(claim.expenditure_items)
-            $("#jsGrid").jsGrid('option', 'data', claim.expenditure_items)
+            $("#jsGrid").jsGrid('option', 'data', jQuery.parseJSON(claim.expenditure_items))
 
         // Attachments
             // Clear existing
             $("#attachments-list").empty()
             
+            // No attachments message
             if (claim.attachments.length === 0) {
                 $("<li>")
                 .addClass("list-group-item d-flex justify-content-between bg-light")
@@ -136,6 +136,12 @@
                 .appendTo("#attachments-list")
             }
 
+            // Sort
+            window.claimState.attachments.sort((a, b) => {
+                return new Date(a.uploaded_datetime) - new Date(b.uploaded_datetime);
+            })
+
+            // Render list
             claim.attachments.forEach((attachment) => {
                 $("<li>")
                 .addClass("list-group-item d-flex justify-content-between lh-condensed")
@@ -286,7 +292,8 @@
             })
         })
         .on('upload-success', (file, resp, uploadURL) => {
-            refreshClaimFromServer()
+            window.claimState.attachments.push(resp.attachment_upload)
+            loadClaim(window.claimState)
         })
         .use(Uppy.DragDrop, { target: '#drag-drop-area' })
         .use(Uppy.ProgressBar, {
@@ -302,14 +309,14 @@
             },
         })
 
-        loadClaim(claimFromServerRender)
+        loadClaim(window.claimState)
 
-        // function refreshClaimFromServer() {
-        window.refreshClaimFromServer = function() {
+        window.refreshClaimStateFromServer = function() {
             jQuery.ajax({
-                url: "../../api/expenses/claim/"+claimFromServerRender.id_claim,
+                url: "../../api/expenses/claim/"+window.claimState.id_claim,
             }).done((data) => {
-                loadClaim(data)
+                window.claimState = data
+                loadClaim(window.claimState)
             }).fail((jqXHR, textStatus, errorThrown) => {
                 console.error(errorThrown)
             })
