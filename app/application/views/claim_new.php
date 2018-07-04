@@ -61,7 +61,7 @@
           </ul>
 
           <form class="card p-2">
-            <div id="drag-drop-area"></div>
+            <div id="drag-drop-area" class="progress-bar-fix-height"></div>
             <div id="drag-drop-progress"></div>
           </form>
         </div>
@@ -109,6 +109,10 @@
         border-top-style: solid;
         border-top-width: 1px;
         border-bottom-style: double;
+    }
+
+    #drag-drop-area.progress-bar-fix-height {
+        margin-bottom: -3px;
     }
 </style>
 
@@ -290,6 +294,8 @@
             uppy.setFileMeta(file.id, {
                 invoice_id: <?php echo $claim['id_claim'] ?>
             })
+            // Remove the negative margin on the drop-zone to make room for the progressbar
+            $("#drag-drop-area").removeClass('progress-bar-fix-height')
         })
         .on('upload-success', (file, resp, uploadURL) => {
             window.claimState.attachments.push(resp.attachment_upload)
