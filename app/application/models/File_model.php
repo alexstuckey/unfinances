@@ -65,6 +65,8 @@ class File_model extends CI_Model {
         );
 
         $this->db->insert('uploads', $data);
+
+        return $this->getFileByFilename($data['id_filename']);
     }
 
 }
