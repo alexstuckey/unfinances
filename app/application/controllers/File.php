@@ -24,6 +24,7 @@ class File extends CI_Controller {
         $this->load->library('upload', $config);
 
         $error = null;
+        $data = array();
         $invoice_id = $this->input->post('invoice_id');
 
         if ( empty($invoice_id) )
@@ -42,16 +43,14 @@ class File extends CI_Controller {
                     $error = array('error' => $this->upload->display_errors());
 
                 } else {
-                    $data = array('upload_data' => $this->upload->data(),
-                                  'invoice_id' => $invoice_id
-                                );
+                    $upload_data = $this->upload->data();
 
                     // Write to db
                     $this->load->model('File_model');
-                    $this->File_model->createFile(
-                        $data['upload_data']['file_name'],
-                        $data['upload_data']['client_name'],
-                        filesize($data['upload_data']['full_path']),
+                    $data['attachment_upload'] = $this->File_model->createFile(
+                        $upload_data['file_name'],
+                        $upload_data['client_name'],
+                        filesize($upload_data['full_path']),
                         $_SERVER['REMOTE_USER'],
                         $invoice_id
                     );
