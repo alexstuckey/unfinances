@@ -41,7 +41,8 @@ class Claim_model extends CI_Model {
         $data = array(
             'claimant_id' => $claimant_id,
             'date' => date("Y-m-d"),
-            'expenditure_items' => "[]"
+            'expenditure_items' => "[]",
+            'cost_centre' => "General"
         );
 
         $this->db->insert('claims', $data);

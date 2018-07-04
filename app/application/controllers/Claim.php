@@ -55,6 +55,9 @@ class Claim extends CI_Controller {
                 $data['active'] = 'expenses';
                 $data['page_title'] = 'UCFinances - New claim';
 
+                $this->load->model('CostCentre_model');
+                $data['cost_centres'] = $this->CostCentre_model->getAllCostCentres();
+
                 $this->load->view('header', $data);
                 $this->load->view('claim_new', $data);
                 $this->load->view('footer', $data);
