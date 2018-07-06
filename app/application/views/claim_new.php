@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="input_cost_centre">Cost Centre</label>
-                        <select id="input_cost_centre" class="custom-select">
+                        <select id="input_cost_centre" class="custom-select detectStateInput">
                             <?php foreach ($cost_centres as $cost_centre): ?>
                             <option value="<?php echo $cost_centre['cost_centre']; ?>"><?php echo $cost_centre['cost_centre']; ?></option>
                             <?php endforeach; ?>
@@ -48,7 +48,7 @@
 
                 <div class="mb-3">
                     <label class="bold-label" for="input_description">Description of expense</label>
-                    <input type="text" class="form-control" id="input_description" placeholder="Description" value="">
+                    <input type="text" class="form-control detectStateInput" id="input_description" placeholder="Description" value="">
                 </div>
 
 
@@ -132,6 +132,7 @@
 
 <script>
     window.claimState = jQuery.parseJSON(<?php echo json_encode($claimJSON); ?>)
+    window.stateChanged = false
 
     $(document).ready(function() {
         // Gets run once on page load (at bootom), then used to reload server data
@@ -341,6 +342,18 @@
                 console.error(errorThrown)
             })
         }
+        // Detect when fields are altered
+        $(".detectStateInput").change(() => {
+            if (
+                $("#input_description").val() === window.claimState.description &&
+                $("#input_cost_centre").val() === window.claimState.cost_centre &&
+                JSON.stringify($("#jsGrid").jsGrid('option', 'data')) == window.claimState.expenditure_items
+                ) {
+                window.stateChanged = false
+            } else {
+                window.stateChanged = true
+            }
+        })
     })
 
 </script>
