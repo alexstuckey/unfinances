@@ -80,6 +80,9 @@ class Claim extends CI_Controller {
                         ->set_output(json_encode($error));
             }
         }
+    }
+
+    // Looks up to see if a cost centre exists
     public function cost_centre_check($str)
     {
         $this->load->model('CostCentre_model');
@@ -91,8 +94,62 @@ class Claim extends CI_Controller {
         return false;
     }
 
+    public function saveClaimByJSON($id_claim)
+    {
+        $error = null;
+        $data = array();
 
-        
+        // $this->load->model('User_model');
+        // if (!$this->User_model->doesUserExist($_SERVER['REMOTE_USER'])) {
+        //     $this->load->helper('url');
+        //     redirect('/onboard/welcome');
+        // } else if ($this->User_model->isAdmin($_SERVER['REMOTE_USER'])) {
+        //     $data['is_admin'] = TRUE;
+        // }
+
+
+        $this->load->model('Claim_model');
+        $data['claim'] = $this->Claim_model->getClaimById($id_claim);
+
+        if (isset($data['claim'])) {
+            $data['claimJSON'] = json_encode($data['claim']);
+            $data['claimJSON'] = str_replace('\\\\\\', '\\', $data['claimJSON']);
+
+        } else {
+            // Couldn't find it
+            $error = array("error" => "claim could not be found");
+        }
+
+        // get input
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('description', 'Description', 'trim|max_length[255]');
+        $this->form_validation->set_rules('cost_centre', 'Cost Centre', 'max_length[255]|callback_cost_centre_check');
+        $this->form_validation->set_rules('expenditure_items', 'Expenditure Items', '');
+
+        if ($this->form_validation->run() == FALSE) {
+            $error['error'] = $this->form_validation->error_array();
+        } else {
+            $this->load->model('Claim_model');
+            $this->Claim_model->updateClaim(
+                $id_claim, $this->input->post('description'),
+                $this->input->post('cost_centre'),
+                $this->input->post('expenditure_items')
+            );
+        }
+
+
+        if (!isset($error)) {
+            $this->output
+                ->set_status_header(201)
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('success')));
+
+        } else {
+            $this->output
+                    ->set_status_header(404)
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($error));
+        }
     }
 
 }
