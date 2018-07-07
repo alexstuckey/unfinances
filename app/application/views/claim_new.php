@@ -363,6 +363,32 @@
             })
         }
 
+        // to send any changes to be committed to the server
+        window.saveStateToServer = function() {
+            jQuery.ajax({
+                url: "../../api/expenses/saveClaim/"+window.claimState.id_claim,
+                type: "POST",
+                data: {
+                    description: $("#input_description").val(),
+                    cost_centre: $("#input_cost_centre").val(),
+                    expenditure_items: JSON.stringify($("#jsGrid").jsGrid('option', 'data')),
+                }
+            }).done((data) => {
+                console.log('saved state to server', data)
+                refreshClaimStateFromServer()
+            }).fail((jqXHR, textStatus, errorThrown) => {
+                console.error(errorThrown)
+                alert('Save failed, please check your connection and try again.')
+            })
+        }
+
+        // to progress the claim, by submitting it to Treasurer
+        window.claimStateToServer = function() {
+            console.log("claim state")
+        }
+
+        $("#button_save").on("click", window.saveStateToServer)
+        $("#button_claim").on("click", window.claimStateToServer)
     })
 
 </script>
