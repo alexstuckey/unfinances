@@ -50,4 +50,13 @@ class Claim_model extends CI_Model {
         return $this->db->insert_id();
     }
 
+    public function updateClaim($id_claim, $description, $cost_centre, $expenditure_items)
+    {
+        $this->db->where('id_claim', $id_claim);
+        $this->db->set('description', $description);
+        $this->db->set('cost_centre', $cost_centre);
+        $this->db->set('expenditure_items', $expenditure_items);
+        $this->db->update('claims');
+    }
+
 }
