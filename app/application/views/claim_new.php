@@ -213,7 +213,7 @@
             }
             $("#button_save").prop('disabled', !window.stateChanged)
             $("#button_claim").prop('disabled', window.stateChanged)
-            console.log(window.stateChanged)
+            console.log("Has local state been changed: ", window.stateChanged)
         }
         // Detect when fields are altered
         $(".detectStateInput").change(checkStateChange)
