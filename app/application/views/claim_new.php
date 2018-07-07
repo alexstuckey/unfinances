@@ -93,10 +93,10 @@
 
             <div class="row form-group">
                 <div class="col-6">
-                    <a href="#" class="btn btn-dark btn-lg btn-block" role="button">Save</a>
+                    <button id="button_save" class="btn btn-dark btn-lg btn-block" role="button">Save</button>
                 </div>
                 <div class="col-6">
-                    <a href="#" class="btn btn-primary btn-lg btn-block" role="button">Claim this expense</a>
+                    <button id="button_claim" class="btn btn-primary btn-lg btn-block" role="button">Claim this expense</button>
                 </div>
             </div>
         </div>
@@ -137,7 +137,6 @@
     $(document).ready(function() {
         // Gets run once on page load (at bootom), then used to reload server data
         function loadClaim(claim) {
-            $("#jsGrid").jsGrid('option', 'data', jQuery.parseJSON(claim.expenditure_items))
 
         // Attachments
             // Clear existing
@@ -198,6 +197,8 @@
             $("#input_cost_centre").val(claim.cost_centre)
             $("#input_description").val(claim.description)
 
+        // The grid
+            $("#jsGrid").jsGrid('option', 'data', jQuery.parseJSON(claim.expenditure_items))
         }
 
         function checkStateChange() {
@@ -210,6 +211,8 @@
             } else {
                 window.stateChanged = true
             }
+            $("#button_save").prop('disabled', !window.stateChanged)
+            $("#button_claim").prop('disabled', window.stateChanged)
             console.log(window.stateChanged)
         }
         // Detect when fields are altered
@@ -299,7 +302,7 @@
                     width: 20
                 }
             ],
-            onInit: calculate_sum,
+            // onInit: calculate_sum,
             onItemDeleted: calculate_sum,
             onItemInserted: calculate_sum,
             onItemUpdated: calculate_sum,
@@ -359,6 +362,7 @@
                 console.error(errorThrown)
             })
         }
+
     })
 
 </script>
