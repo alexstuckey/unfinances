@@ -312,6 +312,9 @@
         $('body').click(function(e) {
             if ($(e.target).closest('#jsGrid').length === 0) {
                 $('#jsGrid').jsGrid('cancelEdit')
+                if ($('.jsgrid').jsGrid('option', 'inserting') === true) {
+                    $(".jsgrid-insert-mode-button").click()
+                }
             }
         })
 
