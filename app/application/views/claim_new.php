@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="field_status">Status</label>
-                        <div><span class="badge my-badge-status badge-secondary">DRAFT</span></div>
+                        <div><span class="badge my-badge-status" id="input_status">DRAFT</span></div>
                     </div>
                 </div>
 
@@ -196,6 +196,20 @@
             $("#input_date").val(claim.date)
             $("#input_cost_centre").val(claim.cost_centre)
             $("#input_description").val(claim.description)
+
+        // Statuses
+            const statusesLookup = {
+                0: { text: "Draft", backgroundColour: "#6c757d", textColour: "#fff" },
+                1: { text: "Review", backgroundColour: "#007bff", textColour: "#fff" },
+                2: { text: "Bounced", backgroundColour: "#ffc107", textColour: "#212529" },
+                3: { text: "Changes Requested", backgroundColour: "#ffc107", textColour: "#212529" },
+                4: { text: "Rejected", backgroundColour: "#dc3545", textColour: "#fff" },
+                5: { text: "Approved", backgroundColour: "#28a745", textColour: "#fff" },
+                6: { text: "Paid", backgroundColour: "#28a745", textColour: "#fff" },
+            }
+            $("#input_status").text(statusesLookup[claim.status].text.toUpperCase())
+            $("#input_status").css('background-color', statusesLookup[claim.status].backgroundColour)
+            $("#input_status").css('color', statusesLookup[claim.status].textColour)
 
         // The grid
             $("#jsGrid").jsGrid('option', 'data', jQuery.parseJSON(claim.expenditure_items))
