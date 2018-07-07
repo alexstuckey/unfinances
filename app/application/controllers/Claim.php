@@ -80,6 +80,17 @@ class Claim extends CI_Controller {
                         ->set_output(json_encode($error));
             }
         }
+    public function cost_centre_check($str)
+    {
+        $this->load->model('CostCentre_model');
+        $allCostCentres = $this->CostCentre_model->getAllCostCentres();
+        foreach ($allCostCentres as $row) {
+            if ($row['cost_centre'] == $str) return true;
+        }
+        $this->form_validation->set_message('cost_centre_check', 'The {field} must be a valid cost centre.');
+        return false;
+    }
+
 
         
     }
