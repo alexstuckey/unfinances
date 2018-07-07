@@ -1,6 +1,73 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Great example of PHP-styled enum alternative
+// https://stackoverflow.com/a/254543/298051
+abstract class ClaimStatus {
+    const Draft = 0;
+    const Review = 1;
+    const Bounced = 2;
+    const ChangesRequested = 3;
+    const Rejected = 4;
+    const Approved = 5;
+    const Paid = 6;
+
+    private static $constCacheArray = NULL;
+
+    private static function getConstants() {
+        if (self::$constCacheArray == NULL) {
+            self::$constCacheArray = array();
+        }
+        $calledClass = get_called_class();
+        if (!array_key_exists($calledClass, self::$constCacheArray)) {
+            $reflect = new ReflectionClass($calledClass);
+            self::$constCacheArray[$calledClass] = $reflect->getConstants();
+        }
+        return self::$constCacheArray[$calledClass];
+    }
+
+    private static function statusStringToInt($statusString)
+    {
+        $statusesByStringInLowercase = array_change_key_case(self::getConstants(), CASE_LOWER);
+        return $statusesByStringInLowercase[strtolower($statusString)];
+    }
+
+
+
+    public static function isValidStatus($status)
+    {
+        if (is_string($status)) {
+            $statusStrings = array_map('strtolower', array_keys(self::getConstants()));
+            return in_array(strtolower($status), $statusStrings);
+        } else if (is_int($status)) {
+            $statusInts = array_values(self::getConstants());
+            return in_array($status, $statusInts, false);
+        } else {
+            // another type, therefore not a valid status
+            return false;
+        }
+    }
+
+    public static function isStatusEditable($status)
+    {
+        $editableStatusesStrings = array(
+            'Draft',
+            'ChangesRequested'
+        );
+
+        if (self::isValidStatus($status)) {
+            if (is_string($status)) {
+                return in_array(strtolower($status), $editableStatusesStrings);
+            } else if (is_int($status)) {
+                $editableStatusesStrings = array_map("self::statusStringToInt", $editableStatusesStrings);
+                return in_array($status, $editableStatusesStrings);
+            }
+        }
+
+        return false;
+    }
+}
+
 class Claim_model extends CI_Model {
 
 
@@ -9,11 +76,37 @@ class Claim_model extends CI_Model {
         $this->load->database();
     }
 
+    // Helper function to be run on each claim, whether each row of all or getting an individual
+    // Does things like casting types for the result_array and getting author names
+    private function perClaimModify($claim)
+    {
+        // Cast types
+        settype($claim['status'], 'int');
+
+        // Fetch attachments
+        $this->load->model('File_model');
+        $claim['attachments'] = $this->File_model->getFilesForClaimID($claim['id_claim']);
+
+        // Query real name from username
+        $this->load->model('CIS_model');
+        $user_cis_profile = $this->CIS_model->get_user_details_by_cisID($claim['claimant_id']);
+        $claim['claimant_name'] = $user_cis_profile['fullname'];
+
+        // Determine actions possible on claim
+        $claim['isEditable'] = ClaimStatus::isStatusEditable($claim['status']);
+
+        return $claim;
+    }
+
     public function getAllClaims()
     {
         $query = $this->db->get('claims');
 
-        return $query->result_array();
+        $claims = $query->result_array();
+
+        array_map($this->perClaimModify, $claims);
+
+        return $claims;
     }
 
     public function getClaimByID($id_claim)
@@ -24,13 +117,7 @@ class Claim_model extends CI_Model {
         $claim = null;
         if ($query->num_rows() == 1) {
             $claim = $query->row_array();
-
-            $this->load->model('File_model');
-            $claim['attachments'] = $this->File_model->getFilesForClaimID($id_claim);
-
-            $this->load->model('CIS_model');
-            $user_cis_profile = $this->CIS_model->get_user_details_by_cisID($claim['claimant_id']);
-            $claim['claimant_name'] = $user_cis_profile['fullname'];
+            $claim = $this->perClaimModify($claim);
         }
 
         return $claim;
@@ -50,6 +137,12 @@ class Claim_model extends CI_Model {
         return $this->db->insert_id();
     }
 
+    public function mayClaimBeEdited($id_claim)
+    {
+        $claim = $this->getClaimByID($id_claim);
+        return ClaimStatus::isStatusEditable($claim['status']);
+    }
+
     public function updateClaim($id_claim, $description, $cost_centre, $expenditure_items)
     {
         $this->db->where('id_claim', $id_claim);
@@ -57,6 +150,7 @@ class Claim_model extends CI_Model {
         $this->db->set('cost_centre', $cost_centre);
         $this->db->set('expenditure_items', $expenditure_items);
         $this->db->update('claims');
+        return true;
     }
 
 }
