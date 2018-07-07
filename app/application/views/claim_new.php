@@ -193,7 +193,10 @@
             $("#input_id_claim").val(claim.id_claim)
             $("#input_claimant_id").val(claim.claimant_id)
             $("#input_claimant_name").val(claim.claimant_name)
-            $("#input_date").val(claim.date)
+            $("#input_date").val(() => {
+                const [year, month, day] = claim.date.split("-")
+                return `${day}/${month}/${year}`
+            })
             $("#input_cost_centre").val(claim.cost_centre)
             $("#input_description").val(claim.description)
 
