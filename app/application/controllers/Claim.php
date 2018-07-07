@@ -130,11 +130,12 @@ class Claim extends CI_Controller {
             $error['error'] = $this->form_validation->error_array();
         } else {
             $this->load->model('Claim_model');
-            $this->Claim_model->updateClaim(
-                $id_claim, $this->input->post('description'),
-                $this->input->post('cost_centre'),
-                $this->input->post('expenditure_items')
-            );
+            // check if claim is allowed to be updated
+            $updateDBAttempt = $this->Claim_model->updateClaim(
+                                    $id_claim, $this->input->post('description'),
+                                    $this->input->post('cost_centre'),
+                                    $this->input->post('expenditure_items')
+                                );
         }
 
 
