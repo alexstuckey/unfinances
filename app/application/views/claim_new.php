@@ -200,6 +200,21 @@
 
         }
 
+        function checkStateChange() {
+            if (
+                $("#input_description").val() === window.claimState.description &&
+                $("#input_cost_centre").val() === window.claimState.cost_centre &&
+                JSON.stringify($("#jsGrid").jsGrid('option', 'data')) == window.claimState.expenditure_items
+                ) {
+                window.stateChanged = false
+            } else {
+                window.stateChanged = true
+            }
+            console.log(window.stateChanged)
+        }
+        // Detect when fields are altered
+        $(".detectStateInput").change(checkStateChange)
+
 
         // jsGrid config
         function insert_on_enter(field) {
@@ -223,6 +238,8 @@
 
         function calculate_sum(args) {
             $('#currency-sum').text(args.grid.data.reduce((accumulator, row) => accumulator + Number(row.Price), 0).toFixed(2))
+            // then re-check state
+            checkStateChange()
         }
      
         $("#jsGrid").jsGrid({
@@ -342,18 +359,6 @@
                 console.error(errorThrown)
             })
         }
-        // Detect when fields are altered
-        $(".detectStateInput").change(() => {
-            if (
-                $("#input_description").val() === window.claimState.description &&
-                $("#input_cost_centre").val() === window.claimState.cost_centre &&
-                JSON.stringify($("#jsGrid").jsGrid('option', 'data')) == window.claimState.expenditure_items
-                ) {
-                window.stateChanged = false
-            } else {
-                window.stateChanged = true
-            }
-        })
     })
 
 </script>
