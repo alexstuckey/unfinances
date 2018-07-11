@@ -29,13 +29,11 @@ class Admin extends CI_Controller
         $data['message'] = $this->session->flashdata('message');
 
         $this->load->view('header', $data);
-        /* place content body chunks within content_open and content_close */
-        $this->load->view('content_open', $data);
 
         $this->load->view('admin_sidebar', $data);
         $this->load->view('admin_page_emails', $data);
+        $this->load->view('admin_sidebar_close', $data);
 
-        $this->load->view('content_close', $data);
         $this->load->view('footer', $data);
 
     }
