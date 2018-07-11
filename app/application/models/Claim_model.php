@@ -104,7 +104,7 @@ class Claim_model extends CI_Model {
 
         $claims = $query->result_array();
 
-        array_map($this->perClaimModify, $claims);
+        array_map(array($this, 'perClaimModify'), $claims);
 
         return $claims;
     }
