@@ -25,7 +25,7 @@
         <link rel="stylesheet" href="<?php echo base_url('/static/css/main.css'); ?>" type="text/css">
 
         <!-- Icon -->
-        <link rel="icon" type="image/png" href="<?php echo base_url('/static/images/favicon-32x32.png'); ?>" sizes="32x32">
+        <!-- <link rel="icon" type="image/png" href="<?php echo base_url('/static/images/favicon-32x32.png'); ?>" sizes="32x32"> -->
     </head>
 
     <body>
