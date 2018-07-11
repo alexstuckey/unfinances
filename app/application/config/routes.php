@@ -56,8 +56,10 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['home'] = 'home/homepage';
 
+$route['admin'] = 'admin/emails';
 $route['admin/emails'] = 'admin/emails';
 $route['admin/emails/edit'] = 'admin/emailsEdit';
+$route['admin/settings'] = 'admin/settings';
 
 
 $route['expenses/claim/new'] = 'claim/newClaim';
