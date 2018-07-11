@@ -62,6 +62,7 @@ $route['admin/emails/edit'] = 'admin/emailsEdit';
 $route['admin/settings'] = 'admin/settings';
 
 
+$route['expenses'] = 'expenses/my';
 $route['expenses/claim/new'] = 'claim/newClaim';
 $route['expenses/claim/(:num)'] = 'claim/showClaim/$1/web';
 $route['api/expenses/claim/(:num)'] = 'claim/showClaim/$1/json';
