@@ -33,7 +33,7 @@ class Admin extends CI_Controller
         $this->load->view('content_open', $data);
 
         $this->load->view('admin_sidebar', $data);
-        $this->load->view('admin_3_emails', $data);
+        $this->load->view('admin_page_emails', $data);
 
         $this->load->view('content_close', $data);
         $this->load->view('footer', $data);
