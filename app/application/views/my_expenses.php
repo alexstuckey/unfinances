@@ -41,6 +41,17 @@
             return $cellInfo;
         }
     ?>
+
+    <style type="text/css">
+        .my-badge-status {
+            margin-top: 3px;
+            font-size: 1.0rem;
+        }
+        .cell_description {
+            width: 40%;
+        }
+    </style>
+
     <table class="table table-striped table-bordered table-hover">
       <thead class="thead-dark">
         <tr>
@@ -55,10 +66,13 @@
         <?php foreach ($claims as $claim): ?>
         <tr>
           <th scope="row"><?php echo $claim['id_claim']; ?></th>
-          <td><?php echo $claim['status']; ?></td>
+          <?php $claim['statusCellInfo'] = generateStatusCell($claim['status']); ?>
+          <td>
+            <span class="badge my-badge-status" id="input_status" style="background-color: <?php echo $claim['statusCellInfo']['backgroundColour']; ?>; color: <?php echo $claim['statusCellInfo']['textColour']; ?>;"><?php echo $claim['statusCellInfo']['text']; ?></span>
+          </td>
           <td><?php echo $claim['date']; ?></td>
           <td><?php echo $claim['cost_centre']; ?></td>
-          <td><?php echo $claim['description']; ?></td>
+          <td class="cell_description"><?php echo $claim['description']; ?></td>
         </tr>
         <?php endforeach; ?>
       </tbody>
