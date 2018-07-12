@@ -128,6 +128,10 @@
     #drag-drop-area.progress-bar-fix-height {
         margin-bottom: -3px;
     }
+
+    #attachments-list {
+        overflow-wrap: break-word;
+    }
 </style>
 
 <script>
@@ -161,7 +165,7 @@
         // Render list
         claim.attachments.forEach((attachment) => {
             $("<li>")
-            .addClass("list-group-item d-flex justify-content-between lh-condensed")
+            .addClass("list-group-item")
             .append(
                 $("<div>")
                 .append(
