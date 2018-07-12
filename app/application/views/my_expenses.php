@@ -7,6 +7,40 @@
         </p>
     </div>
 
+    <?php
+        function generateStatusCell($statusInt)
+        {
+            $cellInfo = null;
+            switch($statusInt)
+            {
+                case 0:
+                    $cellInfo = array( 'text' => "Draft", 'backgroundColour' => "#6c757d", 'textColour' => "#fff" );
+                    break;
+                case 1:
+                    $cellInfo = array( 'text' => "Review", 'backgroundColour' => "#007bff", 'textColour' => "#fff" );
+                    break;
+                case 2:
+                    $cellInfo = array( 'text' => "Bounced", 'backgroundColour' => "#ffc107", 'textColour' => "#212529" );
+                    break;
+                case 3:
+                    $cellInfo = array( 'text' => "Changes Requested", 'backgroundColour' => "#ffc107", 'textColour' => "#212529" );
+                    break;
+                case 4:
+                    $cellInfo = array( 'text' => "Rejected", 'backgroundColour' => "#dc3545", 'textColour' => "#fff" );
+                    break;
+                case 5:
+                    $cellInfo = array( 'text' => "Approved", 'backgroundColour' => "#28a745", 'textColour' => "#fff" );
+                    break;
+                case 6:
+                    $cellInfo = array( 'text' => "Paid", 'backgroundColour' => "#28a745", 'textColour' => "#fff" );
+                    break;
+                default:
+                    $cellInfo = array();
+                    break;
+            }
+            return $cellInfo;
+        }
+    ?>
     <table class="table table-striped table-bordered table-hover">
       <thead class="thead-dark">
         <tr>
