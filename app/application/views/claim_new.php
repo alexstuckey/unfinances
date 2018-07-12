@@ -134,108 +134,150 @@
     window.claimState = jQuery.parseJSON(<?php echo json_encode($claimJSON); ?>)
     window.stateChanged = false
 
+    // Gets run once on page load (at bootom), then used to reload server data
+    window.loadClaim = function(claim) {
+
+    // Attachments
+        // Clear existing
+        $("#attachments-list").empty()
+        
+        // No attachments message
+        if (claim.attachments.length === 0) {
+            $("<li>")
+            .addClass("list-group-item d-flex justify-content-between bg-light")
+            .append(
+                $("<h6>")
+                .addClass("my-0 text-muted")
+                .text("No attachments added")
+                )
+            .appendTo("#attachments-list")
+        }
+
+        // Sort
+        window.claimState.attachments.sort((a, b) => {
+            return new Date(a.uploaded_datetime) - new Date(b.uploaded_datetime);
+        })
+
+        // Render list
+        claim.attachments.forEach((attachment) => {
+            $("<li>")
+            .addClass("list-group-item d-flex justify-content-between lh-condensed")
+            .append(
+                $("<div>")
+                .append(
+                    $("<a>")
+                    .attr("href", "../../../uploads/"+attachment.id_filename)
+                    .append(
+                        $("<h6>")
+                        .addClass("my-0")
+                        .text(attachment.client_name)
+                        )
+                    )
+                .append(
+                    $("<small>")
+                    .addClass("text-muted")
+                    .text(attachment.filesize_human)
+                    )
+                )
+            // COMMENTED UNTIL DELETE FEATURE ADDED
+            // .append(
+            //     $("<span>")
+            //     .addClass("text-muted")
+            //     .text("X")
+            //     )
+            .appendTo("#attachments-list")
+        })
+
+    // Fields
+        $("#input_id_claim").val(claim.id_claim)
+        $("#input_claimant_id").val(claim.claimant_id)
+        $("#input_claimant_name").val(claim.claimant_name)
+        $("#input_date").val(() => {
+            const [year, month, day] = claim.date.split("-")
+            return `${day}/${month}/${year}`
+        })
+        $("#input_cost_centre").val(claim.cost_centre)
+        $("#input_description").val(claim.description)
+
+    // Statuses
+        const statusesLookup = {
+            0: { text: "Draft", backgroundColour: "#6c757d", textColour: "#fff" },
+            1: { text: "Review", backgroundColour: "#007bff", textColour: "#fff" },
+            2: { text: "Bounced", backgroundColour: "#ffc107", textColour: "#212529" },
+            3: { text: "Changes Requested", backgroundColour: "#ffc107", textColour: "#212529" },
+            4: { text: "Rejected", backgroundColour: "#dc3545", textColour: "#fff" },
+            5: { text: "Approved", backgroundColour: "#28a745", textColour: "#fff" },
+            6: { text: "Paid", backgroundColour: "#28a745", textColour: "#fff" },
+        }
+        $("#input_status").text(statusesLookup[claim.status].text.toUpperCase())
+        $("#input_status").css('background-color', statusesLookup[claim.status].backgroundColour)
+        $("#input_status").css('color', statusesLookup[claim.status].textColour)
+
+    // The grid
+        $("#jsGrid").jsGrid('option', 'data', jQuery.parseJSON(claim.expenditure_items))
+    }
+
+    window.refreshClaimStateFromServer = function() {
+        jQuery.ajax({
+            url: "../../api/expenses/claim/"+window.claimState.id_claim,
+        }).done((data) => {
+            window.claimState = data
+            loadClaim(window.claimState)
+        }).fail((jqXHR, textStatus, errorThrown) => {
+            console.error(errorThrown)
+        })
+    }
+
+    window.checkStateChange = function() {
+        if (
+            $("#input_description").val() === window.claimState.description &&
+            $("#input_cost_centre").val() === window.claimState.cost_centre &&
+            JSON.stringify($("#jsGrid").jsGrid('option', 'data')) == window.claimState.expenditure_items
+            ) {
+            window.stateChanged = false
+        } else {
+            window.stateChanged = true
+        }
+        $("#button_save").prop('disabled', !window.stateChanged)
+        $("#button_claim").prop('disabled', window.stateChanged)
+        console.log("Has local state been changed: ", window.stateChanged)
+    }
+
+    // to send any changes to be committed to the server
+    window.saveStateToServer = function() {
+        // Prevent saving when nothing has changed
+        if (window.stateChanged) {
+            jQuery.ajax({
+                url: "../../api/expenses/saveClaim/"+window.claimState.id_claim,
+                type: "POST",
+                data: {
+                    description: $("#input_description").val(),
+                    cost_centre: $("#input_cost_centre").val(),
+                    expenditure_items: JSON.stringify($("#jsGrid").jsGrid('option', 'data')),
+                }
+            }).done((data) => {
+                console.log('saved state to server', data)
+                refreshClaimStateFromServer()
+            }).fail((jqXHR, textStatus, errorThrown) => {
+                console.error(errorThrown)
+                alert('Save failed, please check your connection and try again.')
+            })
+        }
+    }
+
+    // to progress the claim, by submitting it to Treasurer
+    window.claimStateToServer = function() {
+        console.log("claim state")
+    }
+
+    // Link clicks
+    $("#button_save").on("click", window.saveStateToServer)
+    $("#button_claim").on("click", window.claimStateToServer)
+    // Detect when fields are altered
+    $(".detectStateInput").change(window.checkStateChange)
+
+
     $(document).ready(function() {
-        // Gets run once on page load (at bootom), then used to reload server data
-        function loadClaim(claim) {
-
-        // Attachments
-            // Clear existing
-            $("#attachments-list").empty()
-            
-            // No attachments message
-            if (claim.attachments.length === 0) {
-                $("<li>")
-                .addClass("list-group-item d-flex justify-content-between bg-light")
-                .append(
-                    $("<h6>")
-                    .addClass("my-0 text-muted")
-                    .text("No attachments added")
-                    )
-                .appendTo("#attachments-list")
-            }
-
-            // Sort
-            window.claimState.attachments.sort((a, b) => {
-                return new Date(a.uploaded_datetime) - new Date(b.uploaded_datetime);
-            })
-
-            // Render list
-            claim.attachments.forEach((attachment) => {
-                $("<li>")
-                .addClass("list-group-item d-flex justify-content-between lh-condensed")
-                .append(
-                    $("<div>")
-                    .append(
-                        $("<a>")
-                        .attr("href", "../../../uploads/"+attachment.id_filename)
-                        .append(
-                            $("<h6>")
-                            .addClass("my-0")
-                            .text(attachment.client_name)
-                            )
-                        )
-                    .append(
-                        $("<small>")
-                        .addClass("text-muted")
-                        .text(attachment.filesize_human)
-                        )
-                    )
-                // COMMENTED UNTIL DELETE FEATURE ADDED
-                // .append(
-                //     $("<span>")
-                //     .addClass("text-muted")
-                //     .text("X")
-                //     )
-                .appendTo("#attachments-list")
-            })
-
-        // Fields
-            $("#input_id_claim").val(claim.id_claim)
-            $("#input_claimant_id").val(claim.claimant_id)
-            $("#input_claimant_name").val(claim.claimant_name)
-            $("#input_date").val(() => {
-                const [year, month, day] = claim.date.split("-")
-                return `${day}/${month}/${year}`
-            })
-            $("#input_cost_centre").val(claim.cost_centre)
-            $("#input_description").val(claim.description)
-
-        // Statuses
-            const statusesLookup = {
-                0: { text: "Draft", backgroundColour: "#6c757d", textColour: "#fff" },
-                1: { text: "Review", backgroundColour: "#007bff", textColour: "#fff" },
-                2: { text: "Bounced", backgroundColour: "#ffc107", textColour: "#212529" },
-                3: { text: "Changes Requested", backgroundColour: "#ffc107", textColour: "#212529" },
-                4: { text: "Rejected", backgroundColour: "#dc3545", textColour: "#fff" },
-                5: { text: "Approved", backgroundColour: "#28a745", textColour: "#fff" },
-                6: { text: "Paid", backgroundColour: "#28a745", textColour: "#fff" },
-            }
-            $("#input_status").text(statusesLookup[claim.status].text.toUpperCase())
-            $("#input_status").css('background-color', statusesLookup[claim.status].backgroundColour)
-            $("#input_status").css('color', statusesLookup[claim.status].textColour)
-
-        // The grid
-            $("#jsGrid").jsGrid('option', 'data', jQuery.parseJSON(claim.expenditure_items))
-        }
-
-        function checkStateChange() {
-            if (
-                $("#input_description").val() === window.claimState.description &&
-                $("#input_cost_centre").val() === window.claimState.cost_centre &&
-                JSON.stringify($("#jsGrid").jsGrid('option', 'data')) == window.claimState.expenditure_items
-                ) {
-                window.stateChanged = false
-            } else {
-                window.stateChanged = true
-            }
-            $("#button_save").prop('disabled', !window.stateChanged)
-            $("#button_claim").prop('disabled', window.stateChanged)
-            console.log("Has local state been changed: ", window.stateChanged)
-        }
-        // Detect when fields are altered
-        $(".detectStateInput").change(checkStateChange)
-
-
         // jsGrid config
         function insert_on_enter(field) {
           field.on("keydown", function(e) {
@@ -259,7 +301,7 @@
         function calculate_sum(args) {
             $('#currency-sum').text(args.grid.data.reduce((accumulator, row) => accumulator + Number(row.Price), 0).toFixed(2))
             // then re-check state
-            checkStateChange()
+            window.checkStateChange()
         }
      
         $("#jsGrid").jsGrid({
@@ -351,10 +393,10 @@
             })
             // Remove the negative margin on the drop-zone to make room for the progressbar
             $("#drag-drop-area").removeClass('progress-bar-fix-height')
+            window.saveStateToServer()
         })
         .on('upload-success', (file, resp, uploadURL) => {
-            window.claimState.attachments.push(resp.attachment_upload)
-            loadClaim(window.claimState)
+            window.refreshClaimStateFromServer()
         })
         .use(Uppy.DragDrop, { target: '#drag-drop-area' })
         .use(Uppy.ProgressBar, {
@@ -372,43 +414,6 @@
 
         loadClaim(window.claimState)
 
-        window.refreshClaimStateFromServer = function() {
-            jQuery.ajax({
-                url: "../../api/expenses/claim/"+window.claimState.id_claim,
-            }).done((data) => {
-                window.claimState = data
-                loadClaim(window.claimState)
-            }).fail((jqXHR, textStatus, errorThrown) => {
-                console.error(errorThrown)
-            })
-        }
-
-        // to send any changes to be committed to the server
-        window.saveStateToServer = function() {
-            jQuery.ajax({
-                url: "../../api/expenses/saveClaim/"+window.claimState.id_claim,
-                type: "POST",
-                data: {
-                    description: $("#input_description").val(),
-                    cost_centre: $("#input_cost_centre").val(),
-                    expenditure_items: JSON.stringify($("#jsGrid").jsGrid('option', 'data')),
-                }
-            }).done((data) => {
-                console.log('saved state to server', data)
-                refreshClaimStateFromServer()
-            }).fail((jqXHR, textStatus, errorThrown) => {
-                console.error(errorThrown)
-                alert('Save failed, please check your connection and try again.')
-            })
-        }
-
-        // to progress the claim, by submitting it to Treasurer
-        window.claimStateToServer = function() {
-            console.log("claim state")
-        }
-
-        $("#button_save").on("click", window.saveStateToServer)
-        $("#button_claim").on("click", window.claimStateToServer)
     })
 
 </script>
