@@ -81,12 +81,8 @@
             <hr class="mt-5">
 
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="same-address">
-                <label class="custom-control-label" for="same-address">Shipping address is the same as my billing address</label>
-            </div>
-            <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="save-info">
-                <label class="custom-control-label" for="save-info">Save this information for next time</label>
+                <input type="checkbox" class="custom-control-input" id="declaration-checkbox">
+                <label class="custom-control-label" for="declaration-checkbox">By checking this box, I confirm that the contents of this form is correct and that I am asking to be reinbursed for the amount displayed above. The expenditure listed above was bought for the purposes of the JCR.</label>
             </div>
 
             <hr class="mb-5">
@@ -271,7 +267,11 @@
 
     // to progress the claim, by submitting it to Treasurer
     window.claimStateToServer = function() {
-        console.log("claim state")
+        if ($('#declaration-checkbox').is(':checked')) {
+            console.log("claim state")
+        } else {
+            alert('You must confirm the declaration before claiming an expense.')
+        }
     }
 
     // Link clicks
