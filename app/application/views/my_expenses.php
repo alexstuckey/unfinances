@@ -65,7 +65,7 @@
       <tbody>
         <?php foreach ($claims as $claim): ?>
         <tr>
-          <th scope="row"><?php echo $claim['id_claim']; ?></th>
+          <th scope="row"><a href="<?php echo site_url('/expenses/claim/' . $claim['id_claim']); ?>"><?php echo $claim['id_claim']; ?></a></th>
           <?php $claim['statusCellInfo'] = generateStatusCell($claim['status']); ?>
           <td>
             <span class="badge my-badge-status" id="input_status" style="background-color: <?php echo $claim['statusCellInfo']['backgroundColour']; ?>; color: <?php echo $claim['statusCellInfo']['textColour']; ?>;"><?php echo $claim['statusCellInfo']['text']; ?></span>
