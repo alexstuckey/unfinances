@@ -69,4 +69,26 @@ class User_model extends CI_Model
 
 
 
+
+    public function addAdmin($cisID)
+    {
+        $user = $this->getUserByCIS($cisID);
+        if ($user['doesUserExist']) {
+            $data = array(
+                'is_admin' => 1
+            );
+            $this->db->where('id_cis', $cisID);
+            $this->db->update('users', $data);
+        }
+    }
+
+    public function getAdmins()
+    {
+        $this->db->where('is_admin', '1');
+        $query = $this->db->get('users');
+
+        return $query->result_array();
+    }
+
+
 }
