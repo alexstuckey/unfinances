@@ -88,9 +88,9 @@ class Claim_model extends CI_Model {
         $claim['attachments'] = $this->File_model->getFilesForClaimID($claim['id_claim']);
 
         // Query real name from username
-        $this->load->model('CIS_model');
-        $user_cis_profile = $this->CIS_model->get_user_details_by_cisID($claim['claimant_id']);
-        $claim['claimant_name'] = $user_cis_profile['fullname'];
+        $this->load->model('User_model');
+        $user_profile = $this->User_model->getUserByCIS($claim['claimant_id']);
+        $claim['claimant_name'] = $user_profile['fullname'];
 
         // Determine actions possible on claim
         $claim['isEditable'] = ClaimStatus::isStatusEditable($claim['status']);
