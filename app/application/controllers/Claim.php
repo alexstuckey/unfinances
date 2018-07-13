@@ -22,16 +22,14 @@ class Claim extends CI_Controller {
 
     public function showClaim($id_claim, $format)
     {
+        $userAccount = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($userAccount['doesUserExist'] == false) {
+            $this->load->helper('url');
+            redirect('/onboard/welcome');
+        }
+
         $error = null;
         $data = array();
-
-        // $this->load->model('User_model');
-        // if (!$this->User_model->doesUserExist($_SERVER['REMOTE_USER'])) {
-        //     $this->load->helper('url');
-        //     redirect('/onboard/welcome');
-        // } else if ($this->User_model->isAdmin($_SERVER['REMOTE_USER'])) {
-        //     $data['is_admin'] = TRUE;
-        // }
 
 
         $this->load->model('Claim_model');
