@@ -53,6 +53,7 @@ $route['default_controller'] = 'home/homepage';
 $route['404_override'] = 'home/show404';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['onboarding/welcome'] = 'onboarding/welcome';
 
 $route['home'] = 'home/homepage';
 
