@@ -93,4 +93,26 @@ class User_model extends CI_Model
     }
 
 
+
+    // Creates a new local user from a CIS user, with a 0 onboarding status,
+    // ready for the onboarding phase
+    public function createUser($cisID)
+    {
+        $existingUser = $this->getUserByCIS($cisID);
+
+        if (!empty($existingUser)) {
+            if ($existingUser['doesUserExist'] == false) {
+                $data = array(
+                    'id_cis' => $cisID,
+                    'has_onboarded' => 0
+                );
+
+                $this->db->insert('users', $data);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }
