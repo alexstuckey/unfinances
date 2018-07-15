@@ -50,6 +50,11 @@ gulp.task('js', function() {
     // 'node_modules/select2/dist/js/select2.js',
     'node_modules/jsgrid/dist/jsgrid.js',
     'node_modules/uppy/dist/uppy.js',
+    'node_modules/inputmask/dist/inputmask/inputmask.js',
+    'node_modules/inputmask/dist/inputmask/inputmask.extensions.js',
+    'node_modules/inputmask/dist/inputmask/inputmask.numeric.extensions.js',
+    'node_modules/inputmask/dist/inputmask/inputmask.date.extensions.js',
+    'node_modules/inputmask/dist/inputmask/jquery.inputmask.js',
     ])
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(minify({
