@@ -143,14 +143,35 @@ class Claim_model extends CI_Model {
         return ClaimStatus::isStatusEditable($claim['status']);
     }
 
-    public function updateClaim($id_claim, $description, $cost_centre, $expenditure_items)
+    public function updateClaimAsUser($cisID, $id_claim, $description, $cost_centre, $expenditure_items)
     {
-        $this->db->where('id_claim', $id_claim);
-        $this->db->set('description', $description);
-        $this->db->set('cost_centre', $cost_centre);
-        $this->db->set('expenditure_items', $expenditure_items);
-        $this->db->update('claims');
-        return true;
+        $response = array(
+            'success' => false,
+        );
+
+        // Get user
+        $user = $this->User_model->getUserByCIS($cisID);
+
+        // Get claim
+        $claim = $this->getClaimByID($id_claim);
+
+        // Check permissions
+        if ($claim['claimant_id'] == $user['username']) {
+            $response['success'] = true;
+        } else {
+            $response['success'] = false;
+            $response['message'] = 'You are not the owner of this claim.';
+        }
+
+        // Update claim
+        if ($response['success']) {
+            $this->db->where('id_claim', $id_claim);
+            $this->db->set('description', $description);
+            $this->db->set('cost_centre', $cost_centre);
+            $this->db->set('expenditure_items', $expenditure_items);
+            $this->db->update('claims');
+        }
+        return $response;
     }
 
 }
