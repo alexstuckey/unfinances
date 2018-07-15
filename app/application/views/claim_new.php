@@ -259,8 +259,17 @@
                 console.log('saved state to server', data)
                 refreshClaimStateFromServer()
             }).fail((jqXHR, textStatus, errorThrown) => {
-                console.error(errorThrown)
-                alert('Save failed, please check your connection and try again.')
+                if (jqXHR.status == 403) {
+                    console.error('Attempted to save a claim not owned by user.')
+                    alert('You do not own this claim, and so cannot modify it.')
+                } else if (jqXHR.status == 404) {
+                    console.error('This claim does not exist')
+                    alert('Save failed, this claim does not exist.')
+                } else {
+                    console.error(errorThrown)
+                    alert('Save failed, please check your connection and try again.')
+                }
+                
             })
         }
     }
