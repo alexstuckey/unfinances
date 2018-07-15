@@ -49,9 +49,10 @@ class User_model extends CI_Model
 
         if (!empty($userCIS)) {
             $userLocal = $this->getLocalUserData($userCIS['username']);
+            return array_merge($userCIS, $userLocal);
         }
 
-        return array_merge($userCIS, $userLocal);
+        return $userCIS;
     }
 
     public function getUserByEmail($email)
@@ -62,9 +63,10 @@ class User_model extends CI_Model
 
         if (!empty($userCIS)) {
             $userLocal = $this->getLocalUserData($userCIS['username']);
+            return array_merge($userCIS, $userLocal);
         }
 
-        return array_merge($userCIS, $userLocal);
+        return $userCIS;
     }
 
 
