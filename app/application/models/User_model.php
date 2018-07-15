@@ -115,4 +115,20 @@ class User_model extends CI_Model
         return false;
     }
 
+    public function completeOnboarding($cisID)
+    {
+        $existingUser = $this->getUserByCIS($cisID);
+
+        if ($existingUser['doesUserExist']) {
+            $data = array(
+                'has_onboarded' => 1
+            );
+
+            $this->db->where('id_cis', $cisID);
+            $this->db->update('users', $data);
+        }
+
+        return false;
+    }
+
 }
