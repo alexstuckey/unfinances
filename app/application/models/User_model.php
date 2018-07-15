@@ -115,13 +115,18 @@ class User_model extends CI_Model
         return false;
     }
 
-    public function completeOnboarding($cisID)
+    // Assumes correct data
+    public function completeOnboardingWithDetails($cisID, $dob, $accountNumber, $sortCode)
     {
         $existingUser = $this->getUserByCIS($cisID);
 
         if ($existingUser['doesUserExist']) {
             $data = array(
-                'has_onboarded' => 1
+                'has_onboarded' => 1,
+                'dob' => $dob,
+                'bank_account_number' => $accountNumber,
+                'bank_sort_code' => $sortCode
+
             );
 
             $this->db->where('id_cis', $cisID);
