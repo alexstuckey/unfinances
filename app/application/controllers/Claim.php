@@ -8,7 +8,7 @@ class Claim extends CI_Controller {
         $userAccount = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
         if ($userAccount['doesUserExist'] == false) {
             $this->load->helper('url');
-            redirect('/onboard/welcome');
+            redirect('/onboarding/welcome');
         }
 
         $this->load->model('Claim_model');
@@ -23,7 +23,7 @@ class Claim extends CI_Controller {
         $userAccount = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
         if ($userAccount['doesUserExist'] == false) {
             $this->load->helper('url');
-            redirect('/onboard/welcome');
+            redirect('/onboarding/welcome');
         }
 
         $error = null;
@@ -97,7 +97,7 @@ class Claim extends CI_Controller {
         $userAccount = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
         if ($userAccount['doesUserExist'] == false) {
             $this->load->helper('url');
-            redirect('/onboard/welcome');
+            redirect('/onboarding/welcome');
         }
 
         $error = array(
