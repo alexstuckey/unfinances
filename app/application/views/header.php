@@ -9,8 +9,22 @@
         <!-- Vendor JS -->
         <script src="<?php echo base_url('/static/js/jquery.min.js'); ?>"></script>
         <script src="<?php echo base_url('/static/js/bootstrap.min.js'); ?>"></script>
+
+<?php if (empty($javascript_jsgrid) || ($javascript_jsgrid == FALSE)): ?>
         <script src="<?php echo base_url('/static/js/jsgrid.min.js'); ?>"></script>
+<?php endif; ?>
+
+<?php if (empty($javascript_uppy) || ($javascript_uppy == FALSE)): ?>
         <script src="<?php echo base_url('/static/js/uppy.min.js'); ?>"></script>
+<?php endif; ?>
+
+<?php if (empty($javascript_inputmask) || ($javascript_inputmask == FALSE)): ?>
+        <script src="<?php echo base_url('/static/js/inputmask.min.js'); ?>"></script>
+        <script src="<?php echo base_url('/static/js/inputmask.extensions.min.js'); ?>"></script>
+        <script src="<?php echo base_url('/static/js/inputmask.numeric.extensions.min.js'); ?>"></script>
+        <script src="<?php echo base_url('/static/js/inputmask.date.extensions.min.js'); ?>"></script>
+        <script src="<?php echo base_url('/static/js/jquery.inputmask.min.js'); ?>"></script>
+<?php endif; ?>
 
         <!-- App JS -->
         <!-- <script src="<?php echo base_url('/static/js/homepage.js'); ?>"></script> -->

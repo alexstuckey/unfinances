@@ -50,6 +50,8 @@ class Claim extends CI_Controller {
             if (!isset($error)) {
                 $data['active'] = 'expenses';
                 $data['page_title'] = 'UCFinances - New claim';
+                $data['javascript_jsgrid'] = true;
+                $data['javascript_uppy'] = true;
 
                 $this->load->model('CostCentre_model');
                 $data['cost_centres'] = $this->CostCentre_model->getAllCostCentres();
