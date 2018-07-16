@@ -27,11 +27,7 @@ class User_model extends CI_Model
             $claim = null;
             if ($query->num_rows() == 1) {
                 $userLocal = $query->row_array();
-                if ($userLocal['has_onboarded']) {
-                    $userLocal['doesUserExist'] = true;
-                } else {
-                    $userLocal['doesUserExist'] = false;
-                }
+                $userLocal['doesUserExist'] = true;
                 return $userLocal;
             } else {
                 return array( 'doesUserExist' => false );
