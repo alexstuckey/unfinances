@@ -26,7 +26,7 @@
                     foreach ($admins as $admin): ?>
                     <tr>
                       <th scope="row"><?php echo $count; $count++; ?></th>
-                      <td><?php echo $admin['cisID'] ?></td>
+                      <td><?php echo $admin['id_cis'] ?></td>
                     </tr>
                     <?php endforeach; ?>
                   </tbody>
