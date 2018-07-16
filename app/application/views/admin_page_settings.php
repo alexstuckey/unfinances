@@ -18,6 +18,7 @@
                     <tr>
                       <th scope="col">#</th>
                       <th scope="col">Username</th>
+                      <th scope="col">Full name</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -27,6 +28,7 @@
                     <tr>
                       <th scope="row"><?php echo $count; $count++; ?></th>
                       <td><?php echo $admin['id_cis'] ?></td>
+                      <td><?php echo $admin['fullname'] ?></td>
                     </tr>
                     <?php endforeach; ?>
                   </tbody>
