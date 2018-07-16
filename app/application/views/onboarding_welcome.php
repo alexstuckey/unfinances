@@ -60,6 +60,7 @@ $(document).ready(function(){
     $('#onboarding_input_account_number').inputmask({
         mask: "99999999",
         clearMaskOnLostFocus: false,
+        removeMaskOnSubmit: true,
     })
     $('#onboarding_input_sort_code').inputmask({
         mask: "99-99-99",
