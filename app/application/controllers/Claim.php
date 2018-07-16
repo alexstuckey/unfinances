@@ -5,9 +5,8 @@ class Claim extends CI_Controller {
 
     public function newClaim()
     {
-        $userAccount = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
-        if ($userAccount['doesUserExist'] == false) {
-            $this->load->helper('url');
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['has_onboarded'] == false) {
             redirect('/onboarding/welcome');
         }
 
@@ -20,15 +19,12 @@ class Claim extends CI_Controller {
 
     public function showClaim($id_claim, $format)
     {
-        $userAccount = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
-        if ($userAccount['doesUserExist'] == false) {
-            $this->load->helper('url');
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['has_onboarded'] == false) {
             redirect('/onboarding/welcome');
         }
 
         $error = null;
-        $data = array();
-
 
         $this->load->model('Claim_model');
         $data['claim'] = $this->Claim_model->getClaimById($id_claim);
@@ -94,18 +90,22 @@ class Claim extends CI_Controller {
 
     public function saveClaimByJSON($id_claim)
     {
-        $userAccount = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
-        if ($userAccount['doesUserExist'] == false) {
-            $this->load->helper('url');
-            redirect('/onboarding/welcome');
-        }
-
         $error = array(
             'error' => false,
             'message' => '',
             'error_code' => ''
         );
         $data = array();
+
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['has_onboarded'] == false) {
+            $error = array(
+                'error' => false,
+                'message' => 'You have not yet registered.',
+                'error_code' => 403
+            );
+        }
+
 
         $this->load->model('Claim_model');
         $data['claim'] = $this->Claim_model->getClaimById($id_claim);
