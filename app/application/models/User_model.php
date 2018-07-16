@@ -133,6 +133,7 @@ class User_model extends CI_Model
 
             $this->db->where('id_cis', $cisID);
             $this->db->update('users', $data);
+            return true;
         }
 
         return false;
