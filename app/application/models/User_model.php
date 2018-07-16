@@ -89,7 +89,13 @@ class User_model extends CI_Model
         $this->db->where('is_admin', '1');
         $query = $this->db->get('users');
 
-        return $query->result_array();
+        $admins = array();
+
+        foreach ($query->result_array() as $admin) {
+            $admins[] = $this->getUserByCIS($admin['id_cis']);
+        }
+
+        return $admins;
     }
 
 
