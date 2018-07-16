@@ -12,6 +12,8 @@
             Please enter the following details:
         </p>
         <div class="container">
+            <?php echo validation_errors('<div class="alert alert-warning" role="alert">', '</div>'); ?>
+
             <form action="<?php echo site_url('/onboarding/submit'); ?>" method="post">
                 <div class="form-group row">
                     <label for="onboarding_input_dob" class="col-md-3 col-form-label">Date of Birth</label>
