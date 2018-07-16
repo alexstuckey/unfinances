@@ -54,6 +54,7 @@ $route['404_override'] = 'home/show404';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['onboarding/welcome'] = 'onboarding/welcome';
+$route['onboarding/submit']['POST'] = 'onboarding/submit';
 
 $route['home'] = 'home/homepage';
 
