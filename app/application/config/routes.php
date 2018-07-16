@@ -62,6 +62,7 @@ $route['admin'] = 'admin/emails';
 $route['admin/emails'] = 'admin/emails';
 $route['admin/emails/edit'] = 'admin/emailsEdit';
 $route['admin/settings'] = 'admin/settings';
+$route['admin/settings/addAdmin'] = 'admin/settingsAddAdmin';
 
 
 $route['expenses'] = 'expenses/my';

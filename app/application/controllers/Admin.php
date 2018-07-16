@@ -83,6 +83,7 @@ class Admin extends CI_Controller
             $this->load->library('form_validation');
             $this->load->library('session');
             $data['message'] = $this->session->flashdata('message');
+            $data['error'] = $this->session->flashdata('error');
 
             $this->load->view('header', $data);
 
@@ -115,7 +116,7 @@ class Admin extends CI_Controller
                 } else {
                     $this->session->set_flashdata('error', 'Admin adding failed!');
                 }
-                $this->settings();
+                redirect('/admin/settings');
             }
         }
     }

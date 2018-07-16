@@ -4,7 +4,9 @@
         <h1>Settings</h1>
 
         <?php if (isset($message)) {
-            echo '<p class="alert alert-info">'.$message.'</p>';
+            echo '<p class="alert alert-success">'.$message.'</p><br>';
+        } elseif (isset($error)) {
+            echo '<p class="alert alert-danger">'.$error.'</p><br>';
         }?>
 
         <?php echo validation_errors(); ?>
