@@ -69,9 +69,9 @@
                         <?php endif; ?>
                     </ul>
                     <ul class="navbar-nav">
-                        <?php if (!empty($is_admin) && ($is_admin == TRUE)): ?>
+                        <?php if (!empty($userAccount['is_admin']) && ($userAccount['is_admin'] == TRUE)): ?>
                             <li class="nav-item<?php if ($active == "admin") { echo " active"; }; ?>">
-                                <a class="nav-link" href="<?php echo site_url('/admin/departments'); ?>">Admin</a>
+                                <a class="nav-link" href="<?php echo site_url('/admin'); ?>">Admin</a>
                             </li>
                         <?php endif; ?>
                     </ul>
