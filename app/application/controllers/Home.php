@@ -10,13 +10,11 @@ class Home extends CI_Controller {
 
     public function homepage()
     {
-        // $this->load->model('User_model');
-        // if (!$this->User_model->doesUserExist($_SERVER['REMOTE_USER'])) {
-        //     $this->load->helper('url');
-        //     redirect('/onboard/welcome');
-        // } else if ($this->User_model->isAdmin($_SERVER['REMOTE_USER'])) {
-        //     $data['is_admin'] = TRUE;
-        // }
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['doesUserExist'] == false) {
+            $this->load->helper('url');
+            redirect('/onboarding/welcome');
+        }
 
         $data['active'] = 'home';
         $data['page_title'] = 'UCFinances - Home';
