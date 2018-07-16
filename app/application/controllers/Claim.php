@@ -24,18 +24,35 @@ class Claim extends CI_Controller {
             redirect('/onboarding/welcome');
         }
 
-        $error = null;
+        $error = array(
+            'error' => false,
+            'message' => '',
+            'error_code' => ''
+        );
 
         $this->load->model('Claim_model');
         $data['claim'] = $this->Claim_model->getClaimById($id_claim);
 
         if (isset($data['claim'])) {
-            $data['claimJSON'] = json_encode($data['claim']);
-            $data['claimJSON'] = str_replace('\\\\\\', '\\', $data['claimJSON']);
+            if ($data['claim']['claimant_id'] == $data['userAccount']['username'] || $data['userAccount']['is_admin'] || $data['userAccount']['is_treasurer']) {
+                $data['claimJSON'] = json_encode($data['claim']);
+                $data['claimJSON'] = str_replace('\\\\\\', '\\', $data['claimJSON']);
+            } else {
+                // Not that user's claim
+                $error = array(
+                    'error' => true,
+                    'message' => 'You are not permitted to access this claim.',
+                    'error_code' => 403
+                );
+            }
 
         } else {
             // Couldn't find it
-            $error = array("error" => "claim could not be found");
+            $error = array(
+                'error' => true,
+                'message' => 'claim could not be found',
+                'error_code' => 404
+            );
         }
 
 
@@ -43,7 +60,7 @@ class Claim extends CI_Controller {
         // RENDER
         if ($format == 'web') {
 
-            if (!isset($error)) {
+            if (!$error['error']) {
                 $data['active'] = 'expenses';
                 $data['page_title'] = 'UCFinances - New claim';
                 $data['javascript_jsgrid'] = true;
@@ -56,12 +73,16 @@ class Claim extends CI_Controller {
                 $this->load->view('claim_new', $data);
                 $this->load->view('footer', $data);
             } else {
-                show_404();
+                if ($error['error_code'] == 404) {
+                    show_404();
+                } else {
+                    show_error($error['message'], $error['error_code'], "403 Forbidden");
+                }
             }
 
         } else if ($format == 'json') {
 
-            if (!isset($error)) {
+            if (!$error['error']) {
                 $this->output
                     ->set_status_header(201)
                     ->set_content_type('application/json')
@@ -69,9 +90,9 @@ class Claim extends CI_Controller {
 
             } else {
                 $this->output
-                        ->set_status_header(404)
+                        ->set_status_header($error['error_code'])
                         ->set_content_type('application/json')
-                        ->set_output(json_encode($error));
+                        ->set_output(json_encode($error['message']));
             }
         }
     }
