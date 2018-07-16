@@ -12,7 +12,6 @@ class Home extends CI_Controller {
     {
         $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
         if ($data['userAccount']['has_onboarded'] == false) {
-            $this->load->helper('url');
             redirect('/onboarding/welcome');
         }
 
