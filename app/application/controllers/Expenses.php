@@ -5,13 +5,10 @@ class Expenses extends CI_Controller {
 
     public function my()
     {
-        // $this->load->model('User_model');
-        // if (!$this->User_model->doesUserExist($_SERVER['REMOTE_USER'])) {
-        //     $this->load->helper('url');
-        //     redirect('/onboard/welcome');
-        // } else if ($this->User_model->isAdmin($_SERVER['REMOTE_USER'])) {
-        //     $data['is_admin'] = TRUE;
-        // }
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['has_onboarded'] == false) {
+            redirect('/onboarding/welcome');
+        }
 
         $data['active'] = 'expenses';
         $data['page_title'] = 'UCFinances - My Expenses';
