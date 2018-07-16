@@ -43,3 +43,26 @@
 </main>
 
 
+<script type="text/javascript">
+$(document).ready(function(){
+    let now = new Date()
+    let current_year = now.getFullYear()
+    let earliest_year = current_year - 16
+    $("#onboarding_input_dob").inputmask('datetime', {
+        clearMaskOnLostFocus: false,
+        inputFormat: 'dd/mm/yyyy',
+        outputFormat: 'yyyy-mm-dd',
+        max: ('dd/mm/' + earliest_year),
+        removeMaskOnSubmit: true,
+    })
+    $('#onboarding_input_account_number').inputmask({
+        mask: "99999999",
+        clearMaskOnLostFocus: false,
+    })
+    $('#onboarding_input_sort_code').inputmask({
+        mask: "99-99-99",
+        clearMaskOnLostFocus: false,
+        removeMaskOnSubmit: true,
+    })
+})
+</script>
