@@ -79,6 +79,7 @@ class Admin extends CI_Controller
             $data['page_title'] = 'Admin: Settings';
 
             $data['admins'] = $this->User_model->getAdmins();
+            $data['treasurers'] = $this->User_model->getTreasurers();
 
             $this->load->library('form_validation');
             $this->load->library('session');
@@ -95,15 +96,17 @@ class Admin extends CI_Controller
         }
     }
 
-    public function settingsAddAdmin()
+    public function settingsAddAdminOrTreasurer($type)
     {
+        // $type = 'admin' or 'treasurer'
+
         $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
         if ($data['userAccount']['is_admin'] == false) {
             show_error('You are not permitted to access this page.', 403, "403 Forbidden");
         } else {
 
             $this->load->library('form_validation');
-            $this->form_validation->set_rules('adminUsernameAdd', 'Admin username', 'trim|required');
+            $this->form_validation->set_rules('usernameAdd', 'New ' . $type . 'username', 'trim|required');
             $this->form_validation->set_error_delimiters('<p class="alert alert-danger"><strong>Error: </strong>', '</p>');
             $this->load->library('session');
             if ($this->form_validation->run() == FALSE) {
@@ -111,10 +114,20 @@ class Admin extends CI_Controller
                 $this->settings();
             } else {
                 $this->load->model('User_model');
-                if ($this->User_model->addAdmin($this->input->post('adminUsernameAdd'))) {
-                    $this->session->set_flashdata('message', 'Admin added!');
+
+                $result = null;
+                if ($type == 'admin') {
+                    $result = $this->User_model->addAdmin($this->input->post('usernameAdd'));
+                } else if ($type == 'treasurer') {
+                    $result = $this->User_model->addTreasurer($this->input->post('usernameAdd'));
                 } else {
-                    $this->session->set_flashdata('error', 'Admin adding failed!');
+                    $this->session->set_flashdata('error', 'No type provided.');
+                }
+
+                if ($result) {
+                    $this->session->set_flashdata('message', 'Added new ' . $type . '!');
+                } else {
+                    $this->session->set_flashdata('error', 'Failed to add new ' . $type . '.');
                 }
                 redirect('/admin/settings');
             }
