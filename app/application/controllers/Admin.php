@@ -162,7 +162,7 @@ class Admin extends CI_Controller
         }
     }
 
-    public function settingsAddCostCentre()
+    public function addCostCentre()
     {
 
         $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
