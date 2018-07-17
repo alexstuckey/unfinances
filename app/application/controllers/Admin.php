@@ -192,4 +192,30 @@ class Admin extends CI_Controller
         }
     }
 
+    // Looks up to see if a cost centre exists
+    public function cost_centre_check($str)
+    {
+        $this->load->model('CostCentre_model');
+        $allCostCentres = $this->CostCentre_model->getAllCostCentres();
+        foreach ($allCostCentres as $row) {
+            if ($row['cost_centre'] == $str) return true;
+        }
+        $this->form_validation->set_message('cost_centre_check', 'The {field} must be a valid cost centre.');
+        return false;
+    }
+
+    // Returns true if the username exists on the CIS database, and the user has registered for the app (local)
+    public function username_check($str)
+    {
+        $checkUser = $this->User_model->getUserByCIS($str);
+        if (!empty($checkUser)) {
+            if ($checkUser['doesUserExist']) {
+                return true;
+            }
+        }
+
+        $this->form_validation->set_message('username_check', 'The {field} must be a valid account.');
+        return false;
+    }
+
 }
