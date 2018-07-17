@@ -28,6 +28,16 @@ class User_model extends CI_Model
             if ($query->num_rows() == 1) {
                 $userLocal = $query->row_array();
                 $userLocal['doesUserExist'] = true;
+
+                // Lookup if a cost centre manager
+                $this->load->model('CostCentre_model');
+                $managerOfCostCentres = $this->CostCentre_model->getCostCentresWithManager($cisID);
+                if (count($managerOfCostCentres) >= 1) {
+                    $userLocal['isCostCentreManager'] = true;
+                } else {
+                    $userLocal['isCostCentreManager'] = false;
+                }
+
                 return $userLocal;
             } else {
                 return array( 'doesUserExist' => false );
