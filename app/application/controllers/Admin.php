@@ -110,7 +110,6 @@ class Admin extends CI_Controller
             $this->form_validation->set_error_delimiters('<p class="alert alert-danger"><strong>Error: </strong>', '</p>');
             $this->load->library('session');
             if ($this->form_validation->run() == FALSE) {
-                $this->session->set_flashdata('error', validation_errors());
                 $this->settings();
             } else {
                 $this->load->model('User_model');
