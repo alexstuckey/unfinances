@@ -31,4 +31,16 @@ class CostCentre_model extends CI_Model {
         }
     }
 
+    // does not check for cost centre existance, assumes responsible usage
+    public function changeManager($cost_centre, $manager_id_cis)
+    {
+        $data = array(
+            'manager_id_cis' => $manager_id_cis
+        );
+        $this->db->where('cost_centre', $cost_centre);
+        $this->db->update('cost_centres', $data);
+
+        return true;
+    }
+
 }
