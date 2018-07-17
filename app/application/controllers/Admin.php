@@ -133,4 +133,8 @@ class Admin extends CI_Controller
         }
     }
 
+    public function cost_centres()
+    {
+    }
+
 }

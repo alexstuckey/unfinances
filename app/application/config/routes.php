@@ -64,6 +64,7 @@ $route['admin/emails/edit'] = 'admin/emailsEdit';
 $route['admin/settings'] = 'admin/settings';
 $route['admin/settings/addAdmin'] = 'admin/settingsAddAdminOrTreasurer/admin';
 $route['admin/settings/addTreasurer'] = 'admin/settingsAddAdminOrTreasurer/treasurer';
+$route['admin/cost_centres'] = 'admin/cost_centres';
 
 
 $route['expenses'] = 'expenses/my';
