@@ -98,6 +98,36 @@ class User_model extends CI_Model
     }
 
 
+    public function addTreasurer($cisID)
+    {
+        $user = $this->getUserByCIS($cisID);
+        if ($user['doesUserExist']) {
+            $data = array(
+                'is_treasurer' => 1
+            );
+            $this->db->where('id_cis', $cisID);
+            $this->db->update('users', $data);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getTreasurers()
+    {
+        $this->db->where('is_treasurer', '1');
+        $query = $this->db->get('users');
+
+        $treasurers = array();
+
+        foreach ($query->result_array() as $admin) {
+            $treasurers[] = $this->getUserByCIS($admin['id_cis']);
+        }
+
+        return $treasurers;
+    }
+
+
 
     // Creates a new local user from a CIS user, with a 0 onboarding status,
     // ready for the onboarding phase
