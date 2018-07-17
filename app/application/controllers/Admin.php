@@ -218,4 +218,38 @@ class Admin extends CI_Controller
         return false;
     }
 
+    public function changeCostCentreManager()
+    {
+
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['is_admin'] == false) {
+            show_error('You are not permitted to access this page.', 403, "403 Forbidden");
+        } else {
+
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('changeCostCentre', 'Cost Centre', 'max_length[255]|callback_cost_centre_check');
+            $this->form_validation->set_rules('changeCostCentreManager', 'Manager username', 'trim|required|callback_username_check');
+            $this->form_validation->set_error_delimiters('<p class="alert alert-danger"><strong>Error: </strong>', '</p>');
+            $this->load->library('session');
+            if ($this->form_validation->run() == FALSE) {
+                $this->cost_centres();
+            } else {
+                $this->load->model('CostCentre_model');
+
+                $result = null;
+                $result = $this->CostCentre_model->changeManager(
+                    $this->input->post('changeCostCentre'),
+                    $this->input->post('changeCostCentreManager')
+                );
+
+                if ($result) {
+                    $this->session->set_flashdata('message', 'Changed cost centre manager!');
+                } else {
+                    $this->session->set_flashdata('error', 'Failed to change cost centre manager.');
+                }
+                redirect('/admin/cost_centres');
+            }
+        }
+    }
+
 }
