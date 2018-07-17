@@ -19,7 +19,8 @@
                   <thead>
                     <tr>
                       <th scope="col">#</th>
-                      <th scope="col">Name</th>
+                      <th scope="col">Cost Centre</th>
+                      <th scope="col">Manager</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -29,6 +30,7 @@
                     <tr>
                       <th scope="row"><?php echo $count; $count++; ?></th>
                       <td><?php echo $cost_centre['cost_centre'] ?></td>
+                      <td><?php echo $cost_centre['manager_id_cis'] ?></td>
                     </tr>
                     <?php endforeach; ?>
                   </tbody>
