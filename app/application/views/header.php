@@ -47,7 +47,8 @@
         <div id="page">
 
             <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
-                <a class="navbar-brand" href="#">UC Finances</a>
+                <img src="<?php echo base_url('/static/images/uc-crest.svg'); ?>" height="40px" class="pr-2" style="filter: brightness(0) invert(1);">
+                <a class="navbar-brand" href="<?php echo site_url('/home'); ?>">UC Finances</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
