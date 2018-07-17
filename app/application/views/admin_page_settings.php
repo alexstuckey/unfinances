@@ -13,8 +13,7 @@
 
         <div class="card">
             <div class="card-block">
-                <h4>Admins</h4>
-                <br>
+                <h4 class="pb-3">Admins</h4>
                 <table class="table table-responsive">
                   <thead>
                     <tr>
@@ -51,8 +50,7 @@
 
         <div class="card">
             <div class="card-block">
-                <h4>Treasurers</h4>
-                <br>
+                <h4 class="pb-3">Treasurers</h4>
                 <table class="table table-responsive">
                   <thead>
                     <tr>
