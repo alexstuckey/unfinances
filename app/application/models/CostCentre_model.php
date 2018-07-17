@@ -26,6 +26,12 @@ class CostCentre_model extends CI_Model {
 
         return $costCentres;
     }
+
+    public function getCostCentresWithManager($cisID)
+    {
+        $this->db->where('manager_id_cis', $cisID);
+        $query = $this->db->get('cost_centres');
+
         return $query->result_array();
     }
 
