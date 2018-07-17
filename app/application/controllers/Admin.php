@@ -135,6 +135,61 @@ class Admin extends CI_Controller
 
     public function cost_centres()
     {
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['is_admin'] == false) {
+            show_error('You are not permitted to access this page.', 403, "403 Forbidden");
+        } else {
+
+            $data['active'] = 'admin';
+            $data['active_admin'] = 'cost_centres';
+            $data['page_title'] = 'Admin: Cost Centres';
+
+            $this->load->model('CostCentre_model');
+            $data['cost_centres'] = $this->CostCentre_model->getAllCostCentres();
+
+            $this->load->library('form_validation');
+            $this->load->library('session');
+            $data['message'] = $this->session->flashdata('message');
+            $data['error'] = $this->session->flashdata('error');
+
+            $this->load->view('header', $data);
+
+            $this->load->view('admin_sidebar', $data);
+            $this->load->view('admin_page_cost_centres', $data);
+            $this->load->view('admin_sidebar_close', $data);
+
+            $this->load->view('footer', $data);
+        }
+    }
+
+    public function settingsAddCostCentre()
+    {
+
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['is_admin'] == false) {
+            show_error('You are not permitted to access this page.', 403, "403 Forbidden");
+        } else {
+
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('newCostCentreName', 'New Cost Centre Name', 'trim|required');
+            $this->form_validation->set_error_delimiters('<p class="alert alert-danger"><strong>Error: </strong>', '</p>');
+            $this->load->library('session');
+            if ($this->form_validation->run() == FALSE) {
+                $this->cost_centres();
+            } else {
+                $this->load->model('CostCentre_model');
+
+                $result = null;
+                $result = $this->CostCentre_model->createNewCostCentre($this->input->post('newCostCentreName'));
+
+                if ($result) {
+                    $this->session->set_flashdata('message', 'Created new cost centre!');
+                } else {
+                    $this->session->set_flashdata('error', 'Failed to create new cost centre.');
+                }
+                redirect('/admin/cost_centres');
+            }
+        }
     }
 
 }

@@ -65,6 +65,7 @@ $route['admin/settings'] = 'admin/settings';
 $route['admin/settings/addAdmin'] = 'admin/settingsAddAdminOrTreasurer/admin';
 $route['admin/settings/addTreasurer'] = 'admin/settingsAddAdminOrTreasurer/treasurer';
 $route['admin/cost_centres'] = 'admin/cost_centres';
+$route['admin/cost_centres/add'] = 'admin/settingsAddCostCentre';
 
 
 $route['expenses'] = 'expenses/my';
