@@ -14,6 +14,18 @@ class CostCentre_model extends CI_Model {
     {
         $query = $this->db->get('cost_centres');
 
+        $costCentres = $query->result_array();
+
+        foreach ($costCentres as $costCentre) {
+            if ($costCentre['manager_id_cis'] == '') {
+                $costCentre['active'] = false;
+            } else {
+                $costCentre['active'] = true;
+            }
+        }
+
+        return $costCentres;
+    }
         return $query->result_array();
     }
 
