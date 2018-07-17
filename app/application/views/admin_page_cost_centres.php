@@ -35,11 +35,36 @@
                 </table>
                 <form action="<?php echo site_url('/admin/cost_centres/add'); ?>" method="post">
                     <div class="form-row align-items-center">
-                        <div class="col-auto">
+                        <div class="col-md-7">
                             <input type="text" class="form-control mb-2" id="newCostCentreName" name="newCostCentreName" placeholder="Cost Centre name">
                         </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary mb-2">Create new Cost Centre</button>
+                        <div class="col-md-5">
+                            <button type="submit" class="btn btn-primary btn-block mb-2">Create Cost Centre</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-block">
+                <h4 class="pb-3">Assign Cost Centres Managers</h4>
+                <p>Appointing a new manager will replace the previous one.</p>
+
+                <form action="<?php echo site_url('/admin/cost_centres/changeManager'); ?>" method="post">
+                    <div class="form-row align-items-center">
+                        <div class="col-md">
+                            <select name="changeCostCentre" class="custom-select form-control mb-2">
+                                <?php foreach ($cost_centres as $cost_centre): ?>
+                                <option value="<?php echo $cost_centre['cost_centre']; ?>"><?php echo $cost_centre['cost_centre']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="col-lg">
+                            <input type="text" class="form-control mb-2" id="changeCostCentreManager" name="changeCostCentreManager" placeholder="Manager username">
+                        </div>
+                        <div class="col-lg">
+                            <button type="submit" class="btn btn-primary btn-block mb-2">Appoint manager</button>
                         </div>
                     </div>
                 </form>
