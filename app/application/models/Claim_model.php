@@ -169,7 +169,12 @@ class Claim_model extends CI_Model {
 
         // Check permissions
         if ($claim['claimant_id'] == $user['username']) {
-            $response['success'] = true;
+            if ($claim['isEditable']) {
+                $response['success'] = true;
+            } else {
+                $response['success'] = false;
+                $response['message'] = 'This claim is not editable.';
+            }
         } else {
             $response['success'] = false;
             $response['message'] = 'You are not the owner of this claim.';
