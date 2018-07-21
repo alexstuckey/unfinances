@@ -241,7 +241,6 @@
                     icon = 'fas fa-comment-alt'
                     activityInsert = $("<span>")
                                      .text(" commented.")
-                                     .add($("<br>"))
                                      .add(
                                         $("<span>")
                                         .addClass("d-block text-muted")
