@@ -223,6 +223,70 @@
             .appendTo("#attachments-list")
         })
 
+    // Activity feed
+        // Clear existing
+        // $("#activity-feed").empty()
+
+        // Render list
+        claim.activities.forEach((activity) => {
+            let icon, activityInsert
+
+            switch (activity.activity_type) {
+                case 'create':
+                    icon = 'fas fa-plus-square'
+                    activityInsert = $("<span>")
+                                     .text(" created this claim.")
+                    break;
+                case 'comment':
+                    icon = 'fas fa-comment-alt'
+                    activityInsert = $("<span>")
+                                     .text(" commented.")
+                                     .add($("<br>"))
+                                     .add(
+                                        $("<span>")
+                                        .addClass("d-block text-muted")
+                                        .text(activity.activity_value)
+                                     )
+                    break;
+                case 'change_status':
+                    break;
+                default:
+                    icon = 'fas fa-question-circle'
+                    break;
+            }
+
+            $("<li>")
+            .addClass("list-group-item")
+            .append(
+                $("<div>")
+                .addClass("media align-items-center")
+                .append(
+                    $("<i>")
+                    .addClass(icon)
+                )
+                .append(
+                    $("<div>")
+                    .addClass("media-body")
+                    .append(
+                        $("<div>")
+                        .append(
+                            $("<span>")
+                            .addClass("activity_user_name")
+                            .text(activity.by_id_cis_user.fullname)
+                        )
+                        .append(activityInsert) // from the above switch block
+                        )
+                    .append(
+                        $("<span>")
+                        .addClass("time-text")
+                        .text(new Date(activity.activity_datetime).toLocaleString('en-GB'))
+                        )
+
+                    )
+                )
+            .appendTo("#activity-feed")
+        })
+
     // Fields
         $("#input_id_claim").val(claim.id_claim)
         $("#input_claimant_id").val(claim.claimant_id)
