@@ -87,6 +87,7 @@
 
             <hr class="mb-5">
 
+            <?php if ($claim['isEditable']): ?>
             <div class="row form-group">
                 <div class="col-6">
                     <button id="button_save" class="btn btn-dark btn-lg btn-block" role="button">Save</button>
@@ -95,6 +96,7 @@
                     <button id="button_claim" class="btn btn-primary btn-lg btn-block" role="button">Claim this expense</button>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 
