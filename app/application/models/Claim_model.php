@@ -87,6 +87,10 @@ class Claim_model extends CI_Model {
         $this->load->model('File_model');
         $claim['attachments'] = $this->File_model->getFilesForClaimID($claim['id_claim']);
 
+        // Fetch activities
+        $this->load->model('Activity_model');
+        $claim['activities'] = $this->Activity_model->getActivitiesForClaimID($claim['id_claim']);
+
         // Query real name from username
         $this->load->model('User_model');
         $user_profile = $this->User_model->getUserByCIS($claim['claimant_id']);
