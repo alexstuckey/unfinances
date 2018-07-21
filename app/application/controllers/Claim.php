@@ -11,7 +11,10 @@ class Claim extends CI_Controller {
         }
 
         $this->load->model('Claim_model');
-        $id_claim = $this->Claim_model->createClaim($_SERVER['REMOTE_USER']);
+        $id_claim = $this->Claim_model->createClaim($data['userAccount']['username']);
+
+        $this->load->model('Activity_model');
+        $this->Activity_model->createOnClaimID($id_claim, $data['userAccount']['username']);
 
         $this->load->helper('url');
         redirect('/expenses/claim/' . $id_claim);
