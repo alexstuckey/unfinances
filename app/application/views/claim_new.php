@@ -100,9 +100,42 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-lg-8">
+            <ol class="list-group" id="activity-feed">
+
+            </ol>
+        </div>
+    </div>
+
 </main>
 
 <style type="text/css">
+    #activity-feed .avatar {
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 50%;
+        margin-right: 0.75rem;
+    }
+
+    #activity-feed i {
+        font-size: 2rem;
+        margin-right: 0.75rem;
+        width: 1.25em; /* Set a fixed-width, without centre aligning */
+    }
+
+    #activity-feed span.activity_user_name {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    #activity-feed .time-text {
+        font-size: .875rem;
+        line-height: 1.3125rem;
+    }
+
+
     .my-badge-status {
         margin-top: 3px;
         font-size: 1.25rem;
