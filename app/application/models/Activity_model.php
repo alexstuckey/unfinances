@@ -21,7 +21,7 @@ class Activity_model extends CI_Model {
         $this->load->model('User_model');
         $activity['by_id_cis_user'] = $this->User_model->getUserByCIS($activity['by_id_cis']);
 
-        $activity['activity_datetime'] = date("Y-m-d\TH:i:s",strtotime($activity['activity_datetime']));
+        $activity['activity_datetime'] = date("c",strtotime($activity['activity_datetime']));
 
         return $activity;
     }
