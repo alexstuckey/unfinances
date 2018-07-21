@@ -52,6 +52,17 @@ class Activity_model extends CI_Model {
 
 
     // Actions on a claim
+    public function createOnClaimID($of_id_claim, $by_id_cis)
+    {
+        $data = array(
+            'of_id_claim' => $of_id_claim,
+            'by_id_cis' => $by_id_cis,
+            'activity_type' => 'create'
+        );
+
+        return $this->db->insert('activities', $data);
+    }
+
     public function commentOnClaimID($of_id_claim, $by_id_cis, $body)
     {
         $data = array(
