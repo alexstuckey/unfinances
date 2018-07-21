@@ -108,7 +108,7 @@ class Claim_model extends CI_Model {
 
         $claims = $query->result_array();
 
-        array_map(array($this, 'perClaimModify'), $claims);
+        $claims = array_map(array($this, 'perClaimModify'), $claims);
 
         return $claims;
     }
@@ -120,7 +120,7 @@ class Claim_model extends CI_Model {
 
         $claims = $query->result_array();
 
-        array_map(array($this, 'perClaimModify'), $claims);
+        $claims = array_map(array($this, 'perClaimModify'), $claims);
 
         return $claims;
     }

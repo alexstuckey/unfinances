@@ -32,7 +32,7 @@ class Activity_model extends CI_Model {
 
         $activities = $query->result_array();
 
-        array_map(array($this, 'perActivityModify'), $activities);
+        $activities = array_map(array($this, 'perActivityModify'), $activities);
 
         return $activities;
     }
@@ -44,7 +44,7 @@ class Activity_model extends CI_Model {
 
         $activities = $query->result_array();
 
-        array_map(array($this, 'perActivityModify'), $activities);
+        $activities = array_map(array($this, 'perActivityModify'), $activities);
 
         return $activities;
     }
