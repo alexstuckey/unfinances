@@ -258,6 +258,27 @@
                                      )
                     break;
                 case 'change_status':
+                    icon = 'fas fa-edit'
+                    activityInsert = $("<span>")
+                                     .text(" changed status from ")
+                                     .add(
+                                        $("<span>")
+                                        .addClass("badge")
+                                        .css('background-color', statusesLookup[activity.activity_value_before].backgroundColour)
+                                        .css('color', statusesLookup[activity.activity_value_before].textColour)
+                                        .text(statusesLookup[activity.activity_value_before].text.toUpperCase())
+                                     )
+                                     .add(
+                                        $("<span>")
+                                        .text(" to ")
+                                     )
+                                     .add(
+                                        $("<span>")
+                                        .addClass("badge")
+                                        .css('background-color', statusesLookup[activity.activity_value].backgroundColour)
+                                        .css('color', statusesLookup[activity.activity_value].textColour)
+                                        .text(statusesLookup[activity.activity_value].text.toUpperCase())
+                                     )
                     break;
                 default:
                     icon = 'fas fa-question-circle'
