@@ -184,6 +184,79 @@ class Claim extends CI_Controller {
         }
     }
 
+    public function commentClaimByJSON($id_claim)
+    {
+        $error = array(
+            'error' => false,
+            'message' => '',
+            'error_code' => ''
+        );
+        $data = array();
+
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['has_onboarded'] == false) {
+            $error = array(
+                'error' => false,
+                'message' => 'You have not yet registered.',
+                'error_code' => 403
+            );
+        }
+
+
+        $this->load->model('Claim_model');
+        $data['claim'] = $this->Claim_model->getClaimById($id_claim);
+
+        if (isset($data['claim'])) {
+        } else {
+            // Couldn't find it
+            $error = array(
+                'error' => true,
+                'message' => $updateDBAttempt['message'],
+                'error_code' => 403
+            );
+        }
+
+        // get input
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('comment_field', 'Comment Field', 'trim|max_length[255]');
+
+        if ($this->form_validation->run() == FALSE) {
+            $error['error'] = $this->form_validation->error_array();
+        } else {
+            $this->load->model('Activity_model');
+            // check if claim is allowed to be updated
+            $updateDBAttempt = $this->Activity_model->commentOnClaimID(
+                                    $id_claim,
+                                    $data['userAccount']['username'],
+                                    $this->input->post('comment_field')
+                                );
+            if ($updateDBAttempt['success'] == false) {
+                $error = array(
+                    'error' => true,
+                    'message' => $updateDBAttempt['message'],
+                    'error_code' => 403
+                );
+                 if ($updateDBAttempt['message'] == 'This claim does not exist.') {
+                    $error['error_code'] = 404;
+                 }
+            }
+        }
+
+
+        if (!$error['error']) {
+            $this->output
+                ->set_status_header(201)
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('success')));
+
+        } else {
+            $this->output
+                    ->set_status_header($error['error_code'])
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($error['message']));
+        }
+    }
+
 
     public function getUser($id_cis)
     {
