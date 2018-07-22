@@ -31,8 +31,8 @@ class User_model extends CI_Model
 
                 // Lookup if a cost centre manager
                 $this->load->model('CostCentre_model');
-                $managerOfCostCentres = $this->CostCentre_model->getCostCentresWithManager($cisID);
-                if (count($managerOfCostCentres) >= 1) {
+                $userLocal['managerOfCostCentres'] = $this->CostCentre_model->getCostCentresWithManager($cisID);
+                if (count($userLocal['managerOfCostCentres']) >= 1) {
                     $userLocal['is_CostCentreManager'] = true;
                 } else {
                     $userLocal['is_CostCentreManager'] = false;
