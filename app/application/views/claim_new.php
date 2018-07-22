@@ -103,8 +103,20 @@
     <div class="row">
         <div class="col-lg-8">
             <ol class="list-group" id="activity-feed">
-
             </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="form-row mx-3 my-2">
+                <div class="col-9">
+                    <input class="form-control" type="text" placeholder="Your comments" id="comment_field">
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-default btn-block" id="comment_button">Comment</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -235,7 +247,7 @@
 
     // Activity feed
         // Clear existing
-        // $("#activity-feed").empty()
+        $("#activity-feed").empty()
 
         // Render list
         claim.activities.forEach((activity) => {
@@ -403,12 +415,50 @@
         }
     }
 
+    window.submitCommentToServer = function() {
+        // check for value in field
+        if ($("#comment_field").val() === '') {
+            console.log('empty comment')
+        } else {
+            jQuery.ajax({
+                url: "../../api/expenses/commentClaim/"+window.claimState.id_claim,
+                type: "POST",
+                data: {
+                    comment_field: $("#comment_field").val(),
+                }
+            }).done((data) => {
+                console.log('submitted comment to server', data)
+                $("#comment_field").val("")
+                refreshClaimStateFromServer()
+            }).fail((jqXHR, textStatus, errorThrown) => {
+                if (jqXHR.status == 403) {
+                    console.error('Attempted to comment on a claim not owned by user.')
+                    alert('You do not own this claim or have permission to write to it, and so cannot modify it.')
+                } else if (jqXHR.status == 404) {
+                    console.error('This claim does not exist')
+                    alert('Save failed, this claim does not exist.')
+                } else {
+                    console.error(errorThrown)
+                    alert('Save failed, please check your connection and try again.')
+                }
+                
+            })
+        }
+    }
+
     // Link clicks
     $("#button_save").on("click", window.saveStateToServer)
     $("#button_claim").on("click", window.claimStateToServer)
     // Detect when fields are altered
     $(".detectStateInput").change(window.checkStateChange)
-
+    // Comment button / enter
+    $("#comment_button").on("click", window.submitCommentToServer)
+    $("#comment_field").keypress(function(e) {
+        if (e.which === 13) {
+            e.preventDefault()
+            window.submitCommentToServer()
+        }
+    })
 
     $(document).ready(function() {
         // jsGrid config
