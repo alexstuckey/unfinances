@@ -166,6 +166,16 @@
 </style>
 
 <script>
+    const statusesLookup = {
+        0: { text: "Draft", backgroundColour: "#6c757d", textColour: "#fff" },
+        1: { text: "Review", backgroundColour: "#007bff", textColour: "#fff" },
+        2: { text: "Bounced", backgroundColour: "#ffc107", textColour: "#212529" },
+        3: { text: "Changes Requested", backgroundColour: "#ffc107", textColour: "#212529" },
+        4: { text: "Rejected", backgroundColour: "#dc3545", textColour: "#fff" },
+        5: { text: "Approved", backgroundColour: "#28a745", textColour: "#fff" },
+        6: { text: "Paid", backgroundColour: "#28a745", textColour: "#fff" },
+    }
+
     window.claimState = jQuery.parseJSON(<?php echo json_encode($claimJSON); ?>)
     window.stateChanged = false
 
@@ -298,15 +308,6 @@
         $("#input_description").val(claim.description)
 
     // Statuses
-        const statusesLookup = {
-            0: { text: "Draft", backgroundColour: "#6c757d", textColour: "#fff" },
-            1: { text: "Review", backgroundColour: "#007bff", textColour: "#fff" },
-            2: { text: "Bounced", backgroundColour: "#ffc107", textColour: "#212529" },
-            3: { text: "Changes Requested", backgroundColour: "#ffc107", textColour: "#212529" },
-            4: { text: "Rejected", backgroundColour: "#dc3545", textColour: "#fff" },
-            5: { text: "Approved", backgroundColour: "#28a745", textColour: "#fff" },
-            6: { text: "Paid", backgroundColour: "#28a745", textColour: "#fff" },
-        }
         $("#input_status").text(statusesLookup[claim.status].text.toUpperCase())
         $("#input_status").css('background-color', statusesLookup[claim.status].backgroundColour)
         $("#input_status").css('color', statusesLookup[claim.status].textColour)
