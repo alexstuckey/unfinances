@@ -74,6 +74,7 @@ $route['expenses/claim/new'] = 'claim/newClaim';
 $route['expenses/claim/(:num)'] = 'claim/showClaim/$1/web';
 $route['api/expenses/claim/(:num)'] = 'claim/showClaim/$1/json';
 $route['api/expenses/saveClaim/(:num)'] = 'claim/saveClaimByJSON/$1';
+$route['api/expenses/submitClaim/(:num)'] = 'claim/submitClaimByJSON/$1';
 $route['api/expenses/commentClaim/(:num)'] = 'claim/commentClaimByJSON/$1';
 
 $route['api/user/(:any)'] = 'claim/getUser/$1';

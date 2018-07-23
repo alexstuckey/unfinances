@@ -184,6 +184,11 @@ class Claim extends CI_Controller {
         }
     }
 
+    public function submitClaimByJSON($id_claim)
+    {
+        
+    }
+
     public function commentClaimByJSON($id_claim)
     {
         $error = array(
