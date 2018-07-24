@@ -195,9 +195,9 @@ class Claim_model extends CI_Model {
         return $response;
     }
 
-    public function changeClaimStatusAsUser($of_id_claim, $by_id_cis, $status_to)
+    public function changeClaimStatus($of_id_claim, $status_to)
     {
-        $this->db->where('id_claim', $id_claim);
+        $this->db->where('id_claim', $of_id_claim);
         $this->db->set('status', $status_to);
         return $this->db->update('claims');
     }
