@@ -59,7 +59,7 @@
                                 <a class="nav-link" href="<?php echo site_url('/home'); ?>">Home</a>
                             </li>
                             <li class="nav-item<?php if ($active == "expenses") { echo " active"; }; ?>">
-                                <a class="nav-link" href="<?php echo site_url('/expenses'); ?>">My Expenses</a>
+                                <a class="nav-link" href="<?php echo site_url('/expenses/my'); ?>">My Expenses</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo site_url('/expenses/claim/new'); ?>">New Claim</a>
