@@ -14,6 +14,7 @@ class Expenses extends CI_Controller {
         $data['subtitle'] = 'My Expenses';
         $data['page_title'] = 'UCFinances - ' . $data['subtitle'];
         $data['page_lead_text'] = 'View all your expense claims.';
+        $data['page_show_claimant_column'] = false;
 
         $this->load->model('Claim_model');
         $data['claims'] = $this->Claim_model->getClaimsForUser($data['userAccount']['username']);

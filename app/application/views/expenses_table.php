@@ -61,6 +61,9 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Status</th>
+          <?php if ($page_show_claimant_column): ?>
+          <th scope="col">By Claimant</th>
+          <?php endif; ?>
           <th scope="col">Date</th>
           <th scope="col">Cost Centre</th>
           <th scope="col">Description</th>
@@ -74,6 +77,9 @@
           <td>
             <span class="badge my-badge-status" id="input_status" style="background-color: <?php echo $claim['statusCellInfo']['backgroundColour']; ?>; color: <?php echo $claim['statusCellInfo']['textColour']; ?>;"><?php echo $claim['statusCellInfo']['text']; ?></span>
           </td>
+          <?php if ($page_show_claimant_column): ?>
+          <td><?php echo $claim['claimant_name']; ?></td>
+          <?php endif; ?>
           <td><?php echo $claim['date']; ?></td>
           <td><?php echo $claim['cost_centre']; ?></td>
           <td class="cell_description"><?php echo $claim['description']; ?></td>
@@ -82,7 +88,7 @@
               if (count($claims) == 0):
         ?>
         <tr class="table-secondary no-content-row">
-          <td colspan="5">There are no claims to show.</td>
+          <td colspan="<?php if ($page_show_claimant_column) { echo '6'; } else { echo '5'; } ?>">There are no claims to show.</td>
         </tr>
         <?php endif; ?>
       </tbody>
