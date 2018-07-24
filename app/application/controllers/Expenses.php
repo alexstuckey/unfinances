@@ -18,7 +18,7 @@ class Expenses extends CI_Controller {
 
         $this->load->view('header', $data);
 
-        $this->load->view('my_expenses', $data);
+        $this->load->view('expenses_table', $data);
 
         $this->load->view('footer', $data);
     }
