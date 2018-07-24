@@ -10,7 +10,7 @@ class Expenses extends CI_Controller {
             redirect('/onboarding/welcome');
         }
 
-        $data['active'] = 'expenses_review';
+        $data['active'] = 'expenses';
         $data['subtitle'] = 'My Expenses';
         $data['page_title'] = 'UCFinances - ' . $data['subtitle'];
         $data['page_lead_text'] = 'View all your expense claims.';
