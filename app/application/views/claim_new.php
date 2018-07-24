@@ -180,9 +180,9 @@
 <script>
     const statusesLookup = {
         0: { text: "Draft", backgroundColour: "#6c757d", textColour: "#fff" },
-        1: { text: "Review", backgroundColour: "#007bff", textColour: "#fff" },
+        1: { text: "Cost Centre Review", backgroundColour: "#007bff", textColour: "#fff" },
         2: { text: "Bounced", backgroundColour: "#ffc107", textColour: "#212529" },
-        3: { text: "Changes Requested", backgroundColour: "#ffc107", textColour: "#212529" },
+        3: { text: "Treasurer Review", backgroundColour: "#17a2b8", textColour: "#fff" },
         4: { text: "Rejected", backgroundColour: "#dc3545", textColour: "#fff" },
         5: { text: "Approved", backgroundColour: "#28a745", textColour: "#fff" },
         6: { text: "Paid", backgroundColour: "#28a745", textColour: "#fff" },
@@ -278,7 +278,7 @@
                                         .addClass("badge")
                                         .css('background-color', statusesLookup[activity.activity_value_before].backgroundColour)
                                         .css('color', statusesLookup[activity.activity_value_before].textColour)
-                                        .text(statusesLookup[activity.activity_value_before].text.toUpperCase())
+                                        .text(statusesLookup[activity.activity_value_before].text)
                                      )
                                      .add(
                                         $("<span>")
@@ -289,7 +289,7 @@
                                         .addClass("badge")
                                         .css('background-color', statusesLookup[activity.activity_value].backgroundColour)
                                         .css('color', statusesLookup[activity.activity_value].textColour)
-                                        .text(statusesLookup[activity.activity_value].text.toUpperCase())
+                                        .text(statusesLookup[activity.activity_value].text)
                                      )
                     break;
                 default:
@@ -341,7 +341,7 @@
         $("#input_description").val(claim.description)
 
     // Statuses
-        $("#input_status").text(statusesLookup[claim.status].text.toUpperCase())
+        $("#input_status").text(statusesLookup[claim.status].text)
         $("#input_status").css('background-color', statusesLookup[claim.status].backgroundColour)
         $("#input_status").css('color', statusesLookup[claim.status].textColour)
 

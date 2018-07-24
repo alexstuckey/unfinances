@@ -5,9 +5,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // https://stackoverflow.com/a/254543/298051
 abstract class ClaimStatus {
     const Draft = 0;
-    const Review = 1;
+    const CostCentreReview = 1;
     const Bounced = 2;
-    const ChangesRequested = 3;
+    const TreasurerReview = 3;
     const Rejected = 4;
     const Approved = 5;
     const Paid = 6;
@@ -52,7 +52,7 @@ abstract class ClaimStatus {
     {
         $editableStatusesStrings = array(
             'Draft',
-            'ChangesRequested'
+            'Bounced'
         );
 
         if (self::isValidStatus($status)) {
@@ -193,6 +193,13 @@ class Claim_model extends CI_Model {
             $this->db->update('claims');
         }
         return $response;
+    }
+
+    public function changeClaimStatusAsUser($of_id_claim, $by_id_cis, $status_to)
+    {
+        $this->db->where('id_claim', $id_claim);
+        $this->db->set('status', $status_to);
+        return $this->db->update('claims');
     }
 
 }

@@ -17,13 +17,13 @@
                     $cellInfo = array( 'text' => "Draft", 'backgroundColour' => "#6c757d", 'textColour' => "#fff" );
                     break;
                 case 1:
-                    $cellInfo = array( 'text' => "Review", 'backgroundColour' => "#007bff", 'textColour' => "#fff" );
+                    $cellInfo = array( 'text' => "Cost Centre Review", 'backgroundColour' => "#007bff", 'textColour' => "#fff" );
                     break;
                 case 2:
                     $cellInfo = array( 'text' => "Bounced", 'backgroundColour' => "#ffc107", 'textColour' => "#212529" );
                     break;
                 case 3:
-                    $cellInfo = array( 'text' => "Changes Requested", 'backgroundColour' => "#ffc107", 'textColour' => "#212529" );
+                    $cellInfo = array( 'text' => "Treasurer Review", 'backgroundColour' => "#17a2b8", 'textColour' => "#fff" );
                     break;
                 case 4:
                     $cellInfo = array( 'text' => "Rejected", 'backgroundColour' => "#dc3545", 'textColour' => "#fff" );
