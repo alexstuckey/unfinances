@@ -18,6 +18,11 @@ abstract class ClaimStatus {
             'Draft',
             'Bounced'
         );
+    private static $reviewStatusesStrings = array(
+            'CostCentreReview',
+            'TreasurerReview'
+        );
+
     private static function getConstants() {
         if (self::$constCacheArray == NULL) {
             self::$constCacheArray = array();
@@ -64,6 +69,12 @@ abstract class ClaimStatus {
         }
 
         return false;
+    }
+
+    public static function statusesForReviewAsInt()
+    {
+        $statusStrings = array_map("self::statusStringToInt", self::$reviewStatusesStrings);
+        return $statusStrings;
     }
 }
 
@@ -116,6 +127,22 @@ class Claim_model extends CI_Model {
     {
         $this->db->where('claimant_id', $cisID);
         $query = $this->db->get('claims');
+
+        $claims = $query->result_array();
+
+        $claims = array_map(array($this, 'perClaimModify'), $claims);
+
+        return $claims;
+    }
+
+    public function getClaimsForReviewByUser($cisID)
+    {
+        $this->db->select('claims.*');
+        $this->db->from('claims');
+        $this->db->join('cost_centres', 'cost_centres.cost_centre = claims.cost_centre');
+        $this->db->where_in('claims.status', ClaimStatus::statusesForReviewAsInt());
+        $this->db->where('cost_centres.manager_id_cis', $cisID);
+        $query = $this->db->get();
 
         $claims = $query->result_array();
 
