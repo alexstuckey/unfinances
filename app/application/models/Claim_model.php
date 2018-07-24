@@ -14,6 +14,10 @@ abstract class ClaimStatus {
 
     private static $constCacheArray = NULL;
 
+    private static $editableStatusesStrings = array(
+            'Draft',
+            'Bounced'
+        );
     private static function getConstants() {
         if (self::$constCacheArray == NULL) {
             self::$constCacheArray = array();
@@ -50,17 +54,12 @@ abstract class ClaimStatus {
 
     public static function isStatusEditable($status)
     {
-        $editableStatusesStrings = array(
-            'Draft',
-            'Bounced'
-        );
-
         if (self::isValidStatus($status)) {
             if (is_string($status)) {
-                return in_array(strtolower($status), $editableStatusesStrings);
+                return in_array(strtolower($status), self::$editableStatusesStrings);
             } else if (is_int($status)) {
-                $editableStatusesStrings = array_map("self::statusStringToInt", $editableStatusesStrings);
-                return in_array($status, $editableStatusesStrings);
+                $statusStrings = array_map("self::statusStringToInt", self::$editableStatusesStrings);
+                return in_array($status, $statusStrings);
             }
         }
 
