@@ -26,7 +26,7 @@ abstract class ClaimStatus {
         return self::$constCacheArray[$calledClass];
     }
 
-    private static function statusStringToInt($statusString)
+    public static function statusStringToInt($statusString)
     {
         $statusesByStringInLowercase = array_change_key_case(self::getConstants(), CASE_LOWER);
         return $statusesByStringInLowercase[strtolower($statusString)];
