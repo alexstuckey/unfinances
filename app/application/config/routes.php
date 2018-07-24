@@ -70,6 +70,7 @@ $route['admin/cost_centres/changeManager'] = 'admin/changeCostCentreManager';
 
 
 $route['expenses/my'] = 'expenses/my';
+$route['expenses/review'] = 'expenses/review';
 $route['expenses/claim/new'] = 'claim/newClaim';
 $route['expenses/claim/(:num)'] = 'claim/showClaim/$1/web';
 $route['api/expenses/claim/(:num)'] = 'claim/showClaim/$1/json';
