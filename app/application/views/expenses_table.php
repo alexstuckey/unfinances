@@ -1,9 +1,9 @@
 <!-- Content Block (Contains Sidebars and central columns) -->
 <main class="container-fluid" id="content">
     <div class="jumbotron">
-        <h1>My Expenses</h1>
+        <h1><?php echo $subtitle; ?></h1>
         <p class="lead">
-            Here are your expense claims.
+            <?php echo $page_lead_text; ?>
         </p>
     </div>
 

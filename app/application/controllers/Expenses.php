@@ -10,8 +10,10 @@ class Expenses extends CI_Controller {
             redirect('/onboarding/welcome');
         }
 
-        $data['active'] = 'expenses';
-        $data['page_title'] = 'UCFinances - My Expenses';
+        $data['active'] = 'expenses_review';
+        $data['subtitle'] = 'My Expenses';
+        $data['page_title'] = 'UCFinances - ' . $data['subtitle'];
+        $data['page_lead_text'] = 'View all your expense claims.';
 
         $this->load->model('Claim_model');
         $data['claims'] = $this->Claim_model->getClaimsForUser($data['userAccount']['username']);
