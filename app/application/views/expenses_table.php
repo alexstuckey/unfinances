@@ -50,6 +50,10 @@
         .cell_description {
             width: 40%;
         }
+        .no-content-row td {
+          text-align: center;
+          font-style: italic;
+        }
     </style>
 
     <table class="table table-striped table-bordered table-hover">
@@ -74,7 +78,13 @@
           <td><?php echo $claim['cost_centre']; ?></td>
           <td class="cell_description"><?php echo $claim['description']; ?></td>
         </tr>
-        <?php endforeach; ?>
+        <?php endforeach;
+              if (count($claims) == 0):
+        ?>
+        <tr class="table-secondary no-content-row">
+          <td colspan="5">There are no claims to show.</td>
+        </tr>
+        <?php endif; ?>
       </tbody>
     </table>
 </main>
