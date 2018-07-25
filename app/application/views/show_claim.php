@@ -82,7 +82,7 @@
 
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="declaration-checkbox">
-                <label class="custom-control-label" for="declaration-checkbox">By checking this box, I confirm that the contents of this form is correct and that I am asking to be reinbursed for the amount displayed above. The expenditure listed above was bought for the purposes of the JCR.</label>
+                <label class="custom-control-label" for="declaration-checkbox" id="declaration-label"></label>
             </div>
 
             <hr class="mb-4">
@@ -366,6 +366,8 @@
             .attr("id", "button_claim")
             .text("Claim this expense")
             .on("click", window.submitClaimToServer)
+
+            $("#declaration-label").text("By checking this box, I confirm that the contents of this form is correct and that I am asking to be reinbursed for the amount displayed above. The expenditure listed above was bought for the purposes of the JCR.")
         } else if (statusesLookup[claim.status].text == "Cost Centre Review"
                 && userAccount.managerOfCostCentres.reduce((accumulator, row) => accumulator || (row.cost_centre == claim.cost_centre), false)) {
             $("<button>")
@@ -381,6 +383,8 @@
             .attr("id", "button_approve")
             .text("Approve to Treasurer")
             .on("click", window.reviewClaimToServer)
+
+            $("#declaration-label").text("By checking this box, I am confirming that I have read this claim and, as the manager of its cost centre, have decided to either approve or bounce it.")
         } else if (statusesLookup[claim.status].text == "Treasurer Review" && userAccount.is_treasurer) {
             $("<button>")
             .appendTo($("#action_button_row div:first"))
@@ -395,6 +399,8 @@
             .attr("id", "button_claim")
             .text("Approve")
             .on("click", window.reviewClaimToServer)
+
+            $("#declaration-label").text("By checking this box, I am confirming that I have read this claim and, as the treasurer, have decided to either approve, bounce, or reject it.")
         }
 
     // The grid
