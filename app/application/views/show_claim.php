@@ -547,10 +547,16 @@
     window.reviewClaimToServer = function() {
         // check for value in field
         if (!$('#declaration-checkbox').is(':checked')) {
-            alert('You must confirm the declaration before approve an expense.')
+            alert('You must confirm the declaration before approving an expense.')
         } else {
+            switch (this.id) {
+                case 'button_claim':
+                break;
+
+                case '':
+            }
             jQuery.ajax({
-                url: "../../api/expenses/commentClaim/"+window.claimState.id_claim,
+                url: "../../api/expenses/approveClaim/" + this.id + "/"+window.claimState.id_claim,
                 type: "POST",
                 data: {}
             }).done((data) => {
@@ -695,7 +701,7 @@
         uppy
         .on('file-added', (file) => {
             uppy.setFileMeta(file.id, {
-                invoice_id: <?php echo $claim['id_claim'] ?>
+                of_id_claim: <?php echo $claim['id_claim'] ?>
             })
             // Remove the negative margin on the drop-zone to make room for the progressbar
             $("#drag-drop-area").removeClass('progress-bar-fix-height')
@@ -713,8 +719,9 @@
             endpoint: '<?php echo site_url('/file/upload'); ?>',
             fieldName: 'userfile',
             getResponseError(responseText, xhr) {
-                alert('File failed to upload')
-                return new Error(JSON.parse(responseText).message)
+                erorr_text = JSON.parse(responseText).error
+                alert(erorr_text)
+                return new Error(erorr_text)
             },
         })
 
