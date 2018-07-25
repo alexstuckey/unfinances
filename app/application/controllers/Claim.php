@@ -73,7 +73,7 @@ class Claim extends CI_Controller {
                 $data['cost_centres'] = $this->CostCentre_model->getAllCostCentres();
 
                 $this->load->view('header', $data);
-                $this->load->view('claim_new', $data);
+                $this->load->view('show_claim', $data);
                 $this->load->view('footer', $data);
             } else {
                 if ($error['error_code'] == 404) {
