@@ -340,6 +340,14 @@
         $("#input_cost_centre").val(claim.cost_centre)
         $("#input_description").val(claim.description)
 
+        if (claim.isEditable) {
+            $("#input_cost_centre").prop('disabled', false)
+            $("#input_description").prop('disabled', false)
+        } else {    
+            $("#input_cost_centre").prop('disabled', true)
+            $("#input_description").prop('disabled', true)
+        }
+
     // Statuses
         $("#input_status").text(statusesLookup[claim.status].text)
         $("#input_status").css('background-color', statusesLookup[claim.status].backgroundColour)
@@ -347,6 +355,7 @@
 
     // The grid
         $("#jsGrid").jsGrid('option', 'data', jQuery.parseJSON(claim.expenditure_items))
+        $("#jsGrid").jsGrid('option', 'editing', claim.isEditable)
     }
 
     window.refreshClaimStateFromServer = function() {
@@ -369,6 +378,9 @@
             window.stateChanged = false
         } else {
             window.stateChanged = true
+            if (!window.claimState.isEditable) {
+                alert('Error: you cannot edit this claim')
+            }
         }
         $("#button_save").prop('disabled', !window.stateChanged)
         $("#button_claim").prop('disabled', window.stateChanged)
@@ -527,7 +539,6 @@
             width: "100%",
      
             inserting: true,
-            editing: true,
             sorting: false,
             paging: false,
      
