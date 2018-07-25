@@ -373,28 +373,28 @@
             .addClass("btn btn-warning btn-lg btn-block")
             .attr("id", "button_bounce")
             .text("Bounce")
-            .on("click", window.saveStateToServer)
+            .on("click", window.reviewClaimToServer)
 
             $("<button>")
             .appendTo($("#action_button_row div:last"))
             .addClass("btn btn-success btn-lg btn-block")
             .attr("id", "button_approve")
             .text("Approve to Treasurer")
-            .on("click", window.submitClaimToServer)
+            .on("click", window.reviewClaimToServer)
         } else if (statusesLookup[claim.status].text == "Treasurer Review" && userAccount.is_treasurer) {
             $("<button>")
             .appendTo($("#action_button_row div:first"))
             .addClass("btn btn-warning btn-lg btn-block")
             .attr("id", "button_bounce")
             .text("Bounce")
-            .on("click", window.saveStateToServer)
+            .on("click", window.reviewClaimToServer)
 
             $("<button>")
             .appendTo($("#action_button_row div:last"))
             .addClass("btn btn-success btn-lg btn-block")
             .attr("id", "button_claim")
             .text("Approve")
-            .on("click", window.submitClaimToServer)
+            .on("click", window.reviewClaimToServer)
         }
 
     // The grid
@@ -518,6 +518,35 @@
                 data: {
                     comment_field: $("#comment_field").val(),
                 }
+            }).done((data) => {
+                console.log('submitted comment to server', data)
+                $("#comment_field").val("")
+                refreshClaimStateFromServer()
+            }).fail((jqXHR, textStatus, errorThrown) => {
+                if (jqXHR.status == 403) {
+                    console.error('Attempted to comment on a claim not owned by user.')
+                    alert('You do not own this claim or have permission to write to it, and so cannot modify it.')
+                } else if (jqXHR.status == 404) {
+                    console.error('This claim does not exist')
+                    alert('Save failed, this claim does not exist.')
+                } else {
+                    console.error(errorThrown)
+                    alert('Save failed, please check your connection and try again.')
+                }
+                
+            })
+        }
+    }
+
+    window.reviewClaimToServer = function() {
+        // check for value in field
+        if (!$('#declaration-checkbox').is(':checked')) {
+            alert('You must confirm the declaration before approve an expense.')
+        } else {
+            jQuery.ajax({
+                url: "../../api/expenses/commentClaim/"+window.claimState.id_claim,
+                type: "POST",
+                data: {}
             }).done((data) => {
                 console.log('submitted comment to server', data)
                 $("#comment_field").val("")
