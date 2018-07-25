@@ -29,6 +29,10 @@ class User_model extends CI_Model
                 $userLocal = $query->row_array();
                 $userLocal['doesUserExist'] = true;
 
+                $userLocal['is_admin'] = (bool)$userLocal['is_admin'];
+                $userLocal['is_treasurer'] = (bool)$userLocal['is_treasurer'];
+                $userLocal['has_onboarded'] = (bool)$userLocal['has_onboarded'];
+
                 // Lookup if a cost centre manager
                 $this->load->model('CostCentre_model');
                 $userLocal['managerOfCostCentres'] = $this->CostCentre_model->getCostCentresWithManager($cisID);
