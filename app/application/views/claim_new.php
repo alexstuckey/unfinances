@@ -408,37 +408,46 @@
 
     // to progress the claim, by submitting it to Treasurer
     window.submitClaimToServer = function() {
-        if ($('#declaration-checkbox').is(':checked')) {
-
-            // Prevent claiming when something has changed
-            if (window.stateChanged) {
-                alert('You have changed the claim form without saving. Please save or reload the page.')
-            } else {
-                jQuery.ajax({
-                    url: "../../api/expenses/submitClaim/"+window.claimState.id_claim,
-                    type: "POST",
-                    data: {}
-                }).done((data) => {
-                    console.log('Successfully claimed.', data)
-                    $("#save_claim_button_row").remove()
-                    refreshClaimStateFromServer()
-                }).fail((jqXHR, textStatus, errorThrown) => {
-                    if (jqXHR.status == 403) {
-                        console.error('Claim not editable, or you are not the owner.')
-                        alert('Claim not editable, or you are not the owner.')
-                    } else if (jqXHR.status == 404) {
-                        console.error('This claim does not exist')
-                        alert('Claim failed, this claim does not exist.')
-                    } else {
-                        console.error(errorThrown)
-                        alert('Save failed, please check your connection and try again.')
-                    }
-                    
-                })
-            }
-
+        // Prevent claiming when something has changed
+        if (window.stateChanged) {
+            alert('You have changed the claim form without saving. Please save or reload the page.')
         } else {
-            alert('You must confirm the declaration before claiming an expense.')
+            if (!$('#declaration-checkbox').is(':checked')) {
+                alert('You must confirm the declaration before claiming an expense.')
+            } else {
+
+                // Check that the form has been sufficiently filled out
+                if (
+                    window.claimState.description.length == 0
+                 || JSON.parse(window.claimState.expenditure_items).length == 0
+                 || window.claimState.attachments.length == 0
+                    ) {
+                    alert('Please complete the form by including a description, items of expenditure and at least one attachment.')
+                } else {
+                    jQuery.ajax({
+                        url: "../../api/expenses/submitClaim/"+window.claimState.id_claim,
+                        type: "POST",
+                        data: {}
+                    }).done((data) => {
+                        console.log('Successfully claimed.', data)
+                        $("#save_claim_button_row").remove()
+                        refreshClaimStateFromServer()
+                    }).fail((jqXHR, textStatus, errorThrown) => {
+                        if (jqXHR.status == 403) {
+                            console.error('Claim not editable, or you are not the owner.')
+                            alert('Claim not editable, or you are not the owner.')
+                        } else if (jqXHR.status == 404) {
+                            console.error('This claim does not exist')
+                            alert('Claim failed, this claim does not exist.')
+                        } else {
+                            console.error(errorThrown)
+                            alert('Save failed, please check your connection and try again.')
+                        }
+                        
+                    })
+                }
+
+            }
         }
     }
 
