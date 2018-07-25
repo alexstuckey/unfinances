@@ -85,23 +85,19 @@
                 <label class="custom-control-label" for="declaration-checkbox">By checking this box, I confirm that the contents of this form is correct and that I am asking to be reinbursed for the amount displayed above. The expenditure listed above was bought for the purposes of the JCR.</label>
             </div>
 
-            <hr class="mb-5">
+            <hr class="mb-4">
 
-            <?php if ($claim['isEditable']): ?>
-            <div class="row form-group" id="save_claim_button_row">
+            <div class="row" id="action_button_row">
                 <div class="col-6">
-                    <button id="button_save" class="btn btn-dark btn-lg btn-block" role="button">Save</button>
                 </div>
                 <div class="col-6">
-                    <button id="button_claim" class="btn btn-primary btn-lg btn-block" role="button">Claim this expense</button>
                 </div>
             </div>
-            <?php endif; ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-8 mt-4">
             <ol class="list-group" id="activity-feed">
             </ol>
         </div>
@@ -353,6 +349,24 @@
         $("#input_status").css('background-color', statusesLookup[claim.status].backgroundColour)
         $("#input_status").css('color', statusesLookup[claim.status].textColour)
 
+    // Action buttons
+        $("#action_button_row").children().empty()
+        if (claim.isEditable) {
+            $("<button>")
+            .attr("id", "button_save")
+            .addClass("btn btn-dark btn-lg btn-block")
+            .text("Save")
+            .appendTo($("#action_button_row div:first"))
+            .on("click", window.saveStateToServer)
+
+            $("<button>")
+            .attr("id", "button_claim")
+            .addClass("btn btn-primary btn-lg btn-block")
+            .text("Claim this expense")
+            .appendTo($("#action_button_row div:last"))
+            .on("click", window.submitClaimToServer)
+        }
+
     // The grid
         $("#jsGrid").jsGrid('option', 'data', jQuery.parseJSON(claim.expenditure_items))
         $("#jsGrid").jsGrid('option', 'editing', claim.isEditable)
@@ -494,9 +508,6 @@
         }
     }
 
-    // Link clicks
-    $("#button_save").on("click", window.saveStateToServer)
-    $("#button_claim").on("click", window.submitClaimToServer)
     // Detect when fields are altered
     $(".detectStateInput").change(window.checkStateChange)
     // Comment button / enter
