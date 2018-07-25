@@ -37,7 +37,12 @@ class Claim extends CI_Controller {
         $data['claim'] = $this->Claim_model->getClaimById($id_claim);
 
         if (isset($data['claim'])) {
-            if ($data['claim']['claimant_id'] == $data['userAccount']['username'] || $data['userAccount']['is_admin'] || $data['userAccount']['is_treasurer']) {
+            if (
+                $data['claim']['claimant_id'] == $data['userAccount']['username']
+             || $data['userAccount']['is_admin']
+             || $data['userAccount']['is_treasurer']
+             || array_reduce($data['userAccount']['managerOfCostCentres'], function ($carry, $item) use ($data) { return ($carry || ($item['cost_centre'] == $data['claim']['cost_centre'])); }, false)
+                ) {
                 $data['claimJSON'] = json_encode($data['claim']);
                 $data['claimJSON'] = str_replace('\\\\\\', '\\', $data['claimJSON']);
             } else {
