@@ -696,6 +696,22 @@
             restrictions: {
                 allowedFileTypes: ['image/gif', 'image/png', 'image/jpeg', 'image/jpg', 'application/pdf']
             },
+            onBeforeFileAdded: (currentFile, files) => {
+                if (
+                    window.claimState.isEditable
+                 || userAccount.is_admin
+                 || userAccount.is_treasurer
+                 || userAccount.managerOfCostCentres.reduce((accumulator, row) => accumulator || (row.cost_centre == claim.cost_centre), false)
+                   ) {
+                    return true
+                } else {
+                  // log to console
+                  uppy.log(`Skipping file because you are not permitted to upload to this claim.`)
+                  // show error message to the user
+                  uppy.info(`Skipping file because you are not permitted to upload to this claim.`, 'error', 500)
+                  return false
+                }
+            }
 
         })
         uppy
