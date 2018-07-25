@@ -184,6 +184,7 @@
         6: { text: "Paid", backgroundColour: "#28a745", textColour: "#fff" },
     }
 
+    userAccount = jQuery.parseJSON(<?php echo "\"" . str_replace("\"", "\\\"", json_encode($userAccount)) . "\""; ?>)
     window.claimState = jQuery.parseJSON(<?php echo json_encode($claimJSON); ?>)
     window.stateChanged = false
 
@@ -353,17 +354,46 @@
         $("#action_button_row").children().empty()
         if (claim.isEditable) {
             $("<button>")
-            .attr("id", "button_save")
-            .addClass("btn btn-dark btn-lg btn-block")
-            .text("Save")
             .appendTo($("#action_button_row div:first"))
+            .addClass("btn btn-dark btn-lg btn-block")
+            .attr("id", "button_save")
+            .text("Save")
             .on("click", window.saveStateToServer)
 
             $("<button>")
-            .attr("id", "button_claim")
-            .addClass("btn btn-primary btn-lg btn-block")
-            .text("Claim this expense")
             .appendTo($("#action_button_row div:last"))
+            .addClass("btn btn-primary btn-lg btn-block")
+            .attr("id", "button_claim")
+            .text("Claim this expense")
+            .on("click", window.submitClaimToServer)
+        } else if (statusesLookup[claim.status].text == "Cost Centre Review"
+                && userAccount.managerOfCostCentres.reduce((accumulator, row) => accumulator || (row.cost_centre == claim.cost_centre), false)) {
+            $("<button>")
+            .appendTo($("#action_button_row div:first"))
+            .addClass("btn btn-warning btn-lg btn-block")
+            .attr("id", "button_bounce")
+            .text("Bounce")
+            .on("click", window.saveStateToServer)
+
+            $("<button>")
+            .appendTo($("#action_button_row div:last"))
+            .addClass("btn btn-success btn-lg btn-block")
+            .attr("id", "button_approve")
+            .text("Approve to Treasurer")
+            .on("click", window.submitClaimToServer)
+        } else if (statusesLookup[claim.status].text == "Treasurer Review" && userAccount.is_treasurer) {
+            $("<button>")
+            .appendTo($("#action_button_row div:first"))
+            .addClass("btn btn-warning btn-lg btn-block")
+            .attr("id", "button_bounce")
+            .text("Bounce")
+            .on("click", window.saveStateToServer)
+
+            $("<button>")
+            .appendTo($("#action_button_row div:last"))
+            .addClass("btn btn-success btn-lg btn-block")
+            .attr("id", "button_claim")
+            .text("Approve")
             .on("click", window.submitClaimToServer)
         }
 
