@@ -71,9 +71,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo site_url('/expenses/claim/new'); ?>">New Claim</a>
                             </li>
-                            <li class="nav-item<?php if ($active == "wages") { echo " active"; }; ?>">
-                                <a class="nav-link" href="<?php echo site_url('/my_wages'); ?>">My Wages</a>
-                            </li>
                         <?php endif; ?>
                     </ul>
                     <ul class="navbar-nav">
@@ -82,6 +79,9 @@
                                 <a class="nav-link" href="<?php echo site_url('/admin'); ?>">Admin</a>
                             </li>
                         <?php endif; ?>
+                        <li class="nav-item<?php if ($active == "settings") { echo " active"; }; ?>">
+                            <a class="nav-link" href="<?php echo site_url('/settings'); ?>">Settings</a>
+                        </li>
                     </ul>
                 </div>
             </nav>
