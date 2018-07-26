@@ -181,9 +181,30 @@ class User_model extends CI_Model
             $this->db->where('id_cis', $cisID);
             $this->db->update('users', $data);
             return true;
+        } else {
+            return false;
         }
+    }
 
-        return false;
+    public function updateAccountDetails($cisID, $dob, $accountNumber, $sortCode)
+    {
+        $existingUser = $this->getUserByCIS($cisID);
+
+        if ($existingUser['doesUserExist']) {
+            $data = array(
+                'has_onboarded' => 1,
+                'dob' => $dob,
+                'bank_account_number' => $accountNumber,
+                'bank_sort_code' => $sortCode
+
+            );
+
+            $this->db->where('id_cis', $cisID);
+            $this->db->update('users', $data);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

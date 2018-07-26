@@ -53,12 +53,12 @@ class User extends CI_Controller {
             $this->settings();
         } else {
             // Update DB
-            // $resp = $this->User_model->completeOnboardingWithDetails(
-            //     $_SERVER['REMOTE_USER'],
-            //     $this->input->post('settings_input_dob'),
-            //     $this->input->post('settings_input_account_number'),
-            //     $this->input->post('settings_input_sort_code')
-            // );
+            $resp = $this->User_model->updateAccountDetails(
+                $data['userAccount']['username'],
+                $this->input->post('settings_input_dob'),
+                $this->input->post('settings_input_account_number'),
+                $this->input->post('settings_input_sort_code')
+            );
             $this->session->set_flashdata('message', 'Account details updated!');
 
             redirect('/settings');
