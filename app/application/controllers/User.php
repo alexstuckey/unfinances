@@ -6,6 +6,7 @@ class User extends CI_Controller {
     public function settings()
     {
         $this->load->library('form_validation');
+        $this->load->library('session');
 
         $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
         if ($data['userAccount']['has_onboarded'] == false) {
@@ -15,10 +16,53 @@ class User extends CI_Controller {
         $data['active'] = 'settings';
         $data['page_title'] = 'UCFinances - Settings';
         $data['javascript_inputmask'] = true;
+        $data['message'] = $this->session->flashdata('message');
+        $data['error'] = $this->session->flashdata('error');
 
         $this->load->view('header', $data);
         $this->load->view('user_settings', $data);
         $this->load->view('footer', $data);
+    }
+
+    public function submitSettings()
+    {
+        $this->load->library('form_validation');
+        $this->load->library('session');
+
+        $userAccount = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['has_onboarded'] == false) {
+            redirect('/onboarding/welcome');
+        }
+
+        $this->form_validation->set_rules('settings_input_dob', 'Date of Birth', array(
+            'required',
+            'regex_match[/^(\d{4})-([0]\d|1[0-2])-([0-2]\d|3[01])$/]'
+        ));
+        $this->form_validation->set_rules('settings_input_account_number', 'Account Number', array(
+            'required',
+            'regex_match[/^(\d{8})$/]'
+        ));
+        $this->form_validation->set_rules('settings_input_sort_code', 'Sort Code', array(
+            'required',
+            'regex_match[/^(\d{6})$/]'
+        ));
+        $this->form_validation->set_error_delimiters('<p class="alert alert-danger"><strong>Error: </strong>', '</p>');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->settings();
+        } else {
+            // Update DB
+            // $resp = $this->User_model->completeOnboardingWithDetails(
+            //     $_SERVER['REMOTE_USER'],
+            //     $this->input->post('settings_input_dob'),
+            //     $this->input->post('settings_input_account_number'),
+            //     $this->input->post('settings_input_sort_code')
+            // );
+            $this->session->set_flashdata('message', 'Account details updated!');
+
+            redirect('/settings');
+        }
     }
 
 }
