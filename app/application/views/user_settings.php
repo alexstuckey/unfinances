@@ -12,7 +12,7 @@
                     echo '<p class="alert alert-danger">'.$error.'</p>';
                 }?>
 
-                <?php //echo validation_errors(); ?>
+                <?php echo validation_errors(); ?>
 
 
 <style type="text/css">
