@@ -352,7 +352,8 @@
 
     // Action buttons
         $("#action_button_row").children().empty()
-        if (claim.isEditable) {
+        if (claim.isEditable
+         && claim.claimant_id === userAccount.username) {
             $("<button>")
             .appendTo($("#action_button_row div:first"))
             .addClass("btn btn-dark btn-lg btn-block")
