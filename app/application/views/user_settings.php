@@ -61,9 +61,9 @@
                     <div class="card-block">
                         <h4 class="pb-3">Account Details</h4>
 
-                        <form action="<?php echo site_url('/onboarding/submit'); ?>" method="post">
+                        <form action="<?php echo site_url('/settings'); ?>" method="post">
                             <div class="form-group row">
-                                <label for="onboarding_input_dob" class="col-md-3 col-form-label">Date of Birth</label>
+                                <label for="settings_input_dob" class="col-md-3 col-form-label">Date of Birth</label>
                                 <div class="col-md-9">
                                     <?php
                                     // Convert ISO date to UK format for the inputmask
@@ -71,22 +71,22 @@
                                     $month = substr($userAccount['dob'], 5, 2);
                                     $year = substr($userAccount['dob'], 0, 4);
                                     ?>
-                                    <input type="date" class="form-control" id="onboarding_input_dob" name="onboarding_input_dob" value="<?php echo $day . "/" . $month . "/" . $year; ?>">
+                                    <input type="date" class="form-control" id="settings_input_dob" name="settings_input_dob" value="<?php echo $day . "/" . $month . "/" . $year; ?>">
                                 </div>
                             </div>
 
                             <hr>
 
                             <div class="form-group row">
-                                <label for="onboarding_input_account_number" class="col-md-3 col-form-label">Bank Account number</label>
+                                <label for="settings_input_account_number" class="col-md-3 col-form-label">Bank Account number</label>
                                 <div class="col-md-9">
-                                    <input type="date" class="form-control" id="onboarding_input_account_number" name="onboarding_input_account_number" value="<?php echo $userAccount['bank_account_number']; ?>">
+                                    <input type="date" class="form-control" id="settings_input_account_number" name="settings_input_account_number" value="<?php echo $userAccount['bank_account_number']; ?>">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="onboarding_input_sort_code" class="col-md-3 col-form-label">Bank Sort Code</label>
+                                <label for="settings_input_sort_code" class="col-md-3 col-form-label">Bank Sort Code</label>
                                 <div class="col-md-9">
-                                    <input type="date" class="form-control" id="onboarding_input_sort_code" name="onboarding_input_sort_code" value="<?php echo $userAccount['bank_sort_code']; ?>">
+                                    <input type="date" class="form-control" id="settings_input_sort_code" name="settings_input_sort_code" value="<?php echo $userAccount['bank_sort_code']; ?>">
                                 </div>
                             </div>
                             <small id="emailHelp" class="form-text text-muted mb-4">The account you enter here will be used by the Treasurer repay you for expense claims. If you do not wish to enter this information, please contact the Treasurer or your Cost Centre manager.</small>
@@ -105,19 +105,19 @@ $(document).ready(function(){
     let now = new Date()
     let current_year = now.getFullYear()
     let earliest_year = current_year - 16
-    $("#onboarding_input_dob").inputmask('datetime', {
+    $("#settings_input_dob").inputmask('datetime', {
         clearMaskOnLostFocus: false,
         inputFormat: 'dd/mm/yyyy',
         outputFormat: 'yyyy-mm-dd',
         max: ('dd/mm/' + earliest_year),
         removeMaskOnSubmit: true,
     })
-    $('#onboarding_input_account_number').inputmask({
+    $('#settings_input_account_number').inputmask({
         mask: "99999999",
         clearMaskOnLostFocus: false,
         removeMaskOnSubmit: true,
     })
-    $('#onboarding_input_sort_code').inputmask({
+    $('#settings_input_sort_code').inputmask({
         mask: "99-99-99",
         clearMaskOnLostFocus: false,
         removeMaskOnSubmit: true,
