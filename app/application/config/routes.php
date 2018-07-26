@@ -68,7 +68,8 @@ $route['admin/cost_centres'] = 'admin/cost_centres';
 $route['admin/cost_centres/add'] = 'admin/addCostCentre';
 $route['admin/cost_centres/changeManager'] = 'admin/changeCostCentreManager';
 
-$route['settings'] = 'user/settings';
+$route['settings']['GET'] = 'user/settings';
+$route['settings']['POST'] = 'user/submitSettings';
 
 
 $route['expenses/my'] = 'expenses/my';
