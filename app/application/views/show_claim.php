@@ -368,7 +368,10 @@
             .text("Claim this expense")
             .on("click", window.submitClaimToServer)
 
-            $("#declaration-label").text("By checking this box, I confirm that the contents of this form is correct and that I am asking to be reinbursed for the amount displayed above. The expenditure listed above was bought for the purposes of the JCR.")
+            $("#declaration-label")
+            .text("By checking this box, I confirm that the contents of this form is correct and that I am asking to be reinbursed for the amount displayed above. The expenditure listed above was bought for the purposes of the JCR.")
+            .parent().show()
+            .after().show()
         } else if (statusesLookup[claim.status].text == "Cost Centre Review"
                 && userAccount.managerOfCostCentres.reduce((accumulator, row) => accumulator || (row.cost_centre == claim.cost_centre), false)) {
             $("<button>")
@@ -385,7 +388,10 @@
             .text("Approve to Treasurer")
             .on("click", window.reviewClaimToServer)
 
-            $("#declaration-label").text("By checking this box, I am confirming that I have read this claim and, as the manager of its cost centre, have decided to either approve or bounce it.")
+            $("#declaration-label")
+            .text("By checking this box, I am confirming that I have read this claim and, as the manager of its cost centre, have decided to either approve or bounce it.")
+            .parent().show()
+            .next().show()
         } else if (statusesLookup[claim.status].text == "Treasurer Review" && userAccount.is_treasurer) {
             $("<button>")
             .appendTo($("#action_button_row div:first"))
@@ -401,7 +407,14 @@
             .text("Approve")
             .on("click", window.reviewClaimToServer)
 
-            $("#declaration-label").text("By checking this box, I am confirming that I have read this claim and, as the treasurer, have decided to either approve, bounce, or reject it.")
+            $("#declaration-label")
+            .text("By checking this box, I am confirming that I have read this claim and, as the treasurer, have decided to either approve, bounce, or reject it.")
+            .parent().show()
+            .next().show()
+        } else {
+            $("#declaration-label")
+            .parent().hide()
+            .next().hide()
         }
 
     // The grid
