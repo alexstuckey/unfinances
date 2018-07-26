@@ -369,7 +369,7 @@
             .on("click", window.submitClaimToServer)
 
             $("#declaration-label")
-            .text("By checking this box, I confirm that the contents of this form is correct and that I am asking to be reinbursed for the amount displayed above. The expenditure listed above was bought for the purposes of the JCR.")
+            .text("By checking this box, I confirm that the contents of this form is correct and that I am asking to be reinbursed for the amount displayed above. The expenditure listed above was bought for the purposes of the JCR. I am also aware that the bank details listed in my user profile will be used to reinburse this claim.")
             .parent().show()
             .after().show()
         } else if (statusesLookup[claim.status].text == "Cost Centre Review"
