@@ -264,7 +264,7 @@ class Claim extends CI_Controller {
                 // Couldn't find it
                 $error = array(
                     'error' => true,
-                    'message' => $updateDBAttempt['message'],
+                    'message' => 'Claim does not exist.',
                     'error_code' => 404
                 );
             }
