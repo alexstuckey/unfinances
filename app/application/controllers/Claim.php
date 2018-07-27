@@ -246,10 +246,10 @@ class Claim extends CI_Controller {
                         }
                     } else {
                         $error = array(
-                        'error' => true,
-                        'message' => 'You are not the owner of this claim.',
-                        'error_code' => 403
-                    );
+                            'error' => true,
+                            'message' => 'You are not the owner of this claim.',
+                            'error_code' => 403
+                        );
                     }
 
                 } else {
