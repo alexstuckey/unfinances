@@ -377,14 +377,14 @@
             $("<button>")
             .appendTo($("#action_button_row div:first"))
             .addClass("btn btn-warning btn-lg btn-block")
-            .attr("id", "button_bounce")
+            .attr("id", "button_cost_centre_bounce")
             .text("Bounce")
             .on("click", window.reviewClaimToServer)
 
             $("<button>")
             .appendTo($("#action_button_row div:last"))
             .addClass("btn btn-success btn-lg btn-block")
-            .attr("id", "button_approve")
+            .attr("id", "button_cost_centre_approve")
             .text("Approve to Treasurer")
             .on("click", window.reviewClaimToServer)
 
@@ -396,14 +396,14 @@
             $("<button>")
             .appendTo($("#action_button_row div:first"))
             .addClass("btn btn-warning btn-lg btn-block")
-            .attr("id", "button_bounce")
+            .attr("id", "button_treasurer_bounce")
             .text("Bounce")
             .on("click", window.reviewClaimToServer)
 
             $("<button>")
             .appendTo($("#action_button_row div:last"))
             .addClass("btn btn-success btn-lg btn-block")
-            .attr("id", "button_claim")
+            .attr("id", "button_treasurer_approve")
             .text("Approve")
             .on("click", window.reviewClaimToServer)
 
@@ -563,30 +563,49 @@
         if (!$('#declaration-checkbox').is(':checked')) {
             alert('You must confirm the declaration before approving an expense.')
         } else {
+            let reviewType = 'none'
+            let reviewDecision = 'none'
             switch (this.id) {
-                case 'button_claim':
+                case 'button_cost_centre_bounce':
+                reviewType = 'cost_centre'
+                reviewDecision = 'bounce'
                 break;
 
-                case '':
+                case 'button_cost_centre_approve':
+                reviewType = 'cost_centre'
+                reviewDecision = 'approve'
+                break;
+
+                case 'button_treasurer_bounce':
+                reviewType = 'treasurer'
+                reviewDecision = 'bounce'
+                break;
+
+                case 'button_treasurer_approve':
+                reviewType = 'treasurer'
+                reviewDecision = 'approve'
+                break;
             }
             jQuery.ajax({
-                url: "../../api/expenses/approveClaim/" + this.id + "/"+window.claimState.id_claim,
+                url: `../../api/expenses/reviewClaim/${reviewType}/${reviewDecision}/${window.claimState.id_claim}`,
                 type: "POST",
                 data: {}
             }).done((data) => {
                 console.log('submitted comment to server', data)
-                $("#comment_field").val("")
                 refreshClaimStateFromServer()
             }).fail((jqXHR, textStatus, errorThrown) => {
-                if (jqXHR.status == 403) {
-                    console.error('Attempted to comment on a claim not owned by user.')
-                    alert('You do not own this claim or have permission to write to it, and so cannot modify it.')
+                if (jqXHR.status == 400) {
+                    console.error('Request failed: ' + textStatus)
+                    alert('You do not have permission to review this claim.')
+                } else if (jqXHR.status == 403) {
+                    console.error('Request failed: ' + textStatus)
+                    alert('You do not have permission to review this claim.')
                 } else if (jqXHR.status == 404) {
-                    console.error('This claim does not exist')
-                    alert('Save failed, this claim does not exist.')
+                    console.error('Request failed: ' + textStatus)
+                    alert('Review failed, this claim does not exist.')
                 } else {
                     console.error(errorThrown)
-                    alert('Save failed, please check your connection and try again.')
+                    alert('Review failed, please check your connection and try again.')
                 }
                 
             })
