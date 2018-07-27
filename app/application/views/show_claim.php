@@ -411,6 +411,18 @@
             .text("By checking this box, I am confirming that I have read this claim and, as the treasurer, have decided to either approve, bounce, or reject it.")
             .parent().show()
             .next().show()
+        } else if (statusesLookup[claim.status].text == "Approved" && userAccount.is_treasurer) {
+            $("<button>")
+            .appendTo($("#action_button_row div:last"))
+            .addClass("btn btn-success btn-lg btn-block")
+            .attr("id", "button_treasurer_paid")
+            .text("Paid")
+            .on("click", window.reviewClaimToServer)
+
+            $("#declaration-label")
+            .text("By checking this box, I am confirming that I have paid this claim as the treasurer.")
+            .parent().show()
+            .next().show()
         } else {
             $("#declaration-label")
             .parent().hide()
@@ -584,6 +596,11 @@
                 case 'button_treasurer_approve':
                 reviewType = 'treasurer'
                 reviewDecision = 'approve'
+                break;
+
+                case 'button_treasurer_paid':
+                reviewType = 'treasurer'
+                reviewDecision = 'pay'
                 break;
             }
             jQuery.ajax({
