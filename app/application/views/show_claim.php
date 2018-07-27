@@ -449,6 +449,10 @@
     // The grid
         $("#jsGrid").jsGrid('option', 'data', jQuery.parseJSON(claim.expenditure_items))
         $("#jsGrid").jsGrid('option', 'editing', claim.isEditable)
+        // $("#jsGrid").jsGrid('option', 'inserting', true)
+        $("#jsGrid").jsGrid("fieldOption", "Control", "editButton", claim.isEditable)
+        $("#jsGrid").jsGrid("fieldOption", "Control", "deleteButton", claim.isEditable)
+        $("#jsGrid").jsGrid("fieldOption", "Control", "inserting", claim.isEditable)
     }
 
     window.refreshClaimStateFromServer = function() {
@@ -688,6 +692,12 @@
             // then re-check state
             window.checkStateChange()
         }
+
+        function request_editing_check(args) {
+            if (!window.claimState.isEditable) {
+                args.cancel = true
+            }
+        }
      
         $("#jsGrid").jsGrid({
             width: "100%",
@@ -741,6 +751,7 @@
                     },
                 },
                 {
+                    name: "Control",
                     type: "control",
                     width: 20
                 }
@@ -750,6 +761,10 @@
             onItemInserted: calculate_sum,
             onItemUpdated: calculate_sum,
             onOptionChanged: calculate_sum,
+            onItemDeleting: request_editing_check,
+            onItemEditing: request_editing_check,
+            onItemInserting: request_editing_check,
+            onItemUpdating: request_editing_check,
         })
 
         $('body').click(function(e) {
