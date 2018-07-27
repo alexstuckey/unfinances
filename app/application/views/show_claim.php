@@ -87,10 +87,14 @@
 
             <hr class="mb-4">
 
-            <div class="row" id="action_button_row">
+            <div class="row" id="action_button_row_1">
                 <div class="col-6">
                 </div>
                 <div class="col-6">
+                </div>
+            </div>
+            <div class="row" id="action_button_row_2">
+                <div class="col-12">
                 </div>
             </div>
         </div>
@@ -351,18 +355,19 @@
         $("#input_status").css('color', statusesLookup[claim.status].textColour)
 
     // Action buttons
-        $("#action_button_row").children().empty()
+        $("#action_button_row_1").children().empty()
+        $("#action_button_row_2").children().empty()
         if (claim.isEditable
          && claim.claimant_id === userAccount.username) {
             $("<button>")
-            .appendTo($("#action_button_row div:first"))
+            .appendTo($("#action_button_row_1 div:first"))
             .addClass("btn btn-dark btn-lg btn-block")
             .attr("id", "button_save")
             .text("Save as Draft")
             .on("click", window.saveStateToServer)
 
             $("<button>")
-            .appendTo($("#action_button_row div:last"))
+            .appendTo($("#action_button_row_1 div:last"))
             .addClass("btn btn-primary btn-lg btn-block")
             .attr("id", "button_claim")
             .text("Claim this expense")
@@ -375,14 +380,14 @@
         } else if (statusesLookup[claim.status].text == "Cost Centre Review"
                 && userAccount.managerOfCostCentres.reduce((accumulator, row) => accumulator || (row.cost_centre == claim.cost_centre), false)) {
             $("<button>")
-            .appendTo($("#action_button_row div:first"))
+            .appendTo($("#action_button_row_1 div:first"))
             .addClass("btn btn-warning btn-lg btn-block")
             .attr("id", "button_cost_centre_bounce")
             .text("Bounce")
             .on("click", window.reviewClaimToServer)
 
             $("<button>")
-            .appendTo($("#action_button_row div:last"))
+            .appendTo($("#action_button_row_1 div:last"))
             .addClass("btn btn-success btn-lg btn-block")
             .attr("id", "button_cost_centre_approve")
             .text("Approve to Treasurer")
@@ -394,15 +399,22 @@
             .next().show()
         } else if (statusesLookup[claim.status].text == "Treasurer Review" && userAccount.is_treasurer) {
             $("<button>")
-            .appendTo($("#action_button_row div:first"))
+            .appendTo($("#action_button_row_1 div:first"))
             .addClass("btn btn-warning btn-lg btn-block")
             .attr("id", "button_treasurer_bounce")
             .text("Bounce")
             .on("click", window.reviewClaimToServer)
 
             $("<button>")
-            .appendTo($("#action_button_row div:last"))
-            .addClass("btn btn-success btn-lg btn-block")
+            .appendTo($("#action_button_row_1 div:last"))
+            .addClass("btn btn-danger btn-lg btn-block")
+            .attr("id", "button_treasurer_reject")
+            .text("Reject")
+            .on("click", window.reviewClaimToServer)
+
+            $("<button>")
+            .appendTo($("#action_button_row_2 div:first"))
+            .addClass("btn btn-success btn-lg btn-block mt-3")
             .attr("id", "button_treasurer_approve")
             .text("Approve")
             .on("click", window.reviewClaimToServer)
@@ -413,7 +425,7 @@
             .next().show()
         } else if (statusesLookup[claim.status].text == "Approved" && userAccount.is_treasurer) {
             $("<button>")
-            .appendTo($("#action_button_row div:last"))
+            .appendTo($("#action_button_row_1 div:last"))
             .addClass("btn btn-success btn-lg btn-block")
             .attr("id", "button_treasurer_paid")
             .text("Paid")
@@ -591,6 +603,11 @@
                 case 'button_treasurer_bounce':
                 reviewType = 'treasurer'
                 reviewDecision = 'bounce'
+                break;
+
+                case 'button_treasurer_reject':
+                reviewType = 'treasurer'
+                reviewDecision = 'reject'
                 break;
 
                 case 'button_treasurer_approve':
