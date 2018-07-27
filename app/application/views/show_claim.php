@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="input_id_claim">Claim №</label>
-                    <input type="text" class="form-control" id="input_id_claim" value="" required="" style="background-color: transparent; border: 0; color: #212529;">
+                    <input disabled type="text" class="form-control" id="input_id_claim" style="background-color: transparent; border: 0;">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="field_status">Status</label>
@@ -23,18 +23,18 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="input_claimant_name">Claimant Name</label>
-                        <input disabled type="text" class="form-control" id="input_claimant_name" value="" required="" style="color: #212529; -webkit-text-fill-color: #212529;">
+                        <input disabled type="text" class="form-control" id="input_claimant_name">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="input_claimant_id">CIS Username</label>
-                        <input disabled type="text" class="form-control" id="input_claimant_id" value="" required="" style="color: #212529; -webkit-text-fill-color: #212529;">
+                        <input disabled type="text" class="form-control" id="input_claimant_id">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="input_date">Date</label>
-                        <input disabled type="text" class="form-control" id="input_date" placeholder="Date" value="<?php echo $claim['date'] ?>" required="" style="color: #212529; -webkit-text-fill-color: #212529;">
+                        <input disabled type="text" class="form-control" id="input_date" placeholder="Date" value="<?php echo $claim['date'] ?>">
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="input_cost_centre">Cost Centre</label>
@@ -48,7 +48,7 @@
 
                 <div class="mb-3">
                     <label class="bold-label" for="input_description">Description of expense</label>
-                    <input type="text" class="form-control detectStateInput" id="input_description" placeholder="Description" value="">
+                    <input type="text" class="form-control detectStateInput" id="input_description" placeholder="Description">
                 </div>
 
 
@@ -174,6 +174,11 @@
 
     #attachments-list {
         overflow-wrap: break-word;
+    }
+
+    .form-control:disabled {
+        color: #212529;
+        -webkit-text-fill-color: #212529;
     }
 </style>
 
