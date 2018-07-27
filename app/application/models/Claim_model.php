@@ -137,11 +137,19 @@ class Claim_model extends CI_Model {
 
     public function getClaimsForReviewByUser($cisID)
     {
-        $this->db->select('claims.*');
-        $this->db->from('claims');
-        $this->db->join('cost_centres', 'cost_centres.cost_centre = claims.cost_centre');
-        $this->db->where_in('claims.status', ClaimStatus::statusesForReviewAsInt());
-        $this->db->where('cost_centres.manager_id_cis', $cisID);
+        $this->db->select('claims.*')
+                 ->from('claims')
+                 ->join('cost_centres', 'cost_centres.cost_centre = claims.cost_centre', 'left outer')
+                 ->join('users', 'users.id_cis = \'' . $cisID . '\'', 'left outer')
+                 ->group_start()
+                    ->where('claims.status', ClaimStatus::statusStringToInt('CostCentreReview'))
+                    ->where('cost_centres.manager_id_cis', $cisID)
+                 ->group_end()
+                 ->or_group_start()
+                    ->where('claims.status', ClaimStatus::statusStringToInt('TreasurerReview'))
+                    ->where('users.is_treasurer', '1')
+                 ->group_end();
+
         $query = $this->db->get();
 
         $claims = $query->result_array();
