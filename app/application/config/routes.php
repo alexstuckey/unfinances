@@ -81,7 +81,7 @@ $route['api/expenses/saveClaim/(:num)'] = 'claim/saveClaimByJSON/$1';
 $route['api/expenses/submitClaim/(:num)'] = 'claim/submitClaimByJSON/$1';
 $route['api/expenses/commentClaim/(:num)'] = 'claim/commentClaimByJSON/$1';
 
-$route['api/user/(:any)'] = 'claim/getUser/$1';
+$route['api/user/(:any)'] = 'user/getUser/$1';
 
 $route['file/upload']['POST'] = 'file/do_upload';
 

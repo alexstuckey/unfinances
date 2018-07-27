@@ -3,6 +3,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends CI_Controller {
 
+    public function getUser($id_cis)
+    {
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['is_admin'] == true) {
+            $requestedUser = $this->User_model->getUserByCIS($id_cis);
+        
+            $this->output
+                    ->set_status_header(201)
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($requestedUser));
+        } else {
+            $this->output
+                    ->set_status_header(403)
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode(array( 'error' => 'Not admin, access denied.')));
+        }
+    }
+
     public function settings()
     {
         $this->load->library('form_validation');
