@@ -80,6 +80,7 @@ $route['api/expenses/claim/(:num)'] = 'claim/showClaim/$1/json';
 $route['api/expenses/saveClaim/(:num)'] = 'claim/saveClaimByJSON/$1';
 $route['api/expenses/submitClaim/(:num)'] = 'claim/submitClaimByJSON/$1';
 $route['api/expenses/commentClaim/(:num)'] = 'claim/commentClaimByJSON/$1';
+$route['api/expenses/reviewClaim/(:any)/(:any)/(:num)'] = 'claim/reviewClaimByJSON/$3/$1/$2';
 
 $route['api/user/(:any)'] = 'user/getUser/$1';
 

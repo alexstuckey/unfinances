@@ -358,4 +358,139 @@ class Claim extends CI_Controller {
         }
     }
 
+    public function reviewClaimByJSON($id_claim, $review_type, $review_decision)
+    {
+        // This will take a claims in REVIEWand set it to either Bounced, Rejected, or TreasurerReview, then notify the required people.
+        // Curently REVIEW means CostCentreReview or TreasurerReview
+
+        $error = array(
+            'error' => false,
+            'message' => '',
+            'error_code' => ''
+        );
+        $data = array();
+
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['has_onboarded'] == false) {
+            $error = array(
+                'error' => true,
+                'message' => 'You have not yet registered.',
+                'error_code' => 403
+            );
+        } else {
+
+            if (!$review_type == 'cost_centre' || !$review_type == 'treasurer'
+             || !$review_decision == 'bounce'  || !$review_decision == 'approve' || !$review_decision == 'reject') {
+                $error = array(
+                    'error' => true,
+                    'message' => 'Invalid review type or decision.',
+                    'error_code' => 400
+                );
+            } else {
+
+                $this->load->model('Claim_model');
+                $data['claim'] = $this->Claim_model->getClaimById($id_claim);
+
+                if (isset($data['claim'])) {
+
+                    // Check claim is of the correct status to be edited
+                    $is_authorised = false;
+                    $new_status = null;
+                    if (
+                        $review_type == 'cost_centre'
+                     && array_reduce($data['userAccount']['managerOfCostCentres'], function ($carry, $item) use ($data) { return ($carry || ($item['cost_centre'] == $data['claim']['cost_centre'])); }, false)
+                     && $data['claim']['status'] == ClaimStatus::statusStringToInt('CostCentreReview')
+                        ) {
+
+                        $is_authorised = true;
+                        if ($review_decision == 'bounce') {
+                            $new_status = ClaimStatus::statusStringToInt('Bounced');
+                        } else if ($review_decision == 'approve') {
+                            $new_status = ClaimStatus::statusStringToInt('TreasurerReview');
+                        } else if ($review_decision == 'reject') {
+                            $error = array(
+                                'error' => true,
+                                'message' => 'Invalid review type or decision.',
+                                'error_code' => 400
+                            );
+                        }
+                        
+
+                    } else if (
+                        $review_type == 'treasurer'
+                     && $data['userAccount']['is_treasurer']
+                     && $data['claim']['status'] == ClaimStatus::statusStringToInt('TreasurerReview')
+                        ) {
+
+                        $is_authorised = true;
+                        if ($review_decision == 'bounce') {
+                            $new_status = ClaimStatus::statusStringToInt('Bounced');
+                        } else if ($review_decision == 'approve') {
+                            $new_status = ClaimStatus::statusStringToInt('Approved');
+                        } else if ($review_decision == 'reject') {
+                            $new_status = ClaimStatus::statusStringToInt('Rejected');
+                        }
+                    }
+
+
+                    if ($is_authorised) {
+
+                        // check if claim is allowed to be updated
+                        $updateDBAttempt = $this->Claim_model->changeClaimStatus(
+                                                $id_claim,
+                                                $new_status
+                                            );
+                        if ($updateDBAttempt) {
+                            $this->load->model('Activity_model');
+                            $this->Activity_model->changeStatusOnClaimID(
+                                $id_claim,
+                                $data['userAccount']['username'],
+                                $data['claim']['status'],
+                                $new_status
+                            );
+
+                            /// notify claim centre manager
+
+                        } else {
+                            $error = array(
+                                'error' => true,
+                                'message' => 'The claim failed to be updated.',
+                                'error_code' => 400
+                            );
+                        }
+
+                    } else {
+                        $error = array(
+                            'error' => true,
+                            'message' => 'User not authorised to review this claim.',
+                            'error_code' => 403
+                        );
+                    }
+
+                } else {
+                    // Couldn't find it
+                    $error = array(
+                        'error' => true,
+                        'message' => 'Claim does not exist.',
+                        'error_code' => 404
+                    );
+                }
+            }
+        }
+
+
+        if (!$error['error']) {
+            $this->output
+                ->set_status_header(201)
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('success')));
+
+        } else {
+            $this->output
+                    ->set_status_header($error['error_code'])
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($error['message']));
+        }
+    }
+
 }
