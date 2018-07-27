@@ -358,7 +358,7 @@
             .appendTo($("#action_button_row div:first"))
             .addClass("btn btn-dark btn-lg btn-block")
             .attr("id", "button_save")
-            .text("Save")
+            .text("Save as Draft")
             .on("click", window.saveStateToServer)
 
             $("<button>")
