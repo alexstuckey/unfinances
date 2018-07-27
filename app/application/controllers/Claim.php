@@ -379,14 +379,10 @@ class Claim extends CI_Controller {
             );
         } else {
 
-            if (!$review_type == 'cost_centre' || !$review_type == 'treasurer'
-             || !$review_decision == 'bounce'  || !$review_decision == 'approve' || !$review_decision == 'reject') {
-                $error = array(
-                    'error' => true,
-                    'message' => 'Invalid review type or decision.',
-                    'error_code' => 400
-                );
-            } else {
+            if (
+                ($review_type == 'cost_centre' && ($review_decision == 'bounce' || $review_decision == 'approve'))
+             || ($review_type == 'treasurer'   && ($review_decision == 'bounce' || $review_decision == 'approve' || $review_decision == 'reject' || $review_decision == 'pay'))
+            ) {
 
                 $this->load->model('Claim_model');
                 $data['claim'] = $this->Claim_model->getClaimById($id_claim);
@@ -407,12 +403,6 @@ class Claim extends CI_Controller {
                             $new_status = ClaimStatus::statusStringToInt('Bounced');
                         } else if ($review_decision == 'approve') {
                             $new_status = ClaimStatus::statusStringToInt('TreasurerReview');
-                        } else if ($review_decision == 'reject') {
-                            $error = array(
-                                'error' => true,
-                                'message' => 'Invalid review type or decision.',
-                                'error_code' => 400
-                            );
                         }
                         
 
@@ -429,6 +419,18 @@ class Claim extends CI_Controller {
                             $new_status = ClaimStatus::statusStringToInt('Approved');
                         } else if ($review_decision == 'reject') {
                             $new_status = ClaimStatus::statusStringToInt('Rejected');
+                        } else if ($review_decision == 'pay') {
+                            $new_status = ClaimStatus::statusStringToInt('Paid');
+                        }
+                    } else if (
+                        $review_type == 'treasurer'
+                     && $data['userAccount']['is_treasurer']
+                     && $data['claim']['status'] == ClaimStatus::statusStringToInt('Approved')
+                        ) {
+
+                        $is_authorised = true;
+                        if ($review_decision == 'pay') {
+                            $new_status = ClaimStatus::statusStringToInt('Paid');
                         }
                     }
 
@@ -475,6 +477,12 @@ class Claim extends CI_Controller {
                         'error_code' => 404
                     );
                 }
+            } else {
+                $error = array(
+                    'error' => true,
+                    'message' => 'Invalid review type or decision.',
+                    'error_code' => 400
+                );
             }
         }
 
