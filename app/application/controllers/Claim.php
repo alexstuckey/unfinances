@@ -407,6 +407,8 @@ class Claim extends CI_Controller {
                     // Check claim is of the correct status to be edited
                     $is_authorised = false;
                     $new_status = null;
+                    $notify_claimant_with_email_name = false;
+                    $notify_treasurer_with_email_name = false;
                     if (
                         $review_type == 'cost_centre'
                      && array_reduce($data['userAccount']['managerOfCostCentres'], function ($carry, $item) use ($data) { return ($carry || ($item['cost_centre'] == $data['claim']['cost_centre'])); }, false)
@@ -416,8 +418,10 @@ class Claim extends CI_Controller {
                         $is_authorised = true;
                         if ($review_decision == 'bounce') {
                             $new_status = ClaimStatus::statusStringToInt('Bounced');
+                            $notify_claimant_with_email_name = '2_Claimant_Bounced';
                         } else if ($review_decision == 'approve') {
                             $new_status = ClaimStatus::statusStringToInt('TreasurerReview');
+                            $notify_treasurer_with_email_name = '3_Treasurer_Review';
                         }
                         
 
@@ -430,12 +434,16 @@ class Claim extends CI_Controller {
                         $is_authorised = true;
                         if ($review_decision == 'bounce') {
                             $new_status = ClaimStatus::statusStringToInt('Bounced');
+                            $notify_claimant_with_email_name = '2_Claimant_Bounced';
                         } else if ($review_decision == 'approve') {
                             $new_status = ClaimStatus::statusStringToInt('Approved');
+                            $notify_claimant_with_email_name = '4_Claimant_Approved';
                         } else if ($review_decision == 'reject') {
                             $new_status = ClaimStatus::statusStringToInt('Rejected');
+                            $notify_claimant_with_email_name = '5_Claimant_Rejected';
                         } else if ($review_decision == 'pay') {
                             $new_status = ClaimStatus::statusStringToInt('Paid');
+                            $notify_claimant_with_email_name = '6_Claimant_Paid';
                         }
                     } else if (
                         $review_type == 'treasurer'
@@ -446,6 +454,7 @@ class Claim extends CI_Controller {
                         $is_authorised = true;
                         if ($review_decision == 'pay') {
                             $new_status = ClaimStatus::statusStringToInt('Paid');
+                            $notify_claimant_with_email_name = '6_Claimant_Paid';
                         }
                     }
 
@@ -466,7 +475,39 @@ class Claim extends CI_Controller {
                                 $new_status
                             );
 
-                            /// notify claim centre manager
+                            $email_data_payload = array(
+                                'cost_centre' => $data['claim']['cost_centre'],
+                                'claimant_name' => $data['claim']['claimant_name'],
+                                'id_claim' => $data['claim']['id_claim'],
+                                'claim_description' => $data['claim']['description'],
+                                'attachments_count' => count($data['claim']['attachments']),
+                                'expenditure_items' => json_decode(str_replace('\\', '', $data['claim']['expenditure_items']), true),
+                                'claim_url' => site_url('/expenses/claim/' . $data['claim']['id_claim'])
+                            );
+
+                            if ($notify_claimant_with_email_name != false) {
+                                // Notify the claimant
+                                $claimant = $this->User_model->getUserByCIS($data['claim']['claimant_id']);
+
+                                $this->load->model('Email_model');
+                                $this->Email_model->sendEmail(
+                                    $notify_claimant_with_email_name,
+                                    $claimant['email'],
+                                    $email_data_payload
+                                );
+                            }
+                            if ($notify_treasurer_with_email_name != false) {
+                                // Notify the treasurers
+                                $treasurers = $this->User_model->getTreasurers();
+                                $treasuers_emails = array_column($treasurers, 'email');
+
+                                $this->load->model('Email_model');
+                                $this->Email_model->sendEmail(
+                                    $notify_treasurer_with_email_name,
+                                    $treasuers_emails,
+                                    $email_data_payload
+                                );
+                            }
 
                         } else {
                             $error = array(
