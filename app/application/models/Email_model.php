@@ -27,7 +27,7 @@ class Email_model extends CI_Model {
     public function getEmailByName($email_name)
     {
         $this->db->where('email_name', $email_name);
-        $query = $this->db->get('emailTemplates');
+        $query = $this->db->get('email_templates');
 
         return $query->row_array();
     }
@@ -35,15 +35,14 @@ class Email_model extends CI_Model {
     public function sendEmail($email_name, $to, $substitutions)
     {
         $this->load->library('email');
+        $this->load->library('parser');
 
         $email = $this->Email_model->getEmailByName($email_name);
-        $email_body = $email['email_body'];
-        $email_subject = $email['email_subject'];
+        $email_template_body = $email['email_body'];
+        $email_template_subject = $email['email_subject'];
 
-        foreach ($substitutions as $find => $replace) {
-            $email_body = str_replace($find, $replace, $email_body);
-            $email_subject = str_replace($find, $replace, $email_subject);
-        }
+        $email_body = $this->parser->parse_string($email_template_body, $substitutions, TRUE);
+        $email_subject = $this->parser->parse_string($email_template_subject, $substitutions, TRUE);
 
         $this->email->from($this->config->item('email_from'), 'UCFinances');
         $this->email->to($to);
