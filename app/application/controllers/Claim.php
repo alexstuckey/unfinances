@@ -346,7 +346,26 @@ class Claim extends CI_Controller {
                                     $data['userAccount']['username'],
                                     $this->input->post('comment_field')
                                 );
-            if ($updateDBAttempt['success'] == false) {
+            if ($updateDBAttempt['success']) {
+                // Notify all those who have an item in the activity feed
+                $users_involved = array_column($data['claim']['activities'], 'by_id_cis_user');
+                $users_involved[] = $data['userAccount']; // to avoid re-fetching claim
+                $users_involved_emails = array_column($users_involved, 'email');
+                $users_involved_emails = array_unique($users_involved_emails);
+
+                $this->load->model('Email_model');
+                $this->Email_model->sendEmail(
+                    '7_All_Comment',
+                    $users_involved_emails,
+                    array(
+                        'id_claim' => $data['claim']['id_claim'],
+                        'claim_url' => site_url('/expenses/claim/' . $data['claim']['id_claim']),
+                        'comment_text' => $this->input->post('comment_field'),
+                        'comment_author' => $data['userAccount']['fullname']
+                    )
+                );
+
+            } else {
                 $error = array(
                     'error' => true,
                     'message' => $updateDBAttempt['message'],
