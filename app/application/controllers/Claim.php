@@ -139,11 +139,7 @@ class Claim extends CI_Controller {
         $this->load->model('Claim_model');
         $data['claim'] = $this->Claim_model->getClaimById($id_claim);
 
-        if (isset($data['claim'])) {
-            $data['claimJSON'] = json_encode($data['claim']);
-            $data['claimJSON'] = str_replace('\\\\\\', '\\', $data['claimJSON']);
-
-        } else {
+        if (!isset($data['claim'])) {
             // Couldn't find it
             $error['error'] = true;
             $error['error_code'] = 404;
