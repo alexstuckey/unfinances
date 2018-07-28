@@ -231,7 +231,26 @@ class Claim extends CI_Controller {
                                 ClaimStatus::statusStringToInt('CostCentreReview')
                             );
 
-                            /// notify claim centre manager
+                            // Notify cost centre manager
+                                // Find Cost Centre Manager
+                            $this->load->model('CostCentre_model');
+                            $cost_centre_manager = $this->CostCentre_model->getManagerForCostCentre($data['claim']['cost_centre']);
+
+                            $this->load->model('Email_model');
+                            $this->Email_model->sendEmail(
+                                '1_CostCentreManager_Review',
+                                $cost_centre_manager['email'],
+                                array(
+                                    'cost_centre_manager_name' => $cost_centre_manager['fullname'],
+                                    'cost_centre' => $data['claim']['cost_centre'],
+                                    'claimant_name' => $data['claim']['claimant_name'],
+                                    'id_claim' => $data['claim']['id_claim'],
+                                    'claim_description' => $data['claim']['description'],
+                                    'attachments_count' => count($data['claim']['attachments']),
+                                    'expenditure_items' => json_decode(str_replace('\\', '', $data['claim']['expenditure_items']), true),
+                                    'claim_url' => site_url('/expenses/claim/' . $data['claim']['id_claim'])
+                                )
+                            );
 
                         } else {
                             $error = array(
