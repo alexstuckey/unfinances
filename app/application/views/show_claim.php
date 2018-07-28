@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="bold-label" for="input_cost_centre">Cost Centre</label>
-                        <select id="input_cost_centre" class="custom-select detectStateInput">
+                        <select id="input_cost_centre" class="custom-select detectStateInput form-control">
                             <?php foreach ($cost_centres as $cost_centre): ?>
                             <option value="<?php echo $cost_centre['cost_centre']; ?>"><?php echo $cost_centre['cost_centre']; ?></option>
                             <?php endforeach; ?>
