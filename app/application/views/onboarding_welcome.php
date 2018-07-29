@@ -38,7 +38,7 @@
                 </div>
                 <small id="emailHelp" class="form-text text-muted mb-4">The account you enter here will be used by the Treasurer repay you for expense claims. If you do not wish to enter this information, please contact the Treasurer or your Cost Centre manager.</small>
                 
-                <input type="submit" class="btn btn-primary btn-lg">
+                <input type="submit" class="btn btn-primary btn-lg" id="onboarding-submit" disabled>
             </form>
         </div>
     </div>
@@ -56,6 +56,12 @@ $(document).ready(function(){
         outputFormat: 'yyyy-mm-dd',
         max: ('dd/mm/' + earliest_year),
         removeMaskOnSubmit: true,
+        oncomplete: () => {
+            $("#onboarding-submit").prop('disabled', false)
+        },
+        onincomplete: () => {
+            $("#onboarding-submit").prop('disabled', true)
+        }
     })
     $('#onboarding_input_account_number').inputmask({
         mask: "99999999",
