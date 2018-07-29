@@ -20,7 +20,8 @@ class Onboarding extends CI_Controller {
         $data['user'] = $userAccount;
         $data['javascript_inputmask'] = true;
 
-        
+        $this->User_model->createUser($_SERVER['REMOTE_USER']);
+
         $this->load->view('header', $data);
         $this->load->view('onboarding_welcome', $data);
         $this->load->view('footer', $data);
