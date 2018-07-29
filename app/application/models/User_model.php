@@ -44,7 +44,10 @@ class User_model extends CI_Model
 
                 return $userLocal;
             } else {
-                return array( 'doesUserExist' => false );
+                return array(
+                    'doesUserExist' => false,
+                    'has_onboarded' => false
+                );
             }
         } else {
             return null;
