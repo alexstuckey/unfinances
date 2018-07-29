@@ -20,10 +20,15 @@
         right: 0;
         position: absolute;
 
+        z-index: 1;
+
         background-image: url('<?php echo base_url('/static/images/uc-crest.svg'); ?>');
         background-repeat: no-repeat;
         background-position: right 10px top 50%;
         background-size: auto 85%;
         opacity: 0.5;
+    }
+    .jumbotron h1 {
+        z-index: 2;
     }
 </style>
