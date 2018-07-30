@@ -70,7 +70,7 @@ class Claim extends CI_Controller {
 
             if (!$error['error']) {
                 $data['active'] = 'expenses';
-                $data['page_title'] = 'UCFinances - New claim';
+                $data['page_title'] = 'UCFinances - Claim ' . $data['claim']['id_claim'];
                 $data['javascript_jsgrid'] = true;
                 $data['javascript_uppy'] = true;
 
