@@ -18,7 +18,7 @@
                 <div class="form-group row">
                     <label for="onboarding_input_dob" class="col-md-3 col-form-label">Date of Birth</label>
                     <div class="col-md-9">
-                        <input type="date" class="form-control" id="onboarding_input_dob" name="onboarding_input_dob">
+                        <input type="text" class="form-control" id="onboarding_input_dob" name="onboarding_input_dob" autocomplete="off">
                     </div>
                 </div>
 
@@ -27,13 +27,13 @@
                 <div class="form-group row">
                     <label for="onboarding_input_account_number" class="col-md-3 col-form-label">Bank Account number</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" id="onboarding_input_account_number" name="onboarding_input_account_number">
+                        <input type="text" class="form-control" id="onboarding_input_account_number" name="onboarding_input_account_number" autocomplete="off">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="onboarding_input_sort_code" class="col-md-3 col-form-label">Bank Sort Code</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" id="onboarding_input_sort_code" name="onboarding_input_sort_code">
+                        <input type="text" class="form-control" id="onboarding_input_sort_code" name="onboarding_input_sort_code" autocomplete="off">
                     </div>
                 </div>
                 <small id="emailHelp" class="form-text text-muted mb-4">The account you enter here will be used by the Treasurer repay you for expense claims. If you do not wish to enter this information, please contact the Treasurer or your Cost Centre manager.</small>

@@ -46,13 +46,6 @@
                                 <input type="text" class="form-control uneditable" disabled value="<?php echo $userAccount['username']; ?>">
                             </div>
                         </div>
-
-                        <div class="form-group row">
-                            <label for="inputPassword" class="col-sm-3 col-form-label"></label>
-                            <div class="col-sm-9">
-                                <input type="text" class="form-control uneditable" disabled value="<?php echo $userAccount['fullname']; ?>">
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -71,7 +64,7 @@
                                     $month = substr($userAccount['dob'], 5, 2);
                                     $year = substr($userAccount['dob'], 0, 4);
                                     ?>
-                                    <input type="date" class="form-control" id="settings_input_dob" name="settings_input_dob" value="<?php echo $day . "/" . $month . "/" . $year; ?>">
+                                    <input type="text" class="form-control" id="settings_input_dob" name="settings_input_dob" value="<?php echo $day . "/" . $month . "/" . $year; ?>" autocomplete="off">
                                 </div>
                             </div>
 
@@ -80,13 +73,13 @@
                             <div class="form-group row">
                                 <label for="settings_input_account_number" class="col-md-3 col-form-label">Bank Account number</label>
                                 <div class="col-md-9">
-                                    <input type="date" class="form-control" id="settings_input_account_number" name="settings_input_account_number" value="<?php echo $userAccount['bank_account_number']; ?>">
+                                    <input type="text" class="form-control" id="settings_input_account_number" name="settings_input_account_number" value="<?php echo $userAccount['bank_account_number']; ?>" autocomplete="off">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="settings_input_sort_code" class="col-md-3 col-form-label">Bank Sort Code</label>
                                 <div class="col-md-9">
-                                    <input type="date" class="form-control" id="settings_input_sort_code" name="settings_input_sort_code" value="<?php echo $userAccount['bank_sort_code']; ?>">
+                                    <input type="text" class="form-control" id="settings_input_sort_code" name="settings_input_sort_code" value="<?php echo $userAccount['bank_sort_code']; ?>" autocomplete="off">
                                 </div>
                             </div>
                             <small id="emailHelp" class="form-text text-muted mb-4">The account you enter here will be used by the Treasurer repay you for expense claims. If you do not wish to enter this information, please contact the Treasurer or your Cost Centre manager.</small>
