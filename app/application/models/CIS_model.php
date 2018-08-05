@@ -24,8 +24,11 @@ class CIS_model extends CI_Model
         $user = $query->row_array();
 
         if (!empty($user)) {
+            // Capitalise first letters
             list($firstnamesplit)=explode(',', $user['firstnames']);
-            $user['fullname'] = ucwords(strtolower($firstnamesplit . ' ' . $user['surname']));
+            $firstLettersCapitalised = ucwords(strtolower($firstnamesplit . ' ' . $user['surname']));
+            // Capitalise letters after hyphens
+            $user['fullname'] = implode('-', array_map('ucfirst', explode('-', $firstLettersCapitalised)));
         }
 
         return $user;
