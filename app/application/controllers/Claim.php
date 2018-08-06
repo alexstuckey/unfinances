@@ -300,6 +300,99 @@ class Claim extends CI_Controller {
         }
     }
 
+    public function deleteClaimByJSON($id_claim)
+    {
+        // This will take a DRAFT claim and set it to DELETED.
+
+        $error = array(
+            'error' => false,
+            'message' => '',
+            'error_code' => ''
+        );
+        $data = array();
+
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['has_onboarded'] == false) {
+            $error = array(
+                'error' => false,
+                'message' => 'You have not yet registered.',
+                'error_code' => 403
+            );
+        } else {
+
+            $this->load->model('Claim_model');
+            $data['claim'] = $this->Claim_model->getClaimById($id_claim);
+
+            if (isset($data['claim'])) {
+
+                // Check claim is of the correct status to be edited
+                if ($data['claim']['status'] == ClaimStatus::statusStringToInt('Draft')) {
+
+                    // Check permissions
+                    if ($data['claim']['claimant_id'] == $data['userAccount']['username']) {
+
+                        // check if claim is allowed to be updated
+                        $updateDBAttempt = $this->Claim_model->changeClaimStatus(
+                                                $id_claim,
+                                                ClaimStatus::statusStringToInt('Deleted')
+                                            );
+                        if ($updateDBAttempt) {
+                            $this->load->model('Activity_model');
+                            $this->Activity_model->changeStatusOnClaimID(
+                                $id_claim,
+                                $data['userAccount']['username'],
+                                $data['claim']['status'],
+                                ClaimStatus::statusStringToInt('Deleted')
+                            );
+
+                        } else {
+                            $error = array(
+                                'error' => true,
+                                'message' => 'The claim failed to be updated.',
+                                'error_code' => 400
+                            );
+                        }
+                    } else {
+                        $error = array(
+                            'error' => true,
+                            'message' => 'You are not the owner of this claim.',
+                            'error_code' => 403
+                        );
+                    }
+
+                } else {
+                    $error = array(
+                        'error' => true,
+                        'message' => 'Claim is not a draft',
+                        'error_code' => 403
+                    );
+                }
+
+            } else {
+                // Couldn't find it
+                $error = array(
+                    'error' => true,
+                    'message' => 'Claim does not exist.',
+                    'error_code' => 404
+                );
+            }
+        }
+
+
+        if (!$error['error']) {
+            $this->output
+                ->set_status_header(201)
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('success')));
+
+        } else {
+            $this->output
+                    ->set_status_header($error['error_code'])
+                    ->set_content_type('application/json')
+                    ->set_output(json_encode($error['message']));
+        }
+    }
+
     public function commentClaimByJSON($id_claim)
     {
         $error = array(
