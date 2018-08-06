@@ -34,6 +34,9 @@
                 case 6:
                     $cellInfo = array( 'text' => "Paid", 'backgroundColour' => "#28a745", 'textColour' => "#fff" );
                     break;
+                case 7:
+                    $cellInfo = array( 'text' => "Deleted", 'backgroundColour' => "#dc3545", 'textColour' => "#fff" );
+                    break;
                 default:
                     $cellInfo = array();
                     break;

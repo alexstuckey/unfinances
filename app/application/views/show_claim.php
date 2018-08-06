@@ -191,6 +191,7 @@
         4: { text: "Rejected", backgroundColour: "#dc3545", textColour: "#fff" },
         5: { text: "Approved", backgroundColour: "#28a745", textColour: "#fff" },
         6: { text: "Paid", backgroundColour: "#28a745", textColour: "#fff" },
+        7: { text: "Deleted", backgroundColour: "#dc3545", textColour: "#fff" },
     }
 
     userAccount = jQuery.parseJSON(<?php echo "\"" . str_replace("\"", "\\\"", json_encode($userAccount)) . "\""; ?>)

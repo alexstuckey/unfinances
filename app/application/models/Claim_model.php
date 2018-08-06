@@ -11,6 +11,7 @@ abstract class ClaimStatus {
     const Rejected = 4;
     const Approved = 5;
     const Paid = 6;
+    const Deleted = 7;
 
     private static $constCacheArray = NULL;
 
