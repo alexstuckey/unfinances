@@ -60,6 +60,15 @@
         .link-row:hover {
           cursor: pointer;
         }
+        .fa-icon-float-right {
+          float: right;
+          line-height: inherit;
+          color: grey;
+          visibility: hidden;
+        }
+        .link-row:hover .fa-icon-float-right {
+          visibility: visible;
+        }
     </style>
 
     <table class="table table-striped table-bordered table-hover">
@@ -82,6 +91,9 @@
           <?php $claim['statusCellInfo'] = generateStatusCell($claim['status']); ?>
           <td>
             <span class="badge my-badge-status" id="input_status" style="background-color: <?php echo $claim['statusCellInfo']['backgroundColour']; ?>; color: <?php echo $claim['statusCellInfo']['textColour']; ?>;"><?php echo $claim['statusCellInfo']['text']; ?></span>
+            <?php if ($claim['statusCellInfo']['text'] == 'Draft'): ?>
+            <i class="fas fa-trash fa-icon-float-right row-button-delete"></i>
+            <?php endif; ?>
           </td>
           <?php if ($page_show_claimant_column): ?>
           <td><?php echo $claim['claimant_name']; ?></td>
@@ -103,11 +115,38 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $('.link-row').click(function() {
+    $('.link-row').on('click', function() {
         var href = $(this).attr("data-href");
         if(href) {
             window.location = href;
         }
+    })
+
+    $(".row-button-delete").on('click', function(e) {
+      e.stopPropagation()
+      row_claim_id = $(this).parent().parent().children().first().text()
+      jQuery.ajax({
+          url: `../api/expenses/deleteClaim/${row_claim_id}`,
+          type: "POST",
+          data: {}
+      }).done((data) => {
+          console.log('claim deleted')
+      }).fail((jqXHR, textStatus, errorThrown) => {
+          if (jqXHR.status == 400) {
+              console.error('Request failed: ' + textStatus)
+              alert('You do not have permission to delete this claim.')
+          } else if (jqXHR.status == 403) {
+              console.error('Request failed: ' + textStatus)
+              alert('You do not have permission to delete this claim.')
+          } else if (jqXHR.status == 404) {
+              console.error('Request failed: ' + textStatus)
+              alert('Delete failed, this claim does not exist.')
+          } else {
+              console.error(errorThrown)
+              alert('Delete failed, please check your connection and try again.')
+          }
+          
+      })
     })
   })
 </script>
