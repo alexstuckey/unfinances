@@ -18,6 +18,14 @@ class Expenses extends CI_Controller {
 
         $this->load->model('Claim_model');
         $data['claims'] = $this->Claim_model->getClaimsForUser($data['userAccount']['username']);
+        // Remove deleted claims
+        $data['claims'] = array_filter($data['claims'], function($claim) {
+            if ($claim['status'] == ClaimStatus::statusStringToInt('Deleted')) {
+                return false;
+            } else {
+                return true;
+            }
+        });
 
         $this->load->view('header', $data);
 
