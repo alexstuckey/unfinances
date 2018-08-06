@@ -54,6 +54,9 @@
           text-align: center;
           font-style: italic;
         }
+        .link-row:hover {
+          cursor: pointer;
+        }
     </style>
 
     <table class="table table-striped table-bordered table-hover">
@@ -71,8 +74,8 @@
       </thead>
       <tbody>
         <?php foreach ($claims as $claim): ?>
-        <tr>
-          <th scope="row"><a href="<?php echo site_url('/expenses/claim/' . $claim['id_claim']); ?>"><?php echo $claim['id_claim']; ?></a></th>
+        <tr class="link-row" data-href="<?php echo site_url('/expenses/claim/' . $claim['id_claim']); ?>">
+          <th scope="row"><?php echo $claim['id_claim']; ?></th>
           <?php $claim['statusCellInfo'] = generateStatusCell($claim['status']); ?>
           <td>
             <span class="badge my-badge-status" id="input_status" style="background-color: <?php echo $claim['statusCellInfo']['backgroundColour']; ?>; color: <?php echo $claim['statusCellInfo']['textColour']; ?>;"><?php echo $claim['statusCellInfo']['text']; ?></span>
@@ -94,3 +97,14 @@
       </tbody>
     </table>
 </main>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.link-row').click(function() {
+        var href = $(this).attr("data-href");
+        if(href) {
+            window.location = href;
+        }
+    })
+  })
+</script>
