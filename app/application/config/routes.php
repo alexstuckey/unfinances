@@ -76,12 +76,12 @@ $route['expenses/my'] = 'expenses/my';
 $route['expenses/review'] = 'expenses/review';
 $route['expenses/claim/new'] = 'claim/newClaim';
 $route['expenses/claim/(:num)'] = 'claim/showClaim/$1/web';
-$route['api/expenses/claim/(:num)'] = 'claim/showClaim/$1/json';
+$route['api/expenses/claim/(:num)']['POST'] = 'claim/showClaim/$1/json';
 $route['api/expenses/saveClaim/(:num)'] = 'claim/saveClaimByJSON/$1';
-$route['api/expenses/submitClaim/(:num)'] = 'claim/submitClaimByJSON/$1';
-$route['api/expenses/deleteClaim/(:num)'] = 'claim/deleteClaimByJSON/$1';
-$route['api/expenses/commentClaim/(:num)'] = 'claim/commentClaimByJSON/$1';
-$route['api/expenses/reviewClaim/(:any)/(:any)/(:num)'] = 'claim/reviewClaimByJSON/$3/$1/$2';
+$route['api/expenses/submitClaim/(:num)']['POST'] = 'claim/submitClaimByJSON/$1';
+$route['api/expenses/deleteClaim/(:num)']['POST'] = 'claim/deleteClaimByJSON/$1';
+$route['api/expenses/commentClaim/(:num)']['POST'] = 'claim/commentClaimByJSON/$1';
+$route['api/expenses/reviewClaim/(:any)/(:any)/(:num)']['POST'] = 'claim/reviewClaimByJSON/$3/$1/$2';
 
 $route['api/user/(:any)'] = 'user/getUser/$1';
 
