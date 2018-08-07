@@ -363,7 +363,7 @@
     // Action buttons
         $("#action_button_row_1").children().empty()
         $("#action_button_row_2").children().empty()
-        $('#declaration-checkbox').prop('checked', false);
+        $('#declaration-checkbox').prop('checked', false)
         if (claim.isEditable
          && claim.claimant_id === userAccount.username) {
             $("<button>")
