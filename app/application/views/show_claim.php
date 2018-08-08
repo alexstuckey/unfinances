@@ -1,8 +1,10 @@
 <main class="container claim-form pb-3 mb-5">
-    <div class="py-5 col-lg-10 offset-xl-1">
-        <h1 class="mb-4 text-center">JCR Expenses Claim</h1>
-        <p class="lead text-muted">This form is intended for members of the JCR who require reimbursement for services and goods purchased for JCR purposes. This form must be co-signed by the relevant Cost Centre manager. If you are unsure who this person is, please contact the Treasurer. If you would like to be paid by bank transfer please fill in the relevant boxes.</p>
-        <p class="lead text-muted">No reimbursement can be made without the correct receipts.</p>
+    <div class="row justify-content-center">
+        <div class="py-5 col-lg-10">
+            <h1 class="mb-4 text-center">JCR Expenses Claim</h1>
+            <p class="lead text-muted">This form is intended for members of the JCR who require reimbursement for services and goods purchased for JCR purposes. This form must be co-signed by the relevant Cost Centre manager. If you are unsure who this person is, please contact the Treasurer. If you would like to be paid by bank transfer please fill in the relevant boxes.</p>
+            <p class="lead text-muted">No reimbursement can be made without the correct receipts.</p>
+        </div>
     </div>
 
     <div class="row">
