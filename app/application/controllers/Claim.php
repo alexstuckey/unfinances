@@ -596,6 +596,9 @@ class Claim extends CI_Controller {
                                 'expenditure_items' => json_decode(str_replace('\\', '', $data['claim']['expenditure_items']), true),
                                 'claim_url' => site_url('/expenses/claim/' . $data['claim']['id_claim'])
                             );
+                            if ($review_type == 'treasurer') {
+                                $email_data_payload['treasurer_name'] = $data['userAccount']['fullname'];
+                            }
 
                             if ($notify_claimant_with_email_name != false) {
                                 // Notify the claimant
