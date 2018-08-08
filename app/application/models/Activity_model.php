@@ -29,6 +29,7 @@ class Activity_model extends CI_Model {
     public function getAllActivities()
     {
         $query = $this->db->get('activities');
+        $this->db->order_by('activity_datetime', 'ASC');
 
         $activities = $query->result_array();
 
@@ -40,6 +41,7 @@ class Activity_model extends CI_Model {
     public function getActivitiesForClaimID($id_claim)
     {
         $this->db->where('of_id_claim', $id_claim);
+        $this->db->order_by('activity_datetime', 'ASC');
         $query = $this->db->get('activities');
 
         $activities = $query->result_array();
