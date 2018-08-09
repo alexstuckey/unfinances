@@ -6,6 +6,8 @@
   <br>
 </h1>
 
+## Purpose
+An expenses process tool for University College JCR, Durham.
 
 ## Contributions
 - UUID Generator for CodeIgniter, by Dan Storm
