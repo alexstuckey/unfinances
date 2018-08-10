@@ -6,8 +6,9 @@
   <br>
 </h1>
 
-## Purpose
-An expenses process tool for University College JCR, Durham.
+<h3 align="center">An expenses process tool for University College JCR, Durham</h3>
+<h5 align="center">Submit, bounce, approve, and pay expenses.</h5>
+
 
 ## Contributions
 - UUID Generator for CodeIgniter, by Dan Storm
