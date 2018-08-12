@@ -25,7 +25,7 @@
 * **Activity Feed**
   * A clear list of the history of each claim
   * All events are logged, with the responsible user tagged
-  * Comments allow for formal discussion of claims
+  * Comments allow for formal discussion of claims with recorded history
 * **Responsive**
   * Access from desktop web
   * Access from mobile web
