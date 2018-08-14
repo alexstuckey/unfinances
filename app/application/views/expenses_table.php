@@ -131,6 +131,7 @@
           data: {}
       }).done((data) => {
           console.log('claim deleted')
+          location.reload()
       }).fail((jqXHR, textStatus, errorThrown) => {
           if (jqXHR.status == 400) {
               console.error('Request failed: ' + textStatus)
