@@ -74,6 +74,7 @@ $route['settings']['POST'] = 'user/submitSettings';
 
 $route['expenses/my'] = 'expenses/my';
 $route['expenses/review'] = 'expenses/review';
+$route['expenses/all'] = 'expenses/all';
 $route['expenses/claim/new'] = 'claim/newClaim';
 $route['expenses/claim/(:num)'] = 'claim/showClaim/$1/web';
 $route['api/expenses/claim/(:num)']['GET'] = 'claim/showClaim/$1/json';
