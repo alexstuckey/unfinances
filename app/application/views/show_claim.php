@@ -111,12 +111,12 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="form-row mx-3 my-2">
+            <div class="form-row my-2">
                 <div class="col-9">
                     <input class="form-control" type="text" placeholder="Your comments" id="comment_field">
                 </div>
                 <div class="col-3">
-                    <button class="btn btn-default btn-block" id="comment_button">Comment</button>
+                    <button class="btn btn-dark btn-block" id="comment_button">Comment</button>
                 </div>
             </div>
         </div>
