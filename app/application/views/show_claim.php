@@ -596,6 +596,7 @@
                     ) {
                     alert('Please complete the form by including a description, items of expenditure and at least one attachment.')
                 } else {
+                    $(this).prop('disabled', true)
                     jQuery.ajax({
                         url: "../../api/expenses/submitClaim/"+window.claimState.id_claim,
                         type: "POST",
@@ -616,6 +617,9 @@
                             alert('Save failed, please check your connection and try again.')
                         }
                         
+                    }).always(() => {
+                        // Reenable button
+                        $(this).prop('disabled', false)
                     })
                 }
 
@@ -628,6 +632,7 @@
         if ($("#comment_field").val() === '') {
             console.log('empty comment')
         } else {
+            $('#comment_button').prop('disabled', true)
             jQuery.ajax({
                 url: "../../api/expenses/commentClaim/"+window.claimState.id_claim,
                 type: "POST",
@@ -650,11 +655,14 @@
                     alert('Save failed, please check your connection and try again.')
                 }
                 
+            }).always(() => {
+                // Reenable button
+                $('#comment_button').prop('disabled', false)
             })
         }
     }
 
-    window.reviewClaimToServer = function() {
+    window.reviewClaimToServer = function(event) {
         // check for value in field
         if (!$('#declaration-checkbox').is(':checked')) {
             alert('You must confirm the declaration before approving an expense.')
@@ -692,6 +700,10 @@
                 reviewDecision = 'pay'
                 break;
             }
+
+            // Disable button until request finished
+            $(this).prop('disabled', true)
+
             jQuery.ajax({
                 url: `../../api/expenses/reviewClaim/${reviewType}/${reviewDecision}/${window.claimState.id_claim}`,
                 type: "POST",
@@ -714,17 +726,21 @@
                     alert('Review failed, please check your connection and try again.')
                 }
                 
+            }).always(() => {
+                // Reenable button
+                $(this).prop('disabled', false)
             })
         }
     }
 
-    window.paymentDetailsSubmit = function() {
+    window.paymentDetailsSubmit = function(event) {
         // check for value in field
         if (!$('#declaration-checkbox').is(':checked')) {
             alert('You must confirm the declaration before approving an expense.')
         } else if (!$('#claim_input_account_number').inputmask("isComplete") || !$('#claim_input_sort_code').inputmask("isComplete")) {
             alert('Please enter your bank details.')
         } else {
+            $(this).prop('disabled', true)
             jQuery.ajax({
                 url: "../../api/expenses/submitPaymentDetailsClaim/"+window.claimState.id_claim,
                 type: "POST",
@@ -751,7 +767,10 @@
                     console.error(errorThrown)
                     alert('Save failed, please check your connection and try again.')
                 }
-                
+
+            }).always(() => {
+                // Reenable button
+                $(this).prop('disabled', false)
             })
         }
     }
