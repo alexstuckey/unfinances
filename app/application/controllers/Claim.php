@@ -73,6 +73,7 @@ class Claim extends CI_Controller {
                 $data['page_title'] = 'UCFinances - Claim ' . $data['claim']['id_claim'];
                 $data['javascript_jsgrid'] = true;
                 $data['javascript_uppy'] = true;
+                $data['javascript_inputmask'] = true;
 
                 $this->load->model('CostCentre_model');
                 $data['cost_centres'] = $this->CostCentre_model->getAllCostCentres();
@@ -487,7 +488,7 @@ class Claim extends CI_Controller {
 
     public function reviewClaimByJSON($id_claim, $review_type, $review_decision)
     {
-        // This will take a claims in REVIEWand set it to either Bounced, Rejected, or TreasurerReview, then notify the required people.
+        // This will take a claims in REVIEW and set it to either Bounced, Rejected, or TreasurerReview, then notify the required people.
         // Curently REVIEW means CostCentreReview or TreasurerReview
 
         $error = array(
@@ -548,7 +549,7 @@ class Claim extends CI_Controller {
                             $new_status = ClaimStatus::statusStringToInt('Bounced');
                             $notify_claimant_with_email_name = '2_Claimant_Bounced';
                         } else if ($review_decision == 'approve') {
-                            $new_status = ClaimStatus::statusStringToInt('Approved');
+                            $new_status = ClaimStatus::statusStringToInt('PaymentDetails');
                             $notify_claimant_with_email_name = '4_Claimant_Approved';
                         } else if ($review_decision == 'reject') {
                             $new_status = ClaimStatus::statusStringToInt('Rejected');
@@ -560,7 +561,7 @@ class Claim extends CI_Controller {
                     } else if (
                         $review_type == 'treasurer'
                      && $data['userAccount']['is_treasurer']
-                     && $data['claim']['status'] == ClaimStatus::statusStringToInt('Approved')
+                     && $data['claim']['status'] == ClaimStatus::statusStringToInt('PaymentPending')
                         ) {
 
                         $is_authorised = true;
@@ -669,6 +670,137 @@ class Claim extends CI_Controller {
                     ->set_status_header($error['error_code'])
                     ->set_content_type('application/json')
                     ->set_output(json_encode($error['message']));
+        }
+    }
+
+    public function providePaymentDetailsByJSON($id_claim)
+    {
+        // This will take a claims in PaymentDetails and set it to PaymentPending, then notify the treasurer.
+
+        $error = array(
+            'error' => false,
+            'message' => '',
+            'error_code' => ''
+        );
+        $data = array();
+
+        $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
+        if ($data['userAccount']['has_onboarded'] == false) {
+            $error = array(
+                'error' => false,
+                'message' => 'You have not yet registered.',
+                'error_code' => 403
+            );
+        }
+
+
+        $this->load->model('Claim_model');
+        $data['claim'] = $this->Claim_model->getClaimById($id_claim);
+
+        if (isset($data['claim'])) {
+        } else {
+            // Couldn't find it
+            $error = array(
+                'error' => true,
+                'message' => 'Claim does not exist',
+                'error_code' => 404
+            );
+        }
+
+        // get input
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('claim_input_account_number', 'Account Number', array(
+            'required',
+            'regex_match[/^(\d{8})$/]'
+        ));
+        $this->form_validation->set_rules('claim_input_sort_code', 'Sort Code', array(
+            'required',
+            'regex_match[/^(\d{2}-\d{2}-\d{2})$/]'
+        ));
+
+        if ($this->form_validation->run() == FALSE) {
+            $error = array(
+                'error' => true,
+                'message' => $this->form_validation->error_array(),
+                'error_code' => 400
+            );
+        } else {
+
+            // Check permissions
+            if ($data['claim']['claimant_id'] == $data['userAccount']['username']) {
+                if ($data['claim']['status'] == ClaimStatus::statusStringToInt('PaymentDetails')) {
+
+                    // check if claim is allowed to be updated
+                    $updateDBAttempt = $this->Claim_model->changeClaimStatus(
+                                            $id_claim,
+                                            ClaimStatus::statusStringToInt('PaymentPending')
+                                        );
+                    if ($updateDBAttempt) {
+                        $this->load->model('Activity_model');
+                        $this->Activity_model->changeStatusOnClaimID(
+                            $id_claim,
+                            $data['userAccount']['username'],
+                            $data['claim']['status'],
+                            ClaimStatus::statusStringToInt('PaymentPending')
+                        );
+
+                        // CREATE THE PDF
+
+                        // Notify the treasurers
+                        $treasurers = $this->User_model->getTreasurers();
+                        $treasuers_emails = array_column($treasurers, 'email');
+
+                        $this->load->model('Email_model');
+                        $this->Email_model->sendEmail(
+                            '9_Treasurer_PaymentPending',
+                            $treasuers_emails,
+                            array(
+                                'treasurer_name' => 'Treasurers',
+                                'cost_centre' => $data['claim']['cost_centre'],
+                                'claimant_name' => $data['claim']['claimant_name'],
+                                'id_claim' => $data['claim']['id_claim'],
+                                'claim_description' => $data['claim']['description'],
+                                'attachments_count' => count($data['claim']['attachments']),
+                                'expenditure_items' => json_decode(str_replace('\\', '', $data['claim']['expenditure_items']), true),
+                                'claim_url' => site_url('/expenses/claim/' . $data['claim']['id_claim'])
+                            )
+                        );
+
+                    } else {
+                        $error = array(
+                            'error' => true,
+                            'message' => 'The claim failed to be updated.',
+                            'error_code' => 400
+                        );
+                    }
+                } else {
+                    $error = array(
+                        'error' => true,
+                        'message' => 'This claim is not waiting for payment details.',
+                        'error_code' => 403
+                    );
+                }
+            } else {
+                $error = array(
+                    'error' => true,
+                    'message' => 'You are not the owner of this claim.',
+                    'error_code' => 403
+                );
+            }
+
+        }
+
+        if (!$error['error']) {
+            $this->output
+                ->set_status_header(201)
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array('success')));
+
+        } else {
+            $this->output
+                ->set_status_header($error['error_code'])
+                ->set_content_type('application/json')
+                ->set_output(json_encode($error['message']));
         }
     }
 

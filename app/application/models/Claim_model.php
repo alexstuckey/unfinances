@@ -10,6 +10,8 @@ abstract class ClaimStatus {
     const TreasurerReview = 3;
     const Rejected = 4;
     const Approved = 5;
+    const PaymentDetails = 8; // out of order
+    const PaymentPending = 9; // out of order
     const Paid = 6;
     const Deleted = 7;
 
@@ -21,7 +23,8 @@ abstract class ClaimStatus {
         );
     private static $reviewStatusesStrings = array(
             'CostCentreReview',
-            'TreasurerReview'
+            'TreasurerReview',
+            'PaymentPending'
         );
 
     private static function getConstants() {

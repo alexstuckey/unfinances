@@ -83,6 +83,7 @@ $route['api/expenses/submitClaim/(:num)']['POST'] = 'claim/submitClaimByJSON/$1'
 $route['api/expenses/deleteClaim/(:num)']['POST'] = 'claim/deleteClaimByJSON/$1';
 $route['api/expenses/commentClaim/(:num)']['POST'] = 'claim/commentClaimByJSON/$1';
 $route['api/expenses/reviewClaim/(:any)/(:any)/(:num)']['POST'] = 'claim/reviewClaimByJSON/$3/$1/$2';
+$route['api/expenses/submitPaymentDetailsClaim/(:num)']['POST'] = 'claim/providePaymentDetailsByJSON/$1';
 
 $route['api/user/(:any)'] = 'user/getUser/$1';
 

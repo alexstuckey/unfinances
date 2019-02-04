@@ -194,6 +194,8 @@
         5: { text: "Approved", backgroundColour: "#28a745", textColour: "#fff" },
         6: { text: "Paid", backgroundColour: "#28a745", textColour: "#fff" },
         7: { text: "Deleted", backgroundColour: "#dc3545", textColour: "#fff" },
+        8: { text: "Payment Details", backgroundColour: "#ffc107", textColour: "#212529" },
+        9: { text: "Payment Pending", backgroundColour: "#17a2b8", textColour: "#fff" },
     }
 
     userAccount = jQuery.parseJSON(<?php echo "\"" . str_replace("\"", "\\\"", json_encode($userAccount)) . "\""; ?>)
@@ -432,7 +434,64 @@
             .text("By checking this box, I am confirming that I have read this claim and, as the treasurer, have decided to either approve, bounce, or reject it.")
             .parent().show()
             .next().show()
-        } else if (statusesLookup[claim.status].text == "Approved" && userAccount.is_treasurer) {
+        } else if (statusesLookup[claim.status].text == "Payment Details" && claim.claimant_id === userAccount.username) {
+            $("<div>")
+            .addClass("form-group")
+            .append(
+                $("<label>")
+                .text("Bank Account Number")
+                .attr("for", "claim_input_account_number")
+                )
+            .append(
+                $("<input>")
+                .addClass("form-control")
+                .attr("type", "text")
+                .attr("id", "claim_input_account_number")
+                .attr("name", "claim_input_account_number")
+                .attr("autocomplete", "off")
+                )
+            .appendTo($("#action_button_row_1 div:first"))
+
+            $("<div>")
+            .addClass("form-group")
+            .append(
+                $("<label>")
+                .text("Bank Sort Code")
+                .attr("for", "claim_input_sort_code")
+                )
+            .append(
+                $("<input>")
+                .addClass("form-control")
+                .attr("type", "text")
+                .attr("id", "claim_input_sort_code")
+                .attr("name", "claim_input_sort_code")
+                .attr("autocomplete", "off")
+                )
+            .appendTo($("#action_button_row_1 div:last"))
+
+            $('#claim_input_account_number').inputmask({
+                mask: "99999999",
+                clearMaskOnLostFocus: false,
+                removeMaskOnSubmit: true,
+            })
+            $('#claim_input_sort_code').inputmask({
+                mask: "99-99-99",
+                clearMaskOnLostFocus: false,
+                removeMaskOnSubmit: true,
+            })
+
+            $("<button>")
+            .appendTo($("#action_button_row_2 div:first"))
+            .addClass("btn btn-success btn-lg btn-block mt-3")
+            .attr("id", "button_payment_details")
+            .text("Get paid!")
+            .on("click", window.paymentDetailsSubmit)
+
+            $("#declaration-label")
+            .text("By checking this box, I am confirming that these are my correct payment details.")
+            .parent().show()
+            .next().show()
+        } else if (statusesLookup[claim.status].text == "Payment Pending" && userAccount.is_treasurer) {
             $("<button>")
             .appendTo($("#action_button_row_1 div:last"))
             .addClass("btn btn-success btn-lg btn-block")
@@ -653,6 +712,44 @@
                 } else {
                     console.error(errorThrown)
                     alert('Review failed, please check your connection and try again.')
+                }
+                
+            })
+        }
+    }
+
+    window.paymentDetailsSubmit = function() {
+        // check for value in field
+        if (!$('#declaration-checkbox').is(':checked')) {
+            alert('You must confirm the declaration before approving an expense.')
+        } else if (!$('#claim_input_account_number').inputmask("isComplete") || !$('#claim_input_sort_code').inputmask("isComplete")) {
+            alert('Please enter your bank details.')
+        } else {
+            jQuery.ajax({
+                url: "../../api/expenses/submitPaymentDetailsClaim/"+window.claimState.id_claim,
+                type: "POST",
+                data: {
+                    claim_input_account_number: $("#claim_input_account_number").val(),
+                    claim_input_sort_code: $("#claim_input_sort_code").val(),
+                }
+            }).done((data) => {
+                console.log('submitted payment details to server', data)
+                $("#claim_input_account_number").val("")
+                $("#claim_input_sort_code").val("")
+                refreshClaimStateFromServer()
+            }).fail((jqXHR, textStatus, errorThrown) => {
+                if (jqXHR.status == 403) {
+                    console.error('Attempted to submit payment details on a claim not owned by user.')
+                    alert('You do not own this claim or have permission to write to it, and so cannot modify it.')
+                } else if (jqXHR.status == 404) {
+                    console.error('This claim does not exist')
+                    alert('Save failed, this claim does not exist.')
+                } else if (jqXHR.status == 400) {
+                    console.error('Invalid submission')
+                    alert('Submission failed, incorrect bank details format.')
+                } else {
+                    console.error(errorThrown)
+                    alert('Save failed, please check your connection and try again.')
                 }
                 
             })
