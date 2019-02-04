@@ -21,7 +21,9 @@
                         <input type="text" class="form-control" id="onboarding_input_dob" name="onboarding_input_dob" autocomplete="off">
                     </div>
                 </div>
-
+<?php
+/*
+Commented out due to removing storage of bank details.
                 <hr>
 
                 <div class="form-group row">
@@ -37,7 +39,8 @@
                     </div>
                 </div>
                 <small id="emailHelp" class="form-text text-muted mb-4">The account you enter here will be used by the Treasurer repay you for expense claims. If you do not wish to enter this information, please contact the Treasurer or your Cost Centre manager.</small>
-                
+*/
+?>                
                 <input type="submit" class="btn btn-primary btn-lg" id="onboarding-submit" disabled>
             </form>
         </div>
@@ -63,15 +66,15 @@ $(document).ready(function(){
             $("#onboarding-submit").prop('disabled', true)
         }
     })
-    $('#onboarding_input_account_number').inputmask({
-        mask: "99999999",
-        clearMaskOnLostFocus: false,
-        removeMaskOnSubmit: true,
-    })
-    $('#onboarding_input_sort_code').inputmask({
-        mask: "99-99-99",
-        clearMaskOnLostFocus: false,
-        removeMaskOnSubmit: true,
-    })
+    // $('#onboarding_input_account_number').inputmask({
+    //     mask: "99999999",
+    //     clearMaskOnLostFocus: false,
+    //     removeMaskOnSubmit: true,
+    // })
+    // $('#onboarding_input_sort_code').inputmask({
+    //     mask: "99-99-99",
+    //     clearMaskOnLostFocus: false,
+    //     removeMaskOnSubmit: true,
+    // })
 })
 </script>

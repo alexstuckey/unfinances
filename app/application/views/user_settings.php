@@ -67,7 +67,9 @@
                                     <input type="text" class="form-control" id="settings_input_dob" name="settings_input_dob" value="<?php echo $day . "/" . $month . "/" . $year; ?>" autocomplete="off">
                                 </div>
                             </div>
-
+<?php
+/*
+Commented out due to removing storage of bank details.
                             <hr>
 
                             <div class="form-group row">
@@ -83,7 +85,8 @@
                                 </div>
                             </div>
                             <small id="emailHelp" class="form-text text-muted mb-4">The account you enter here will be used by the Treasurer repay you for expense claims. If you do not wish to enter this information, please contact the Treasurer or your Cost Centre manager.</small>
-                            
+*/
+?>                            
                             <input type="submit" class="btn btn-primary btn-lg">
                         </form>
                     </div>

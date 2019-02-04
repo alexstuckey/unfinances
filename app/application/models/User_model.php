@@ -168,17 +168,14 @@ class User_model extends CI_Model
     }
 
     // Assumes correct data
-    public function completeOnboardingWithDetails($cisID, $dob, $accountNumber, $sortCode)
+    public function completeOnboardingWithDetails($cisID, $dob)
     {
         $existingUser = $this->getUserByCIS($cisID);
 
         if ($existingUser['doesUserExist']) {
             $data = array(
                 'has_onboarded' => 1,
-                'dob' => $dob,
-                'bank_account_number' => $accountNumber,
-                'bank_sort_code' => $sortCode
-
+                'dob' => $dob
             );
 
             $this->db->where('id_cis', $cisID);
@@ -189,18 +186,15 @@ class User_model extends CI_Model
         }
     }
 
-    public function updateAccountDetails($cisID, $dob, $accountNumber, $sortCode)
+    public function updateAccountDetails($cisID, $dob)
     {
         $existingUser = $this->getUserByCIS($cisID);
 
         if ($existingUser['doesUserExist']) {
             $data = array(
                 'has_onboarded' => 1,
-                'dob' => $dob,
-                'bank_account_number' => $accountNumber,
-                'bank_sort_code' => $sortCode
-
-            );
+                'dob' => $dob
+             );
 
             $this->db->where('id_cis', $cisID);
             $this->db->update('users', $data);

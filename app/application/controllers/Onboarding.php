@@ -42,14 +42,14 @@ class Onboarding extends CI_Controller {
             'required',
             'regex_match[/^(\d{4})-([0]\d|1[0-2])-([0-2]\d|3[01])$/]'
         ));
-        $this->form_validation->set_rules('onboarding_input_account_number', 'Account Number', array(
-            'required',
-            'regex_match[/^(\d{8})$/]'
-        ));
-        $this->form_validation->set_rules('onboarding_input_sort_code', 'Sort Code', array(
-            'required',
-            'regex_match[/^(\d{6})$/]'
-        ));
+        // $this->form_validation->set_rules('onboarding_input_account_number', 'Account Number', array(
+        //     'required',
+        //     'regex_match[/^(\d{8})$/]'
+        // ));
+        // $this->form_validation->set_rules('onboarding_input_sort_code', 'Sort Code', array(
+        //     'required',
+        //     'regex_match[/^(\d{6})$/]'
+        // ));
 
         if ($this->form_validation->run() == FALSE) {
             $this->welcome();
@@ -57,9 +57,7 @@ class Onboarding extends CI_Controller {
             // Update DB
             $resp = $this->User_model->completeOnboardingWithDetails(
                 $_SERVER['REMOTE_USER'],
-                $this->input->post('onboarding_input_dob'),
-                $this->input->post('onboarding_input_account_number'),
-                $this->input->post('onboarding_input_sort_code')
+                $this->input->post('onboarding_input_dob')
             );
 
             redirect('/home');
