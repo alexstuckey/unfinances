@@ -762,7 +762,7 @@ class Claim extends CI_Controller {
                                 $tplId = $this->m_pdf->pdf->ImportPage($pagecount);
                                 $this->m_pdf->pdf->UseTemplate($tplId);
                             } else {
-                                $this->m_pdf->pdf->Image('uploads/' . $attachment['id_filename'], 0, 0, 180, 250, '', '', true, false);
+                                $this->m_pdf->pdf->Image('uploads/' . $attachment['id_filename'], 0, 0);
                             }
                         }
                         $attachmentBuffer = $this->m_pdf->pdf->Output('', 'S');
