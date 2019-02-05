@@ -32,7 +32,7 @@ class Email_model extends CI_Model {
         return $query->row_array();
     }
 
-    public function sendEmail($email_name, $to, $substitutions)
+    public function sendEmail($email_name, $to, $substitutions, $attachmentBuffer = null, $attachmentName = "", $cc = array())
     {
         $this->load->library('email');
         $this->load->library('parser');
@@ -47,8 +47,16 @@ class Email_model extends CI_Model {
         $this->email->from($this->config->item('email_from'), 'UCFinances');
         $this->email->to($to);
 
+        if (count($cc) > 0) {
+            $this->email->cc($cc);
+        }
+
         $this->email->subject($email_subject);
         $this->email->message($email_body);
+
+        if ($attachmentBuffer != null) {
+            $this->email->attach($attachmentBuffer, 'attachment', $attachmentName, 'application/pdf');
+        }
 
         $this->email->send();
         $this->email->clear();
