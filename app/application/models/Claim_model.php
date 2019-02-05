@@ -45,6 +45,22 @@ abstract class ClaimStatus {
         return $statusesByStringInLowercase[strtolower($statusString)];
     }
 
+    public static function statusIntToString($statusInt)
+    {
+        if (is_int($statusInt)) {
+            foreach (self::getConstants() as $key => $value) {
+                if ($value == $statusInt) {
+                    // Insert spaces before capital letters
+                    // e.g. PaymentPending -> Payment Pending
+                    $withSpaces = preg_replace('/(\w+)([A-Z])/U', '\\1 \\2', $key);
+                    return $withSpaces;
+                }
+            }
+            return false;
+        }
+        return false;
+    }
+
 
 
     public static function isValidStatus($status)
