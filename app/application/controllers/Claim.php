@@ -745,6 +745,28 @@ class Claim extends CI_Controller {
                         );
 
                         // CREATE THE PDF
+                        $data['payment'] = array(
+                            'account_number' => $this->input->post('claim_input_account_number'),
+                            'sort_code' => $this->input->post('claim_input_sort_code')
+                        );
+
+                        $pdfhtml = $this->load->view('pdf_claim_template', $data, TRUE);
+                        $this->load->library('M_pdf');
+                        $this->m_pdf->pdf->WriteHTML($pdfhtml);
+                        $this->m_pdf->pdf->SetImportUse();
+                        foreach ($data['claim']['attachments'] as $attachment) {
+                            $this->m_pdf->pdf->AddPage();
+
+                            if (substr($attachment['id_filename'], -4) === '.pdf') {
+                                $pagecount = $this->m_pdf->pdf->SetSourceFile('uploads/' . $attachment['id_filename']);
+                                $tplId = $this->m_pdf->pdf->ImportPage($pagecount);
+                                $this->m_pdf->pdf->UseTemplate($tplId);
+                            } else {
+                                $this->m_pdf->pdf->Image('uploads/' . $attachment['id_filename'], 0, 0, 180, 250, '', '', true, false);
+                            }
+                        }
+                        $attachmentBuffer = $this->m_pdf->pdf->Output('', 'S');
+
 
                         // Notify the treasurers
                         $treasurers = $this->User_model->getTreasurers();
@@ -763,6 +785,11 @@ class Claim extends CI_Controller {
                                 'attachments_count' => count($data['claim']['attachments']),
                                 'expenditure_items' => json_decode(str_replace('\\', '', $data['claim']['expenditure_items']), true),
                                 'claim_url' => site_url('/expenses/claim/' . $data['claim']['id_claim'])
+                            ),
+                            $attachmentBuffer,
+                            'Claim ' . $data['claim']['id_claim'] . '.pdf',
+                            array(
+                                $data['userAccount']['email']
                             )
                         );
 
