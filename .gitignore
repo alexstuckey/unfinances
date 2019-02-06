@@ -2,7 +2,7 @@
 node_modules
 app/static/
 
-app/vendor/
+app/application/vendor/
 
 ### PhpStorm ###
 .idea/**/*
