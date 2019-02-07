@@ -108,15 +108,5 @@ $(document).ready(function(){
         max: ('dd/mm/' + earliest_year),
         removeMaskOnSubmit: true,
     })
-    $('#settings_input_account_number').inputmask({
-        mask: "99999999",
-        clearMaskOnLostFocus: false,
-        removeMaskOnSubmit: true,
-    })
-    $('#settings_input_sort_code').inputmask({
-        mask: "99-99-99",
-        clearMaskOnLostFocus: false,
-        removeMaskOnSubmit: true,
-    })
 })
 </script>
