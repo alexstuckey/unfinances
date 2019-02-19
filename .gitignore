@@ -3,6 +3,7 @@ node_modules
 app/static/
 
 app/application/vendor/
+app/application/third_party/
 
 ### PhpStorm ###
 .idea/**/*
