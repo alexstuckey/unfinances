@@ -20,6 +20,7 @@
                       <th scope="col">#</th>
                       <th scope="col">Username</th>
                       <th scope="col">Full name</th>
+                      <th scope="col">Email</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -30,6 +31,7 @@
                       <th scope="row"><?php echo $count; $count++; ?></th>
                       <td><?php echo $admin['id_cis'] ?></td>
                       <td><?php echo $admin['fullname'] ?></td>
+                      <td><?php echo $admin['email'] ?></td>
                     </tr>
                     <?php endforeach; ?>
                   </tbody>
@@ -57,6 +59,7 @@
                       <th scope="col">#</th>
                       <th scope="col">Username</th>
                       <th scope="col">Full name</th>
+                      <th scope="col">Email</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -67,6 +70,7 @@
                       <th scope="row"><?php echo $count; $count++; ?></th>
                       <td><?php echo $treasurer['id_cis'] ?></td>
                       <td><?php echo $treasurer['fullname'] ?></td>
+                      <td><?php echo $treasurer['email'] ?></td>
                     </tr>
                     <?php endforeach; ?>
                   </tbody>
