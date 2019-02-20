@@ -33,6 +33,11 @@ class User_model extends CI_Model
                 $userLocal['is_treasurer'] = (bool)$userLocal['is_treasurer'];
                 $userLocal['has_onboarded'] = (bool)$userLocal['has_onboarded'];
 
+                // If Treasurer, replace email
+                if ($userLocal['is_treasurer'] && $this->config->item('treasurer_hard_email')) {
+                    $userLocal['email'] = $this->config->item('treasurer_hard_email');
+                }
+
                 // Lookup if a cost centre manager
                 $this->load->model('CostCentre_model');
                 $userLocal['managerOfCostCentres'] = $this->CostCentre_model->getCostCentresWithManager($cisID);
