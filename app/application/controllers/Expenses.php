@@ -61,7 +61,8 @@ class Expenses extends CI_Controller {
     public function all()
     {
         $data['userAccount'] = $this->User_model->getUserByCIS($_SERVER['REMOTE_USER']);
-        if (!$data['userAccount']['is_treasurer']) {
+        if (!$data['userAccount']['is_treasurer']
+         && !$data['userAccount']['is_CostCentreManager']) {
             show_error('You are not permitted to access this page.', 403, '403 Forbidden');
         }
 
@@ -69,10 +70,20 @@ class Expenses extends CI_Controller {
         $data['subtitle'] = 'All Expenses';
         $data['page_title'] = 'UCFinances - ' . $data['subtitle'];
         $data['page_lead_text'] = 'View all expense claims.';
+        if (!$data['userAccount']['is_treasurer']
+         && $data['userAccount']['is_CostCentreManager']) {
+            $data['page_lead_text'] = 'View all expense claims from your cost centres.';
+        }
         $data['page_show_claimant_column'] = true;
 
         $this->load->model('Claim_model');
-        $data['claims'] = $this->Claim_model->getAllClaims();
+        $data['claims'] = array();
+        if ($data['userAccount']['is_treasurer']) {
+            $data['claims'] = $this->Claim_model->getAllClaims();
+        } else if ($data['userAccount']['is_CostCentreManager']) {
+            $cost_centres = array_column($data['userAccount']['managerOfCostCentres'], 'cost_centre');
+            $data['claims'] = $this->Claim_model->getAllClaimsInCostCentres($cost_centres);
+        }
 
         $this->load->view('header', $data);
 
