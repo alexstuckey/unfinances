@@ -64,13 +64,12 @@
                             </li>
                             <?php if ((!empty($userAccount['is_treasurer']) && ($userAccount['is_treasurer'] == TRUE))
                                    || (!empty($userAccount['is_CostCentreManager']) && ($userAccount['is_CostCentreManager'] == TRUE))): ?>
-                                <li class="nav-item<?php if ($active == "expenses_review") { echo " active"; }; ?>">
-                                    <a class="nav-link" href="<?php echo site_url('/expenses/review'); ?>">Expenses Review</a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if ((!empty($userAccount['is_treasurer']) && ($userAccount['is_treasurer'] == TRUE))): ?>
                                 <li class="nav-item<?php if ($active == "expenses_all") { echo " active"; }; ?>">
                                     <a class="nav-link" href="<?php echo site_url('/expenses/all'); ?>">All Expenses</a>
+                                </li>
+
+                                <li class="nav-item<?php if ($active == "expenses_review") { echo " active"; }; ?>">
+                                    <a class="nav-link" href="<?php echo site_url('/expenses/review'); ?>">Expenses Review</a>
                                 </li>
                             <?php endif; ?>
                             <li class="nav-item">
