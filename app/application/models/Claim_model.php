@@ -143,6 +143,21 @@ class Claim_model extends CI_Model {
         return $claims;
     }
 
+    public function getAllClaimsInCostCentres($cost_centres)
+    {
+        if (!is_array($cost_centres)) {
+            $cost_centres = array($cost_centres);
+        }
+        $this->db->where_in('cost_centre', $cost_centres);
+        $query = $this->db->get('claims');
+
+        $claims = $query->result_array();
+
+        $claims = array_map(array($this, 'perClaimModify'), $claims);
+
+        return $claims;
+    }
+
     public function getClaimsForUser($cisID)
     {
         $this->db->where('claimant_id', $cisID);
