@@ -359,6 +359,9 @@
             $("#input_description").prop('disabled', true)
         }
 
+        $("#claim_input_account_number").val("")
+        $("#claim_input_sort_code").val("")
+
     // Statuses
         $("#input_status").text(statusesLookup[claim.status].text)
         $("#input_status").css('background-color', statusesLookup[claim.status].backgroundColour)
@@ -749,9 +752,7 @@
                     claim_input_sort_code: $("#claim_input_sort_code").val(),
                 }
             }).done((data) => {
-                console.log('submitted payment details to server', data)
-                $("#claim_input_account_number").val("")
-                $("#claim_input_sort_code").val("")
+                $("#action_button_row_1").children().empty()
                 refreshClaimStateFromServer()
             }).fail((jqXHR, textStatus, errorThrown) => {
                 if (jqXHR.status == 403) {
@@ -768,9 +769,9 @@
                     alert('Save failed, please check your connection and try again.')
                 }
 
-            }).always(() => {
                 // Reenable button
                 $(this).prop('disabled', false)
+
             })
         }
     }
