@@ -787,10 +787,7 @@ class Claim extends CI_Controller {
                                 'claim_url' => site_url('/expenses/claim/' . $data['claim']['id_claim'])
                             ),
                             $attachmentBuffer,
-                            'Claim ' . $data['claim']['id_claim'] . '.pdf',
-                            array(
-                                $data['userAccount']['email']
-                            )
+                            'Claim ' . $data['claim']['id_claim'] . '.pdf'
                         );
 
                     } else {
