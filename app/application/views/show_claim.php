@@ -368,11 +368,19 @@
         $("#input_status").css('color', statusesLookup[claim.status].textColour)
 
     // Action buttons
-        $("#action_button_row_1").children().empty()
-        $("#action_button_row_2").children().empty()
+        $("#action_button_row_1").empty()
+        $("#action_button_row_2").empty()
+
         $('#declaration-checkbox').prop('checked', false)
         if (claim.isEditable
          && claim.claimant_id === userAccount.username) {
+            $("<div>")
+            .appendTo($("#action_button_row_1"))
+            .addClass("col-6")
+            $("<div>")
+            .appendTo($("#action_button_row_1"))
+            .addClass("col-6")
+
             $("<button>")
             .appendTo($("#action_button_row_1 div:first"))
             .addClass("btn btn-dark btn-lg btn-block")
@@ -393,6 +401,13 @@
             .after().show()
         } else if (statusesLookup[claim.status].text == "Cost Centre Review"
                 && userAccount.managerOfCostCentres.reduce((accumulator, row) => accumulator || (row.cost_centre == claim.cost_centre), false)) {
+            $("<div>")
+            .appendTo($("#action_button_row_1"))
+            .addClass("col-12")
+            $("<div>")
+            .appendTo($("#action_button_row_2"))
+            .addClass("col-12")
+
             $("<button>")
             .appendTo($("#action_button_row_1 div:first"))
             .addClass("btn btn-warning btn-lg btn-block")
@@ -401,8 +416,8 @@
             .on("click", window.reviewClaimToServer)
 
             $("<button>")
-            .appendTo($("#action_button_row_1 div:last"))
-            .addClass("btn btn-success btn-lg btn-block")
+            .appendTo($("#action_button_row_2 div:first"))
+            .addClass("btn btn-success btn-lg btn-block mt-3")
             .attr("id", "button_cost_centre_approve")
             .text("Approve to Treasurer")
             .on("click", window.reviewClaimToServer)
@@ -412,6 +427,16 @@
             .parent().show()
             .next().show()
         } else if (statusesLookup[claim.status].text == "Treasurer Review" && userAccount.is_treasurer) {
+            $("<div>")
+            .appendTo($("#action_button_row_1"))
+            .addClass("col-6")
+            $("<div>")
+            .appendTo($("#action_button_row_1"))
+            .addClass("col-6")
+            $("<div>")
+            .appendTo($("#action_button_row_2"))
+            .addClass("col-12")
+
             $("<button>")
             .appendTo($("#action_button_row_1 div:first"))
             .addClass("btn btn-warning btn-lg btn-block")
@@ -438,6 +463,16 @@
             .parent().show()
             .next().show()
         } else if (statusesLookup[claim.status].text == "Payment Details" && claim.claimant_id === userAccount.username) {
+            $("<div>")
+            .appendTo($("#action_button_row_1"))
+            .addClass("col-6")
+            $("<div>")
+            .appendTo($("#action_button_row_1"))
+            .addClass("col-6")
+            $("<div>")
+            .appendTo($("#action_button_row_2"))
+            .addClass("col-12")
+
             $("<div>")
             .addClass("form-group")
             .append(
@@ -495,6 +530,10 @@
             .parent().show()
             .next().show()
         } else if (statusesLookup[claim.status].text == "Payment Pending" && userAccount.is_treasurer) {
+            $("<div>")
+            .appendTo($("#action_button_row_1"))
+            .addClass("col-12")
+
             $("<button>")
             .appendTo($("#action_button_row_1 div:last"))
             .addClass("btn btn-success btn-lg btn-block")
